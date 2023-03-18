@@ -1,0 +1,145 @@
+﻿@page "/Overforing"
+@inject HttpClient http
+
+
+
+<br />
+<button>Lägg till ny överföring</button>
+<br />
+<br />
+
+<h3>Överföringar</h3>
+
+@if (OverforingList != null)
+{
+    <body>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><span>Markera </span><span><input type="checkbox" @onchange="MarkeraAlla" /></span></th>
+                    <th>Namn</th>
+                    <th>Beskrivning</th>
+                    <th>Antal Filkollektioner</th>
+                    <th>Detaljer</th>
+                    <th>Redigera</th>
+                    <th>Radera</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var _overforing in OverforingVMs)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" @bind="_overforing.isChecked" @onclick="() => OverCheck(_overforing)"></input>
+                        </td>
+
+                        <td>
+                            @_overforing.Namn
+                        </td>
+                        <td>
+                            @_overforing.Beskrivning
+                        </td>
+                       @* <td>
+                            @if (_overforing.FilKollektions != null)
+                            {
+                            <td>
+                                    @_overforing.FilKollektions.Count.ToString()
+                            </td>
+                            }
+                            else
+                            {
+                            <td>
+                                0
+                            </td>
+                            }
+                        </td>*@
+                        <td>
+                            <button>Detaljer</button>
+                        </td>
+                        <td>
+                            <button>Redigera</button>
+                        </td>
+                        <td>
+                            <button>Radera</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (MarkeradeOverforingar != null && MarkeradeOverforingar.Count != 0)
+        {
+            <b>Markerade Överföringar</b>
+            <br />
+
+            @foreach (var overf in MarkeradeOverforingar)
+            {
+                <span>@overf.Namn</span>
+                <br />
+            }
+            <button>Radera markerade Överföringar</button>
+            <button>Flytta markerade Överföringar</button>
+        }
+    </body>
+}
+else
+{
+    <p>Laddar data...</p>
+}
+@code {
+    private List<FISSUP23.Database.Models.Overforing> OverforingList { get; set; }
+    private List<FISSUP23.Database.Models.FilKollektion> FilKollektionsList { get; set; }
+    private List<ViewModels.OverforingViewModel> MarkeradeOverforingar { get; set; }
+    private List<ViewModels.OverforingViewModel> OverforingVMs { get; set; }
+
+    public bool Checked { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // 1. make request to ./api/Skolas
+        // 2. await response from server
+        // 3. receive reponse
+        // 4. deserialize reponse body to C# object according to the provided type in the <...>
+        OverforingList = await http.GetFromJsonAsync<List<FISSUP23.Database.Models.Overforing>>("./api/Overforings");
+        OverforingVMs = new List<FISSUP23.Client.ViewModels.OverforingViewModel>();
+
+        foreach (var _Overfor in OverforingList)
+        {
+            var OverforingsVM = new ViewModels.OverforingViewModel()
+                {
+                    isChecked = false,
+                    Id = _Overfor.Id,
+                    Namn = _Overfor.Namn,
+                    SystemNamn = _Overfor.SystemNamn,
+                    Beskrivning = _Overfor.Beskrivning
+                };
+            OverforingVMs.Add(OverforingsVM);
+
+        }
+
+
+        MarkeradeOverforingar = new List<ViewModels.OverforingViewModel>();
+
+        await base.OnInitializedAsync();
+
+    }
+
+    public void MarkeraAlla()
+    {
+
+    }
+
+    public void OverCheck(ViewModels.OverforingViewModel over)
+    {
+        Checked = !Checked;
+        if (Checked)
+        {
+            MarkeradeOverforingar.Add(over);
+        }
+        else
+        {
+            MarkeradeOverforingar.Remove(over);
+        }
+    }
+
+}
