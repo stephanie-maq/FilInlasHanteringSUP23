@@ -87,6 +87,7 @@ else
     <p>Laddar data...</p>
 }
 @code {
+    private bool isCheckedTotal { get; set; }
     private List<FISSUP23.Database.Models.Overforing> OverforingList { get; set; }
     private List<FISSUP23.Database.Models.FilKollektion> FilKollektionsList { get; set; }
     private List<ViewModels.OverforingViewModel> MarkeradeOverforingar { get; set; }
@@ -126,13 +127,27 @@ else
 
     public void MarkeraAlla()
     {
+        isCheckedTotal = !isCheckedTotal;
+        foreach (var overforing in OverforingVMs)
+        {
+            overforing.isChecked = isCheckedTotal;
+        }
 
+        MarkeradeOverforingar = new List<FISSUP23.Client.ViewModels.OverforingViewModel>();
+        if (isCheckedTotal)
+        {
+            MarkeradeOverforingar.AddRange(OverforingVMs);
+        }
+        //else
+        //{
+        //    MarkeradeOverforingar = new List<Overforing>();
+        //}
     }
 
     public void OverCheck(ViewModels.OverforingViewModel over)
     {
-        Checked = !Checked;
-        if (Checked)
+        over.isChecked = !over.isChecked;
+        if (over.isChecked)
         {
             MarkeradeOverforingar.Add(over);
         }
