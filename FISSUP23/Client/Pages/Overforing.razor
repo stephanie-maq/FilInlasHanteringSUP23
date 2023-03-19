@@ -20,9 +20,6 @@
                     <th>Namn</th>
                     <th>Beskrivning</th>
                     <th>Antal Filkollektioner</th>
-                    <th>Detaljer</th>
-                    <th>Redigera</th>
-                    <th>Radera</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,16 +50,6 @@
                             </td>
                             }
                         </td>
-                        <td>
-                            <button>Detaljer</button>
-
-                        </td>
-                        <td>
-                            <button>Redigera</button>
-                        </td>
-                        <td>
-                            <button>Radera</button>
-                        </td>
                     </tr>
                 }
             </tbody>
@@ -75,9 +62,18 @@
 
             @foreach (var overf in MarkeradeOverforingar)
             {
+                <body> 
+                <button class="btn btn-primary"> Detaljer</button>
+                <button class="btn btn-primary"> Uppdatera</button>
+                <button class="btn btn-primary"> Radera</button>
+                </body>
+                
                 <span>@overf.Namn</span>
+                <span>@overf.Beskrivning</span>
+
                 <br />
             }
+
            
         }
     </body>
@@ -153,6 +149,11 @@ else
         {
             MarkeradeOverforingar.Remove(over);
         }
+    }
+
+    public void ShowDetails()
+    {
+        
     }
 
 }
