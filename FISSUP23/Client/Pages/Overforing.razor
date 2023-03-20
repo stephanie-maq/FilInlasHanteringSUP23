@@ -1,5 +1,6 @@
 ﻿@page "/Overforing"
 @inject HttpClient http
+@inject NavigationManager navMan
 
 
 
@@ -36,7 +37,7 @@
                         <td>
                             @_overforing.Beskrivning
                         </td>
-                       <td>
+                        <td>
                             @if (_overforing.FileCollections != null)
                             {
                             <td>
@@ -57,24 +58,42 @@
 
         @if (MarkeradeOverforingar != null && MarkeradeOverforingar.Count != 0)
         {
-            <b>Markerade Överföringar</b>
             <br />
+            <br />
+            <br />
+            <h2 style="color:black"> <strong> Se detaljer, uppdatera eller radera</strong></h2>
 
-            @foreach (var overf in MarkeradeOverforingar)
+            if (foo)
             {
-                <body> 
-                <button class="btn btn-primary"> Detaljer</button>
-                <button class="btn btn-primary"> Uppdatera</button>
-                <button class="btn btn-primary"> Radera</button>
-                </body>
-                
-                <span>@overf.Namn</span>
-                <span>@overf.Beskrivning</span>
+                <div>
 
-                <br />
+                    <button type="button" class="btn btn-warning " onlclick="RedirectUpdate"> Uppdatera</button>
+                    <button type="button" class="btn btn-warning " onclick=""> Radera</button>
+
+                </div>
             }
 
-           
+            <br />
+            @foreach (var overf in MarkeradeOverforingar)
+            {
+                <dl class="row">
+                    <dt class="col-sm-3">Namn:</dt>
+                    <dd class="col-sm-9" style=" color: black"> @overf.Namn</dd>
+
+                    <dt class="col-sm-3">Beskrivning:</dt>
+                    <dd class="col-sm-9">
+                        <p style=" color: black">@overf.Beskrivning</p>
+                    </dd>
+
+                    <dt class="col-sm-3">Filkollektioner:</dt>
+                    <dd class="col-sm-9"> xxx </dd>
+                </dl>
+
+                <br />
+
+            }
+
+
         }
     </body>
 }
@@ -84,6 +103,7 @@ else
 }
 @code {
     private bool isCheckedTotal { get; set; }
+    private bool foo { get; set; }
     private List<FISSUP23.Database.Models.Overforing> OverforingList { get; set; }
     private List<FISSUP23.Database.Models.FilKollektion> FilKollektionsList { get; set; }
     private List<ViewModels.OverforingViewModel> MarkeradeOverforingar { get; set; }
@@ -127,7 +147,7 @@ else
             overforing.isChecked = isCheckedTotal;
         }
 
-        MarkeradeOverforingar = new List<FISSUP23.Client.ViewModels.OverforingViewModel>();
+        MarkeradeOverforingar = new List<ViewModels.OverforingViewModel>();
         if (isCheckedTotal)
         {
             MarkeradeOverforingar.AddRange(OverforingVMs);
@@ -149,11 +169,22 @@ else
         {
             MarkeradeOverforingar.Remove(over);
         }
+
+        if (MarkeradeOverforingar.Where(over => over.isChecked).Count() == 0)
+        {
+            foo = false;
+        }
+        else
+        {
+
+            foo = true;
+
+        }
     }
 
-    public void ShowDetails()
+    public async void RedirectUpdate(FISSUP23.Database.Models.Overforing over)
     {
-        
+        navMan.NavigateTo($"./api/Overforings/{over.Id.ToString()}");
     }
 
 }

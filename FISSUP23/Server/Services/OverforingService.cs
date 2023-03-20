@@ -1,31 +1,30 @@
 ﻿using FISSUP23.Database.Models;
 using FISSUP23.Server.Services.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 
 
 namespace FISSUP23.Server.Services
 {
-    
-        public class OverforingService : IOverforingService
 
-        {
+    public class OverforingService : IOverforingService
+
+    {
         private readonly SsisGenericReadContext _context;
 
         public OverforingService(SsisGenericReadContext context)
-            {
-                _context = context;
-            }
-            public async Task Add(Overforing _overforing)
-            {
-                _context.Overforings.Add(_overforing);
-                _context.SaveChangesAsync();
-            }
+        {
+            _context = context;
+        }
+        public async Task Add(Overforing _overforing)
+        {
+            _context.Overforings.Add(_overforing);
+            await _context.SaveChangesAsync();
+        }
 
-            public async Task Delete(int id)
-            {
+        public async Task Delete(int id)
+        {
             throw new NotImplementedException();
-          }
+        }
 
         private void NoContent()
         {
@@ -33,7 +32,7 @@ namespace FISSUP23.Server.Services
         }
 
         public async Task<Overforing> GetByID(int id)
-            {
+        {
             if (_context.Overforings == null)
             {
                 return NotFound();
@@ -46,8 +45,8 @@ namespace FISSUP23.Server.Services
             }
 
             return overforing;
-       
-            }
+
+        }
 
         private Overforing NotFound()
         {
@@ -55,17 +54,60 @@ namespace FISSUP23.Server.Services
         }
 
         public async Task<List<Overforing>> GetOverforingar()
-            {
-                var result = await _context.Overforings.ToListAsync();
-                return result;
-            }
-
-        public async Task<Overforing> Update(int id, Overforing newOverforing)
         {
-           throw new NotImplementedException();
+            var result = await _context.Overforings.ToListAsync();
+            return result;
         }
 
+        public async Task Update(int id)
+        {
+
+            var over = GetOverforingar();
+            if (id != over.Id)
+            {
+
+                throw new Exception("Id not found");
+            }
+            _context.Entry(over).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+
+            //if (id != newOverforing.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            //_context.Entry(newOverforing).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!OverforingExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            //return 
         }
-    
+
+        private Database.Models.Overforing BadRequest()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        private bool OverforingExists(int id)
+        {
+            return (_context.Overforings?.Any(e => e.Id == id)).GetValueOrDefault();
+
+        }
+    }
 }
-
