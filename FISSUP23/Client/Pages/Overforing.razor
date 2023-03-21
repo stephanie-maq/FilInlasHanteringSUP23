@@ -5,7 +5,7 @@
 
 
 <br />
-<button>Lägg till ny överföring</button>
+<button type="button" class="btn btn-warning "> Lägg till ny överföring</button>
 <br />
 <br />
 
@@ -61,13 +61,21 @@
             <br />
             <br />
             <br />
-            <h2 style="color:black"> <strong> Se detaljer, uppdatera eller radera</strong></h2>
 
-            if (foo)
+            if (selectedOverforing && MarkeradeOverforingar.Count == 1)
             {
+                <h2 style="color:black"> <strong> Se detaljer, uppdatera eller radera</strong></h2>
                 <div>
 
                     <button type="button" class="btn btn-warning " onlclick="RedirectUpdate"> Uppdatera</button>
+                    <button type="button" class="btn btn-warning " onclick=""> Radera</button>
+
+                </div>
+            }
+            else
+            {
+                <h2 style="color:black"> <strong> Se detaljer eller radera</strong></h2>
+                <div>
                     <button type="button" class="btn btn-warning " onclick=""> Radera</button>
 
                 </div>
@@ -103,7 +111,7 @@ else
 }
 @code {
     private bool isCheckedTotal { get; set; }
-    private bool foo { get; set; }
+    private bool selectedOverforing { get; set; }
     private List<FISSUP23.Database.Models.Overforing> OverforingList { get; set; }
     private List<FISSUP23.Database.Models.FilKollektion> FilKollektionsList { get; set; }
     private List<ViewModels.OverforingViewModel> MarkeradeOverforingar { get; set; }
@@ -172,19 +180,19 @@ else
 
         if (MarkeradeOverforingar.Where(over => over.isChecked).Count() == 0)
         {
-            foo = false;
+            selectedOverforing = false;
         }
         else
         {
 
-            foo = true;
+            selectedOverforing = true;
 
         }
     }
 
     public async void RedirectUpdate(FISSUP23.Database.Models.Overforing over)
     {
-        navMan.NavigateTo($"./api/Overforings/{over.Id.ToString()}");
+        navMan.NavigateTo($"./api/Overforing/{over.Id.ToString()}");
     }
 
 }

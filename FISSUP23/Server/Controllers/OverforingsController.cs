@@ -27,8 +27,7 @@ namespace FISSUP23.Server.Controllers
         public async Task<ActionResult<IEnumerable<Overforing>>> GetOverforings()
         {
 
-            return await _service.GetOverforingar();
-        }
+            return await _service.GetOverforingar();        }
 
         //GET: api/Overforings/5
         [HttpGet("{id}")]
