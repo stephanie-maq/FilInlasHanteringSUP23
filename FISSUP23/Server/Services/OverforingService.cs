@@ -56,6 +56,7 @@ namespace FISSUP23.Server.Services
         public async Task<List<Overforing>> GetOverforingar()
         {
             var result = await _context.Overforings.ToListAsync();
+
             return result;
         }
 

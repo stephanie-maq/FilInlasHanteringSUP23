@@ -37,7 +37,7 @@
                         <td>
                             @_overforing.Beskrivning
                         </td>
-                        <td>
+                        @*<td>
                             @if (_overforing.FileCollections != null)
                             {
                             <td>
@@ -50,7 +50,7 @@
                                 0
                             </td>
                             }
-                        </td>
+                </td>*@
                     </tr>
                 }
             </tbody>
@@ -67,8 +67,8 @@
                 <h2 style="color:black"> <strong> Se detaljer, uppdatera eller radera</strong></h2>
                 <div>
 
-                    <button type="button" class="btn btn-warning " onlclick="RedirectUpdate"> Uppdatera</button>
-                    <button type="button" class="btn btn-warning " onclick=""> Radera</button>
+                    <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
+                    <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
 
                 </div>
             }
@@ -190,9 +190,16 @@ else
         }
     }
 
-    public async void RedirectUpdate(FISSUP23.Database.Models.Overforing over)
+    public void RedirectUpdate()
     {
-        navMan.NavigateTo($"./api/Overforing/{over.Id.ToString()}");
+        var mo = MarkeradeOverforingar.FirstOrDefault();
+        navMan.NavigateTo($"./Overforing/Update/{mo.Id.ToString()}", true);
+    }
+
+    public void Delete()
+    {
+        string s = "";
+
     }
 
 }

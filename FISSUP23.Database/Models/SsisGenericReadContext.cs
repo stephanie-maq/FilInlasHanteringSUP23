@@ -57,19 +57,8 @@ public partial class SsisGenericReadContext : DbContext
 
     public virtual DbSet<Test> Tests { get; set; }
 
-    public virtual DbSet<VFil15TestPivot> VFil15TestPivots { get; set; }
 
-    public virtual DbSet<VFilerPerSystem> VFilerPerSystems { get; set; }
 
-    public virtual DbSet<VInlastaRaderStephaniesKurser> VInlastaRaderStephaniesKursers { get; set; }
-
-    public virtual DbSet<VKolumnDatatyp> VKolumnDatatyps { get; set; }
-
-    public virtual DbSet<VParsedDatum> VParsedData { get; set; }
-
-    public virtual DbSet<VSaknadeScheman> VSaknadeSchemen { get; set; }
-
-    public virtual DbSet<VSysteminformation> VSysteminformations { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -458,142 +447,9 @@ public partial class SsisGenericReadContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<VFil15TestPivot>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_Fil15_TestPivot", "import");
+       
 
-            entity.Property(e => e.AbsenceId)
-                .HasMaxLength(2047)
-                .IsUnicode(false)
-                .HasColumnName("AbsenceID");
-            entity.Property(e => e.DayMinute)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-            entity.Property(e => e.Event)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-            entity.Property(e => e.Extension)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-            entity.Property(e => e.Reason)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-            entity.Property(e => e.RoleId)
-                .HasMaxLength(2047)
-                .IsUnicode(false)
-                .HasColumnName("RoleID");
-            entity.Property(e => e.SecIndex)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-            entity.Property(e => e.TimeStamp)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-            entity.Property(e => e.UserId)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-        });
-
-        modelBuilder.Entity<VFilerPerSystem>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_FilerPerSystem", "import");
-
-            entity.Property(e => e.FilSpec)
-                .HasMaxLength(511)
-                .IsUnicode(false);
-            entity.Property(e => e.MatchMonster)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.SystemNamn)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
-
-        modelBuilder.Entity<VInlastaRaderStephaniesKurser>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_InlastaRader_Stephanies kurser", "import");
-
-            entity.Property(e => e.DatumTid).HasColumnType("datetime");
-            entity.Property(e => e.FilNamn)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.TabellNamn).HasMaxLength(517);
-        });
-
-        modelBuilder.Entity<VKolumnDatatyp>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_KolumnDatatyp", "import");
-
-            entity.Property(e => e.Datatyp).HasMaxLength(128);
-            entity.Property(e => e.KolumnNamn)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
-
-        modelBuilder.Entity<VParsedDatum>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_ParsedData", "import");
-
-            entity.Property(e => e.Data)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-            entity.Property(e => e.InlasningId).HasColumnName("InlasningID");
-            entity.Property(e => e.KolumnNamn)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.TabellNamn)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
-
-        modelBuilder.Entity<VSaknadeScheman>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_SaknadeScheman", "import");
-
-            entity.Property(e => e.SaknatSchema)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
-
-        modelBuilder.Entity<VSysteminformation>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_Systeminformation", "import");
-
-            entity.Property(e => e.Andelse)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.FolderArkiv)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.FolderFelaktigFil)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.FolderNyFil)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.FolderRoot)
-                .HasMaxLength(511)
-                .IsUnicode(false);
-            entity.Property(e => e.MatchMonster)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.SystemNamn)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
+       
 
         OnModelCreatingPartial(modelBuilder);
     }
