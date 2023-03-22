@@ -37,20 +37,19 @@
                         <td>
                             @_overforing.Beskrivning
                         </td>
-                        @*<td>
-                            @if (_overforing.FileCollections != null)
+                        <td>
+                            @if (_overforing.AntalFilkollektioner != null)
                             {
                             <td>
-                                    @_overforing.FileCollections.Count.ToString()
+                                    @_overforing.AntalFilkollektioner.ToString()
                             </td>
                             }
                             else
                             {
                             <td>
-                                0
                             </td>
                             }
-                </td>*@
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -94,7 +93,10 @@
                     </dd>
 
                     <dt class="col-sm-3">Filkollektioner:</dt>
-                    <dd class="col-sm-9"> xxx </dd>
+
+                    @foreach(var file in overf.FileCollections) {
+                        <dd class="col-sm-9"> @file.Namn </dd>
+                    }
                 </dl>
 
                 <br />
@@ -134,7 +136,9 @@ else
                     Id = _Overfor.Id,
                     Namn = _Overfor.Namn,
                     SystemNamn = _Overfor.SystemNamn,
-                    Beskrivning = _Overfor.Beskrivning
+                    Beskrivning = _Overfor.Beskrivning,
+                    FileCollections = _Overfor.FilKollektions.ToList(),
+                    AntalFilkollektioner = _Overfor.FilKollektions.Count
                 };
             OverforingVMs.Add(OverforingsVM);
 
@@ -193,7 +197,7 @@ else
     public void RedirectUpdate()
     {
         var mo = MarkeradeOverforingar.FirstOrDefault();
-        navMan.NavigateTo($"./Overforing/Update/{mo.Id.ToString()}", true);
+        navMan.NavigateTo($"./Overforings/{mo.Id.ToString()}/Update", true);
     }
 
     public void Delete()

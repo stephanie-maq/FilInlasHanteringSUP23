@@ -48,5 +48,6 @@ static void ConfigureServices(IServiceCollection services)
     services.AddRazorPages();
     services.AddSwaggerGen();
     services.AddScoped<IOverforingService, OverforingService>();
+    services.AddScoped<IFilkollektionService, FilkollektionService>();
     services.AddDbContext<SsisGenericReadContext>();
 }

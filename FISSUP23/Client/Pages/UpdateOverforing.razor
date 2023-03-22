@@ -1,55 +1,31 @@
-﻿@page "/Overforing/Update/{Id:int}"
+﻿@page "/Overforings/{Id:int}/Update"
 @inject HttpClient http
 
-<h3>UpdateOverforing</h3>
+<h3 class="mb-4">Update Overföring</h3>
 
-@if (OverforingList != null)
+@if (_over != null)
 {
     <body>
-        <div class="row g-3">
-            <div class="col">
-                <label for="disabledTextInput" class="form-label">  </label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
-            </div>
-        </div>
-    </body>
+        <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@_over.Namn" disabled>
+        <input type="text" class="form-control mb-4" placeholder="Uppdatera namn" aria-label="Last name">
+        <input type="text" class="form-control mb-4" placeholder="Uppdatera systemnam" aria-label="Last name">
+        <input type="text" class="form-control mb-4" placeholder="Beskrivning" aria-label="Last name">
 
+        <button type="button" class="btn btn-warning "> Spara </button>
+    </body>
 }
 
 @code {
     [Parameter]
-    public int Id{ get; set; }
-    private Overforing _over { get; set; }
-    private List<FISSUP23.Database.Models.Overforing> OverforingList { get; set; }
-    private List<FISSUP23.Database.Models.FilKollektion> FilKollektionsList { get; set; }
-    private List<ViewModels.OverforingViewModel> OverforingVMs { get; set; }
+    public int Id { get; set; }
+    private Database.Models.Overforing _over { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        OverforingList = await http.GetFromJsonAsync<List<FISSUP23.Database.Models.Overforing>>("./api/Overforings");
-        OverforingVMs = new List<FISSUP23.Client.ViewModels.OverforingViewModel>();
-
-        foreach (var _Overfor in OverforingList)
-        {
-            var OverforingsVM = new ViewModels.OverforingViewModel()
-                {
-                    isChecked = false,
-                    Id = _Overfor.Id,
-                    Namn = _Overfor.Namn,
-                    SystemNamn = _Overfor.SystemNamn,
-                    Beskrivning = _Overfor.Beskrivning
-                };
-            OverforingVMs.Add(OverforingsVM);
-
-        }
+        _over = await http.GetFromJsonAsync<FISSUP23.Database.Models.Overforing>($"./api/Overforings/{Id}");
 
         await base.OnInitializedAsync();
     }
 
-    public void GetSelectedOverforing()
-    {
-        var selectedOverInfo = OverforingVMs.Where(x => x.isChecked);
-    }
+
 }

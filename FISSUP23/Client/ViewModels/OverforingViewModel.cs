@@ -14,7 +14,7 @@ namespace FISSUP23.Client.ViewModels
 
         public string? Beskrivning { get; set; }
 
-        //public List<FISSUP23.Database.Models.FilKollektion> FileCollections { get; set; }
+        public List<FISSUP23.Database.Models.FilKollektion> FileCollections { get; set; }
         public int AntalFilkollektioner { get; set; }
     }
 }

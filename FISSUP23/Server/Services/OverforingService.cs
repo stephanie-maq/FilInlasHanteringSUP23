@@ -1,4 +1,6 @@
 ﻿using FISSUP23.Database.Models;
+using FISSUP23.Server.ApiModels;
+using FISSUP23.Server.ApiModels.Extension;
 using FISSUP23.Server.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -57,7 +59,27 @@ namespace FISSUP23.Server.Services
         {
             var result = await _context.Overforings.ToListAsync();
 
+
             return result;
+        }
+
+        public async Task<List<ApiOverforing>> Get()
+        {
+            List<ApiOverforing> ApiOverforingar = new List<ApiOverforing>();
+
+            var dbOverforingar = await _context.Overforings.ToListAsync();
+            foreach (var overforing in dbOverforingar)
+            {
+                var filkollektionService = new FilkollektionService(_context);
+
+                var Apifilkollektioner = await filkollektionService.GetByOverforingId(overforing.Id);
+
+               
+
+                ApiOverforingar.Add(overforing.ToApi(Apifilkollektioner));
+            }
+
+            return ApiOverforingar;
         }
 
         public async Task Update(int id)

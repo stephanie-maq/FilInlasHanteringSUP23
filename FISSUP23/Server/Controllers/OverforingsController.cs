@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FISSUP23.Database.Models;
 using FISSUP23.Server.Services.Interface;
+using FISSUP23.Server.ApiModels;
 
 namespace FISSUP23.Server.Controllers
 {
@@ -24,10 +25,19 @@ namespace FISSUP23.Server.Controllers
 
         // GET: api/Overforings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Overforing>>> GetOverforings()
+        public async Task<ActionResult<IEnumerable<ApiOverforing>>> GetOverforings()
         {
 
-            return await _service.GetOverforingar();        }
+            return await _service.Get();
+        }
+
+        // GET: api/Overforings
+        //[HttpGet("/GetApiModel")]
+        //public async Task<ActionResult<IEnumerable<ApiOverforing>>> GetApi()
+        //{
+        //    return await _service.Get();
+        //}
+
 
         //GET: api/Overforings/5
         [HttpGet("{id}")]

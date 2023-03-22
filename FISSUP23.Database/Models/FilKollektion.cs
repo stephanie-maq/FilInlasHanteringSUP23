@@ -33,6 +33,5 @@ public partial class FilKollektion
 
     public virtual ICollection<Fil> Fils { get; } = new List<Fil>();
 
-    [ForeignKey("import.Overforing")]
     public virtual Overforing Overforing { get; set; } = null!;
 }
