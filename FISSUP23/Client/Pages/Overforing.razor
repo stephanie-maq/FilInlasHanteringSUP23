@@ -200,6 +200,12 @@ else
         navMan.NavigateTo($"./Overforings/{mo.Id.ToString()}/Update", true);
     }
 
+    public void RedirectAddOverforing()
+    {
+        navMan.NavigateTo($"./Overforings/NewOverforing", true);
+    }
+
+
     public void Delete()
     {
         string s = "";
