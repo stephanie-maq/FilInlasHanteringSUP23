@@ -1,0 +1,22 @@
+﻿@page "/Overforings/NewOverforing"
+@inject HttpClient http
+
+<h3 class="mb-4">Lägg till en ny overföring</h3>
+
+    <body>
+        <input type="text" class="form-control mb-4" placeholder="Overofrings namn" aria-label="Last name">
+        <input type="text" class="form-control mb-4" placeholder="System namn" aria-label="Last name">
+        <input type="text" class="form-control mb-4" placeholder="Beskrivning" aria-label="Last name">
+
+        <button type="button" class="btn btn-warning "> Spara </button>
+    </body>
+
+
+@code {
+    private Database.Models.Overforing _over { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
+}

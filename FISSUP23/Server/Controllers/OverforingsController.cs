@@ -56,6 +56,7 @@ namespace FISSUP23.Server.Controllers
         {
             try
             {
+
                 await _service.Update(id);
                 return Ok();
             }
@@ -66,44 +67,40 @@ namespace FISSUP23.Server.Controllers
             }
 
         }
+
+
+
+        //// POST: api/Overforings
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<Overforing>> PostOverforing(Overforing overforing)
+        //{
+
+        //if (_context.Overforings == null)
+        //{
+        //    return Problem("Entity set 'SsisGenericReadContext.Overforings'  is null.");
+        //}
+        //  _context.Overforings.Add(overforing);
+        //  await _context.SaveChangesAsync();
+
+        //  return CreatedAtAction("GetOverforing", new { id = overforing.Id }, overforing);
+
+
+        //DELETE: api / Overforings / 5
+        [HttpDelete]
+        public async Task<IActionResult> DeleteOverforing([FromBody] List<string> toDelete)
+        {
+            try
+            {
+                await _service.Delete(toDelete);
+                return Ok();
+            }
+            catch (Exception e )
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
-
-//// POST: api/Overforings
-//// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-//[HttpPost]
-//public async Task<ActionResult<Overforing>> PostOverforing(Overforing overforing)
-//{
-
-//if (_context.Overforings == null)
-//{
-//    return Problem("Entity set 'SsisGenericReadContext.Overforings'  is null.");
-//}
-//  _context.Overforings.Add(overforing);
-//  await _context.SaveChangesAsync();
-
-//  return CreatedAtAction("GetOverforing", new { id = overforing.Id }, overforing);
-
-
-// DELETE: api/Overforings/5
-//[HttpDelete("{id}")]
-//public async Task<IActionResult> DeleteOverforing(int id)
-//{
-//    if (_context.Overforings == null)
-//    {
-//        return NotFound();
-//    }
-//    var overforing = await _context.Overforings.FindAsync(id);
-//    if (overforing == null)
-//    {
-//        return NotFound();
-//    }
-
-//    _context.Overforings.Remove(overforing);
-//    await _context.SaveChangesAsync();
-
-//    return NoContent();
-//}
-
-
 

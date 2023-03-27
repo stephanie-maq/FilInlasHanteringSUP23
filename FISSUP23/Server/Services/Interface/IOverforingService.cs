@@ -10,7 +10,7 @@ namespace FISSUP23.Server.Services.Interface
         Task Add(Overforing _overforing);
         Task Update(int id);
 
-        Task Delete(int id);
+        Task Delete(List<string> ids);
 
         Task<List<ApiOverforing>> Get();
     }

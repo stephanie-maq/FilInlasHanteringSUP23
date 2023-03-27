@@ -1,11 +1,11 @@
 ﻿@page "/Overforing"
 @inject HttpClient http
 @inject NavigationManager navMan
-
+@using System.Text.Json
 
 
 <br />
-<button type="button" class="btn btn-warning "> Lägg till ny överföring</button>
+<button type="button" class="btn btn-warning" @onclick="RedirectAddOverforing"> Lägg till ny överföring</button>
 <br />
 <br />
 
@@ -61,24 +61,16 @@
             <br />
             <br />
 
-            if (selectedOverforing && MarkeradeOverforingar.Count == 1)
-            {
+            
+            
                 <h2 style="color:black"> <strong> Se detaljer, uppdatera eller radera</strong></h2>
                 <div>
-
+                    @if (selectedOverforing && MarkeradeOverforingar.Count == 1) {
                     <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
+                    }
                     <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
-
                 </div>
-            }
-            else
-            {
-                <h2 style="color:black"> <strong> Se detaljer eller radera</strong></h2>
-                <div>
-                    <button type="button" class="btn btn-warning " onclick=""> Radera</button>
-
-                </div>
-            }
+            
 
             <br />
             @foreach (var overf in MarkeradeOverforingar)
@@ -206,10 +198,24 @@ else
     }
 
 
-    public void Delete()
+    public async void Delete()
     {
-        string s = "";
+        var toDelete = MarkeradeOverforingar.Select(m => m.Id.ToString());
 
+        var request = new HttpRequestMessage
+        {
+                RequestUri = new Uri("./api/Overforings", UriKind.RelativeOrAbsolute),
+                Method = HttpMethod.Delete,
+                Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
+        };
+
+
+        var resp = await http.SendAsync(request);
+
+        if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            OverforingVMs = OverforingVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
+            StateHasChanged();
+        }
     }
-
 }
