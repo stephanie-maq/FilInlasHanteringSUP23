@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\FISSUP23.Database\FISSUP23.Database.csproj" />
+    <ProjectReference Include="..\Client\FISSUP23.Client.csproj" />
   </ItemGroup>
   
 </Project>
