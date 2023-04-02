@@ -4,105 +4,101 @@
 @using System.Text.Json
 
 
-<br />
+<br/>
 <button type="button" class="btn btn-warning" @onclick="RedirectAddOverforing"> Lägg till ny överföring</button>
-<br />
-<br />
+<br/>
+<br/>
 
 <h3>Överföringar</h3>
 
 @if (OverforingList != null)
 {
     <body>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th><span>Markera </span><span><input type="checkbox" @onchange="MarkeraAlla" /></span></th>
-                    <th>Namn</th>
-                    <th>Beskrivning</th>
-                    <th>Antal Filkollektioner</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var _overforing in OverforingVMs)
-                {
-                    <tr>
-                        <td>
-                            <input type="checkbox" @bind="_overforing.isChecked" @onclick="() => OverCheck(_overforing)"></input>
-                        </td>
-
-                        <td>
-                            @_overforing.Namn
-                        </td>
-                        <td>
-                            @_overforing.Beskrivning
-                        </td>
-                        <td>
-                            @if (_overforing.AntalFilkollektioner != null)
-                            {
-                            <td>
-                                    @_overforing.AntalFilkollektioner.ToString()
-                            </td>
-                            }
-                            else
-                            {
-                            <td>
-                            </td>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        @if (MarkeradeOverforingar != null && MarkeradeOverforingar.Count != 0)
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <span>Markera </span>
+                <span>
+                    <input type="checkbox" @onchange="MarkeraAlla"/>
+                </span>
+            </th>
+            <th>Namn</th>
+            <th>Beskrivning</th>
+            <th>Antal Filkollektioner</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var _overforing in OverforingVMs)
         {
-            <br />
-            <br />
-            <br />
+            <tr>
+                <td>
+                    <input type="checkbox" @bind="_overforing.isChecked" @onclick="() => OverCheck(_overforing)"/>
+                </td>
 
-            
-            
-                <h2 style="color:black"> <strong> Se detaljer, uppdatera eller radera</strong></h2>
-                <div>
-                    @if (selectedOverforing && MarkeradeOverforingar.Count == 1) {
-                    <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
-                    }
-                    <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
-                </div>
-            
-
-            <br />
-            @foreach (var overf in MarkeradeOverforingar)
-            {
-                <dl class="row">
-                    <dt class="col-sm-3">Namn:</dt>
-                    <dd class="col-sm-9" style=" color: black"> @overf.Namn</dd>
-
-                    <dt class="col-sm-3">Beskrivning:</dt>
-                    <dd class="col-sm-9">
-                        <p style=" color: black">@overf.Beskrivning</p>
-                    </dd>
-
-                    <dt class="col-sm-3">Filkollektioner:</dt>
-
-                    @foreach(var file in overf.FileCollections) {
-                        <dd class="col-sm-9"> @file.Namn </dd>
-                    }
-                </dl>
-
-                <br />
-
-            }
-
-
+                <td>
+                    @_overforing.Namn
+                </td>
+                <td>
+                    @_overforing.Beskrivning
+                </td>
+                <td>
+                    @_overforing.FileCollections.Count
+                </td>
+            </tr>
         }
+        </tbody>
+    </table>
+
+    @if (MarkeradeOverforingar != null && MarkeradeOverforingar.Count != 0)
+    {
+        <br/>
+        <br/>
+        <br/>
+
+
+        <h2 style="color:black">
+            <strong> Se detaljer, uppdatera eller radera</strong>
+        </h2>
+        <div>
+            @if (selectedOverforing && MarkeradeOverforingar.Count == 1)
+            {
+                <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
+            }
+            <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
+        </div>
+
+
+        <br/>
+        @foreach (var overf in MarkeradeOverforingar)
+        {
+            <dl class="row">
+                <dt class="col-sm-3">Namn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @overf.Namn</dd>
+
+                <dt class="col-sm-3">Beskrivning:</dt>
+                <dd class="col-sm-9">
+                    <p style=" color: black">@overf.Beskrivning</p>
+                </dd>
+
+                <dt class="col-sm-3">Filkollektioner:</dt>
+
+                @foreach (var file in overf.FileCollections)
+                {
+                    <dd class="col-sm-9"> @file.Namn </dd>
+                }
+            </dl>
+
+            <br/>
+        }
+    }
     </body>
 }
 else
 {
     <p>Laddar data...</p>
 }
+
 @code {
     private bool isCheckedTotal { get; set; }
     private bool selectedOverforing { get; set; }
@@ -110,37 +106,35 @@ else
     private List<FISSUP23.Database.Models.FilKollektion> FilKollektionsList { get; set; }
     private List<ViewModels.OverforingViewModel> MarkeradeOverforingar { get; set; }
     private List<ViewModels.OverforingViewModel> OverforingVMs { get; set; }
-
+    
     protected override async Task OnInitializedAsync()
     {
-        // 1. make request to ./api/Skolas
-        // 2. await response from server
-        // 3. receive reponse
-        // 4. deserialize reponse body to C# object according to the provided type in the <...>
+    // 1. make request to ./api/Skolas
+    // 2. await response from server
+    // 3. receive reponse
+    // 4. deserialize reponse body to C# object according to the provided type in the <...>
+
         OverforingList = await http.GetFromJsonAsync<List<FISSUP23.Database.Models.Overforing>>("./api/Overforings");
+
         OverforingVMs = new List<FISSUP23.Client.ViewModels.OverforingViewModel>();
 
         foreach (var _Overfor in OverforingList)
         {
-            var OverforingsVM = new ViewModels.OverforingViewModel()
-                {
-                    isChecked = false,
-                    Id = _Overfor.Id,
-                    Namn = _Overfor.Namn,
-                    SystemNamn = _Overfor.SystemNamn,
-                    Beskrivning = _Overfor.Beskrivning,
-                    FileCollections = _Overfor.FilKollektions.ToList(),
-                    AntalFilkollektioner = _Overfor.FilKollektions.Count
-                };
+            var OverforingsVM = new ViewModels.OverforingViewModel
+            {
+                isChecked = false,
+                Id = _Overfor.Id,
+                Namn = _Overfor.Namn,
+                SystemNamn = _Overfor.SystemNamn,
+                Beskrivning = _Overfor.Beskrivning,
+                FileCollections = _Overfor.FilKollektions.ToList(),
+                AntalFilkollektioner = _Overfor.FilKollektions.Count
+            };
+            Console.WriteLine(_Overfor.FilKollektions.ToList().Count);
             OverforingVMs.Add(OverforingsVM);
-
         }
-
-
-        MarkeradeOverforingar = new List<ViewModels.OverforingViewModel>();
-
-        await base.OnInitializedAsync();
-
+        
+        StateHasChanged();
     }
 
     public void MarkeraAlla()
@@ -156,10 +150,10 @@ else
         {
             MarkeradeOverforingar.AddRange(OverforingVMs);
         }
-        //else
-        //{
-        //    MarkeradeOverforingar = new List<Overforing>();
-        //}
+    //else
+    //{
+    //    MarkeradeOverforingar = new List<Overforing>();
+    //}
     }
 
     public void OverCheck(ViewModels.OverforingViewModel over)
@@ -180,9 +174,7 @@ else
         }
         else
         {
-
             selectedOverforing = true;
-
         }
     }
 
@@ -204,9 +196,9 @@ else
 
         var request = new HttpRequestMessage
         {
-                RequestUri = new Uri("./api/Overforings", UriKind.RelativeOrAbsolute),
-                Method = HttpMethod.Delete,
-                Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
+            RequestUri = new Uri("./api/Overforings", UriKind.RelativeOrAbsolute),
+            Method = HttpMethod.Delete,
+            Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
         };
 
 
@@ -218,4 +210,5 @@ else
             StateHasChanged();
         }
     }
+
 }
