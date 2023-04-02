@@ -62,7 +62,7 @@ public partial class SsisGenericReadContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=O-7R7Z5D3;Database=SSIS_GenericRead;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=localhost,57000;Database=SSIS_GenericRead;User Id=SA;Password=Str#ng_Passw#rd;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -190,16 +190,14 @@ public partial class SsisGenericReadContext : DbContext
         modelBuilder.Entity<Inlasning>(entity =>
         {
             entity.ToTable("Inlasning", "import");
-
-            entity.Property(e => e.AntalTillagdaKolumner).HasComputedColumnSql("([import].[f_NoOfColumnsPerInlasning]([Id]))", false);
+            
             entity.Property(e => e.DatumTid).HasColumnType("datetime");
             entity.Property(e => e.FilNamn)
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.Namn)
                 .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasComputedColumnSql("([import].[f_GetLastValueFromString]([FilNamn],'\\'))", false);
+                .IsUnicode(false);
 
             entity.HasOne(d => d.ErrorLog).WithMany(p => p.Inlasnings)
                 .HasForeignKey(d => d.ErrorLogId)
