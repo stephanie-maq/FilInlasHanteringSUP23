@@ -12,6 +12,6 @@ namespace FISSUP23.Server.Services.Interface
 
         Task Delete(List<string> ids);
 
-        Task<List<ApiOverforing>> Get();
+        Task<List<Overforing>> Get();
     }
 }
