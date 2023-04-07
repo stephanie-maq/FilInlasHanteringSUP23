@@ -57,21 +57,23 @@ namespace FISSUP23.Server.Controllers
         }
 
 
-        //// POST: api/Overforings
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Overforing>> PostOverforing(Overforing overforing)
-        //{
+        // POST: api/Overforings
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Overforing>> PostOverforing(Overforing overforing)
+        {
+            try
+            {
+                await _service.Add(overforing);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
-        //if (_context.Overforings == null)
-        //{
-        //    return Problem("Entity set 'SsisGenericReadContext.Overforings'  is null.");
-        //}
-        //  _context.Overforings.Add(overforing);
-        //  await _context.SaveChangesAsync();
-
-        //  return CreatedAtAction("GetOverforing", new { id = overforing.Id }, overforing);
-
+            //return CreatedAtAction("GetOverforing", new {id = overforing.Id}, overforing);
+        }
 
         //DELETE: api / Overforings / 5
         [HttpDelete]

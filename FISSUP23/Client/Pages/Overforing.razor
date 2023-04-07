@@ -29,28 +29,27 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var _overforing in OverforingVMs)
+        @foreach (var overforing in OverforingVMs)
         {
             <tr>
                 <td>
-                    <input type="checkbox" @bind="_overforing.isChecked" @onclick="() => OverCheck(_overforing)"/>
-                </td>
-
-                <td>
-                    @_overforing.Namn
+                    <input type="checkbox" @bind="overforing.isChecked" @onclick="() => OverCheck(overforing)"/>
                 </td>
                 <td>
-                    @_overforing.Beskrivning
+                    @overforing.Namn
                 </td>
                 <td>
-                    @_overforing.FileCollections.Count
+                    @overforing.Beskrivning
+                </td>
+                <td>
+                    @overforing.FileCollections.Count
                 </td>
             </tr>
         }
         </tbody>
     </table>
 
-    @if (MarkeradeOverforingar != null && MarkeradeOverforingar.Count != 0)
+    @if (MarkeradeOverforingar.Count != 0)
     {
         <br/>
         <br/>
@@ -61,7 +60,7 @@
             <strong> Se detaljer, uppdatera eller radera</strong>
         </h2>
         <div>
-            @if (selectedOverforing && MarkeradeOverforingar.Count == 1)
+            @if (MarkeradeOverforingar.Count == 1)
             {
                 <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
             }
@@ -100,13 +99,11 @@ else
 }
 
 @code {
-    private bool isCheckedTotal { get; set; }
-    private bool selectedOverforing { get; set; }
+    private bool IsCheckedTotal { get; set; }
     private List<FISSUP23.Database.Models.Overforing> OverforingList { get; set; }
-    private List<FISSUP23.Database.Models.FilKollektion> FilKollektionsList { get; set; }
     private List<ViewModels.OverforingViewModel> MarkeradeOverforingar { get; set; }
     private List<ViewModels.OverforingViewModel> OverforingVMs { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
     // 1. make request to ./api/Skolas
@@ -115,8 +112,8 @@ else
     // 4. deserialize reponse body to C# object according to the provided type in the <...>
 
         OverforingList = await http.GetFromJsonAsync<List<FISSUP23.Database.Models.Overforing>>("./api/Overforings");
-
-        OverforingVMs = new List<FISSUP23.Client.ViewModels.OverforingViewModel>();
+        MarkeradeOverforingar = new List<ViewModels.OverforingViewModel>();
+        OverforingVMs = new List<ViewModels.OverforingViewModel>();
 
         foreach (var _Overfor in OverforingList)
         {
@@ -130,35 +127,16 @@ else
                 FileCollections = _Overfor.FilKollektions.ToList(),
                 AntalFilkollektioner = _Overfor.FilKollektions.Count
             };
-            Console.WriteLine(_Overfor.FilKollektions.ToList().Count);
             OverforingVMs.Add(OverforingsVM);
         }
         
         StateHasChanged();
     }
 
-    public void MarkeraAlla()
-    {
-        isCheckedTotal = !isCheckedTotal;
-        foreach (var overforing in OverforingVMs)
-        {
-            overforing.isChecked = isCheckedTotal;
-        }
-
-        MarkeradeOverforingar = new List<ViewModels.OverforingViewModel>();
-        if (isCheckedTotal)
-        {
-            MarkeradeOverforingar.AddRange(OverforingVMs);
-        }
-    //else
-    //{
-    //    MarkeradeOverforingar = new List<Overforing>();
-    //}
-    }
-
-    public void OverCheck(ViewModels.OverforingViewModel over)
+    private void OverCheck(ViewModels.OverforingViewModel over)
     {
         over.isChecked = !over.isChecked;
+
         if (over.isChecked)
         {
             MarkeradeOverforingar.Add(over);
@@ -167,30 +145,36 @@ else
         {
             MarkeradeOverforingar.Remove(over);
         }
+    }
 
-        if (MarkeradeOverforingar.Where(over => over.isChecked).Count() == 0)
+    private void MarkeraAlla()
+    {
+        IsCheckedTotal = !IsCheckedTotal;
+        
+        foreach (var overforing in OverforingVMs)
         {
-            selectedOverforing = false;
+            overforing.isChecked = IsCheckedTotal;
         }
-        else
+
+        MarkeradeOverforingar = new List<ViewModels.OverforingViewModel>();
+        if (IsCheckedTotal)
         {
-            selectedOverforing = true;
+            MarkeradeOverforingar.AddRange(OverforingVMs);
         }
     }
 
-    public void RedirectUpdate()
+    private void RedirectUpdate()
     {
         var mo = MarkeradeOverforingar.FirstOrDefault();
         navMan.NavigateTo($"./Overforings/{mo.Id.ToString()}/Update", true);
     }
 
-    public void RedirectAddOverforing()
+    private void RedirectAddOverforing()
     {
         navMan.NavigateTo($"./Overforings/NewOverforing", true);
     }
-
-
-    public async void Delete()
+    
+    private async void Delete()
     {
         var toDelete = MarkeradeOverforingar.Select(m => m.Id.ToString());
 
@@ -200,15 +184,14 @@ else
             Method = HttpMethod.Delete,
             Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
         };
-
-
+        
         var resp = await http.SendAsync(request);
 
         if (resp.StatusCode == System.Net.HttpStatusCode.OK)
         {
             OverforingVMs = OverforingVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
+            MarkeradeOverforingar = OverforingVMs;
             StateHasChanged();
         }
     }
-
 }

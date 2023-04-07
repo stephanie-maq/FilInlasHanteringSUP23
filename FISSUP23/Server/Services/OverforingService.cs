@@ -17,8 +17,9 @@ namespace FISSUP23.Server.Services
 
         public async Task Add(Overforing overforing)
         {
+            
             _context.Overforings.Add(overforing);
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
         }
 
         public async Task Delete(List<string> toDelete)
@@ -82,7 +83,7 @@ namespace FISSUP23.Server.Services
                 throw new Exception("Id not found");
             }
 
-            _context.Entry(over).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Entry(over).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
 

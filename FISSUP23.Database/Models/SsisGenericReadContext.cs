@@ -164,7 +164,7 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Overforing).WithMany(p => p.FilKollektions)
                 .HasForeignKey(d => d.OverforingId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_FilKollektion_Overforing");
         });
 

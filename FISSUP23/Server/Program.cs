@@ -1,7 +1,6 @@
 using FISSUP23.Database.Models;
 using FISSUP23.Server.Services;
 using FISSUP23.Server.Services.Interface;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
