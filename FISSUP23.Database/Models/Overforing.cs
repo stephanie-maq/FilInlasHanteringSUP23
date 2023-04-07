@@ -13,5 +13,5 @@ public partial class Overforing
 
     public string? Beskrivning { get; set; }
 
-    public virtual ICollection<FilKollektion> FilKollektions { get; } = new List<FilKollektion>();
+    public virtual ICollection<FilKollektion> FilKollektions { get; set; } = new List<FilKollektion>();
 }

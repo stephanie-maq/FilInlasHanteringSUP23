@@ -30,25 +30,16 @@ namespace FISSUP23.Server.Services
             throw new NotImplementedException();
         }
 
-        public Task<ApiFilkollektion> GetByID(int id)
+        public Task<ApiFilkollektion> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
         public async Task<List<ApiFilkollektion>> GetByOverforingId(int id)
         {
-            List<ApiFilkollektion> Apifilkollektioner = new List<ApiFilkollektion>();
             var dbFilkollektioner = await _context.FilKollektions.Where(x => x.OverforingId == id).ToListAsync();
 
-            if (dbFilkollektioner != null)
-            {
-                foreach (var filkollektion in dbFilkollektioner)
-                {
-                    Apifilkollektioner.Add(filkollektion.ToApi());
-                }
-            }
-
-            return Apifilkollektioner;
+            return dbFilkollektioner.Select(filkollektion => filkollektion.ToApi()).ToList();
         }
 
         public Task Update(int id)

@@ -1,19 +1,10 @@
 ﻿using FISSUP23.Database.Models;
-using FISSUP23.Server.ApiModels;
-using FISSUP23.Server.ApiModels.Extension;
 using FISSUP23.Server.Services.Interface;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Collections.Generic;
-
-
 
 
 namespace FISSUP23.Server.Services
 {
-
     public class OverforingService : IOverforingService
 
     {
@@ -23,25 +14,22 @@ namespace FISSUP23.Server.Services
         {
             _context = context;
         }
-        public async Task Add(Overforing _overforing)
+
+        public async Task Add(Overforing overforing)
         {
-            _context.Overforings.Add(_overforing);
-            await _context.SaveChangesAsync();
+            
+            _context.Overforings.Add(overforing);
+                await _context.SaveChangesAsync();
         }
 
         public async Task Delete(List<string> toDelete)
         {
             var overfors = await Get();
 
-            var toDelete2 = overfors
-            .FindAll(o => toDelete.Contains(o.Id.ToString()))
-            .Select(o => o.ToDb());
-
-            foreach (var td in toDelete2)
-            {
-                _context.Remove(td);
-            }
-
+            overfors
+                .FindAll(o => toDelete.Contains(o.Id.ToString()))
+                .ForEach(x=>_context.Remove(x));
+            
             await _context.SaveChangesAsync();
         }
 
@@ -56,6 +44,7 @@ namespace FISSUP23.Server.Services
             {
                 return NotFound();
             }
+
             var overforing = await _context.Overforings.FirstOrDefaultAsync(n => n.Id == id);
 
             if (overforing == null)
@@ -64,7 +53,6 @@ namespace FISSUP23.Server.Services
             }
 
             return overforing;
-
         }
 
         private Overforing NotFound()
@@ -80,35 +68,22 @@ namespace FISSUP23.Server.Services
             return result;
         }
 
-        public async Task<List<ApiOverforing>> Get()
+        public async Task<List<Overforing>> Get()
         {
-            List<ApiOverforing> ApiOverforingar = new List<ApiOverforing>();
-
-            var dbOverforingar = await _context.Overforings.AsNoTracking().ToListAsync();
-            foreach (var overforing in dbOverforingar)
-            {
-                var filkollektionService = new FilkollektionService(_context);
-
-                var Apifilkollektioner = await filkollektionService.GetByOverforingId(overforing.Id);
-
-
-
-                ApiOverforingar.Add(overforing.ToApi(Apifilkollektioner));
-            }
-
-            return ApiOverforingar;
+            return await _context.Overforings
+                .Include(x => x.FilKollektions)
+                .ToListAsync();
         }
 
         public async Task Update(int id)
         {
-
             var over = GetOverforingar();
             if (id != over.Id)
             {
-
                 throw new Exception("Id not found");
             }
-            _context.Entry(over).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+            _context.Entry(over).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
 
@@ -147,7 +122,6 @@ namespace FISSUP23.Server.Services
         private bool OverforingExists(int id)
         {
             return (_context.Overforings?.Any(e => e.Id == id)).GetValueOrDefault();
-
         }
     }
 }
