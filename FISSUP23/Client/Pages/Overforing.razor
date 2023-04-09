@@ -42,7 +42,7 @@
                     @overforing.Beskrivning
                 </td>
                 <td>
-                    @overforing.FileCollections.Count
+                    <a href=@($"./Filkollektion/{overforing.Id.ToString()}")>@overforing.AntalFilkollektioner.ToString()</a>
                 </td>
             </tr>
         }
