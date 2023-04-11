@@ -60,16 +60,16 @@ namespace FISSUP23.Server.Controllers
         // POST: api/Overforings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Overforing>> PostOverforing(Overforing overforing)
+        public async Task<ActionResult<NyOverforing>> PostOverforing(NyOverforing overforing)
         {
             try
             {
                 await _service.Add(overforing);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
 
             //return CreatedAtAction("GetOverforing", new {id = overforing.Id}, overforing);

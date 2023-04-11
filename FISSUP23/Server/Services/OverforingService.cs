@@ -15,11 +15,10 @@ namespace FISSUP23.Server.Services
             _context = context;
         }
 
-        public async Task Add(Overforing overforing)
+        public async Task Add(NyOverforing overforing)
         {
-            
-            _context.Overforings.Add(overforing);
-                await _context.SaveChangesAsync();
+            _context.NyOverforings.Add(overforing);
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(List<string> toDelete)
@@ -28,8 +27,8 @@ namespace FISSUP23.Server.Services
 
             overfors
                 .FindAll(o => toDelete.Contains(o.Id.ToString()))
-                .ForEach(x=>_context.Remove(x));
-            
+                .ForEach(x => _context.Remove(x));
+
             await _context.SaveChangesAsync();
         }
 
