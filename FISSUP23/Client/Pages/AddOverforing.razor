@@ -6,9 +6,9 @@
 <h3 class="mb-4">Lägg till en ny overföring</h3>
 
 <body>
-<input type="text" class="form-control mb-4" placeholder="Overofrings namn" aria-label="Last name">
-<input type="text" class="form-control mb-4" placeholder="System namn" aria-label="Last name">
-<input type="text" class="form-control mb-4" placeholder="Beskrivning" aria-label="Last name">
+<input type="text" class="form-control mb-4" @bind="NameValue" placeholder="Overofrings namn" aria-label="Last name">
+<input type="text" class="form-control mb-4"  @bind="SystemNameValue" placeholder="System namn" aria-label="Last name">
+<input type="text" class="form-control mb-4" @bind="BeskValue" placeholder="Beskrivning" aria-label="Last name">
 
 <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
 </body>
@@ -16,13 +16,19 @@
 
 @code {
 
+    private string NameValue { get; set; }
+    
+    private string SystemNameValue { get; set; }
+    
+    private string BeskValue { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
     }
 
     private async Task Spara()
     {
-        var nyOverforing = new Database.Models.NyOverforing {Namn = "hi", SystemNamn = "bye", Beskrivning = null};
+        var nyOverforing = new Database.Models.NyOverforing {Namn = NameValue, SystemNamn = SystemNameValue, Beskrivning = BeskValue};
         var content = new StringContent(JsonSerializer.Serialize(nyOverforing), System.Text.Encoding.UTF8, "application/json");
         await http.PostAsync("./api/Overforings", content);
     }
