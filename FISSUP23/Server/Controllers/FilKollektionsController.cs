@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using FISSUP23.Database.Models;
+using FISSUP23.Server.Services;
 
 namespace FISSUP23.Server.Controllers
 {
@@ -13,127 +8,124 @@ namespace FISSUP23.Server.Controllers
     [ApiController]
     public class FilKollektionsController : ControllerBase
     {
-        private readonly SsisGenericReadContext _context;
-
-        public FilKollektionsController(SsisGenericReadContext context)
+        private IFilkollektionService _filkollektionService;
+        
+        public FilKollektionsController(IFilkollektionService service)
         {
-            _context = context;
+            _filkollektionService= service;
         }
-
         // GET: api/FilKollektions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FilKollektion>>> GetFilKollektions()
-        {
-          if (_context.FilKollektions == null)
-          {
-              return NotFound();
-          }
-            return await _context.FilKollektions.ToListAsync();
-        }
-        [HttpGet("getByOverforing/{id}")]
+        // public async Task<ActionResult<IEnumerable<FilKollektion>>> GetFilKollektions()
+        // {
+        //   if (_context.FilKollektions == null)
+        //   {
+        //       return NotFound();
+        //   }
+        //     return await _context.FilKollektions.ToListAsync();
+        // }
+        
+        [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<FilKollektion>>> GetByOverforing(int id)
         {
-            if (_context.FilKollektions == null)
+            try
             {
-                return NotFound();
+                return await _filkollektionService.GetByID(id);
             }
-            var filKollektion = await _context.FilKollektions.Where(x => x.OverforingId == id).ToListAsync();
-
-            if (filKollektion == null)
+            catch (Exception e)
             {
-                return NotFound();
+                Console.WriteLine(e);
+                throw;
             }
-
-            return filKollektion;
         }
 
         // GET: api/FilKollektions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<FilKollektion>> GetFilKollektion(int id)
-        {
-          if (_context.FilKollektions == null)
-          {
-              return NotFound();
-          }
-            var filKollektion = await _context.FilKollektions.FindAsync(id);
-
-            if (filKollektion == null)
-            {
-                return NotFound();
-            }
-
-            return filKollektion;
-        }
+        //[HttpGet("{id}")]
+        // public async Task<ActionResult<FilKollektion>> GetFilKollektion(int id)
+        // {
+        //   if (_context.FilKollektions == null)
+        //   {
+        //       return NotFound();
+        //   }
+        //     var filKollektion = await _context.FilKollektions.FindAsync(id);
+        //
+        //     if (filKollektion == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     return filKollektion;
+        // }
 
         // PUT: api/FilKollektions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFilKollektion(int id, FilKollektion filKollektion)
-        {
-            if (id != filKollektion.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(filKollektion).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FilKollektionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        //[HttpPut("{id}")]
+        // public async Task<IActionResult> PutFilKollektion(int id, FilKollektion filKollektion)
+        // {
+        //     if (id != filKollektion.Id)
+        //     {
+        //         return BadRequest();
+        //     }
+        //
+        //     _context.Entry(filKollektion).State = EntityState.Modified;
+        //
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!FilKollektionExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
+        //
+        //     return NoContent();
+        // }
 
         // POST: api/FilKollektions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<FilKollektion>> PostFilKollektion(FilKollektion filKollektion)
-        {
-          if (_context.FilKollektions == null)
-          {
-              return Problem("Entity set 'SsisGenericReadContext.FilKollektions'  is null.");
-          }
-            _context.FilKollektions.Add(filKollektion);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFilKollektion", new { id = filKollektion.Id }, filKollektion);
-        }
+        //[HttpPost]
+        // public async Task<ActionResult<FilKollektion>> PostFilKollektion(FilKollektion filKollektion)
+        // {
+        //   if (_context.FilKollektions == null)
+        //   {
+        //       return Problem("Entity set 'SsisGenericReadContext.FilKollektions'  is null.");
+        //   }
+        //     _context.FilKollektions.Add(filKollektion);
+        //     await _context.SaveChangesAsync();
+        //
+        //     return CreatedAtAction("GetFilKollektion", new { id = filKollektion.Id }, filKollektion);
+        // }
 
         // DELETE: api/FilKollektions/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFilKollektion(int id)
-        {
-            if (_context.FilKollektions == null)
-            {
-                return NotFound();
-            }
-            var filKollektion = await _context.FilKollektions.FindAsync(id);
-            if (filKollektion == null)
-            {
-                return NotFound();
-            }
-
-            _context.FilKollektions.Remove(filKollektion);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool FilKollektionExists(int id)
-        {
-            return (_context.FilKollektions?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        //[HttpDelete("{id}")]
+        // public async Task<IActionResult> DeleteFilKollektion(int id)
+        // {
+        //     if (_context.FilKollektions == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     var filKollektion = await _context.FilKollektions.FindAsync(id);
+        //     if (filKollektion == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     _context.FilKollektions.Remove(filKollektion);
+        //     await _context.SaveChangesAsync();
+        //
+        //     return NoContent();
+        // }
+        //
+        // private bool FilKollektionExists(int id)
+        // {
+        //     return (_context.FilKollektions?.Any(e => e.Id == id)).GetValueOrDefault();
+        // }
     }
 }
