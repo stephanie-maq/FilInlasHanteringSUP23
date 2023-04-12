@@ -43,16 +43,16 @@ namespace FISSUP23.Server.Controllers
         //To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Overforing>> PutOverforing(int id, Overforing overforing)
+        public async Task<ActionResult<Overforing>> PutOverforing(int id)
         {
             try
             {
-                await _service.Update(id, overforing);
+                await _service.Update(id);
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
 
@@ -60,16 +60,16 @@ namespace FISSUP23.Server.Controllers
         // POST: api/Overforings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NyOverforing>> PostOverforing(NyOverforing overforing)
+        public async Task<ActionResult<Overforing>> PostOverforing(Overforing overforing)
         {
             try
             {
                 await _service.Add(overforing);
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
 
             //return CreatedAtAction("GetOverforing", new {id = overforing.Id}, overforing);

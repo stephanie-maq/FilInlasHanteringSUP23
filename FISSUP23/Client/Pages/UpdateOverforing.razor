@@ -1,5 +1,4 @@
 ﻿@page "/Overforings/{Id:int}/Update"
-@using System.Text.Json
 @inject HttpClient http
 
 <h3 class="mb-4">Update Overföring</h3>
@@ -8,11 +7,11 @@
 {
     <body>
         <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@_over.Namn" disabled>
-        <input type="text" class="form-control mb-4" @bind="NyNamn" placeholder="Uppdatera namn" aria-label="Last name">
-        <input type="text" class="form-control mb-4" @bind="NySystemNamn" placeholder="Uppdatera systemnam" aria-label="Last name">
-        <input type="text" class="form-control mb-4" @bind="NyBeskrivning" placeholder="Beskrivning" aria-label="Last name">
+        <input type="text" class="form-control mb-4" placeholder="Uppdatera namn" aria-label="Last name">
+        <input type="text" class="form-control mb-4" placeholder="Uppdatera systemnam" aria-label="Last name">
+        <input type="text" class="form-control mb-4" placeholder="Beskrivning" aria-label="Last name">
 
-        <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
+        <button type="button" class="btn btn-warning "> Spara </button>
     </body>
 }
 
@@ -21,23 +20,12 @@
     public int Id { get; set; }
     private Database.Models.Overforing _over { get; set; }
 
-    private string NyNamn { get; set; }          
-    private string NySystemNamn { get; set; }          
-    private string NyBeskrivning { get; set; }          
-    
     protected override async Task OnInitializedAsync()
     {
         _over = await http.GetFromJsonAsync<FISSUP23.Database.Models.Overforing>($"./api/Overforings/{Id}");
 
         await base.OnInitializedAsync();
     }
-    
-    private async Task Spara()
-    {
-        var overforing = new Database.Models.Overforing {Namn = NyNamn, SystemNamn = NySystemNamn, Beskrivning = NyBeskrivning};
-        var content = new StringContent(JsonSerializer.Serialize(overforing), System.Text.Encoding.UTF8, "application/json");
-        await http.PutAsync($"./api/Overforings/{_over.Id}", content);
 
-    }
 
 }

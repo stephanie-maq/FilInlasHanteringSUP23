@@ -42,7 +42,7 @@
                     @overforing.Beskrivning
                 </td>
                 <td>
-                    <a href=@($"./Filkollektion/{overforing.Id.ToString()}")>@overforing.AntalFilkollektioner.ToString()</a>
+                    @overforing.FileCollections.Count
                 </td>
             </tr>
         }
@@ -171,7 +171,7 @@ else
 
     private void RedirectAddOverforing()
     {
-        navMan.NavigateTo($"./Overforings/NyOverforing", true);
+        navMan.NavigateTo($"./Overforings/NewOverforing", true);
     }
     
     private async void Delete()

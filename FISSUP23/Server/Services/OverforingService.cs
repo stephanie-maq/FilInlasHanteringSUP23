@@ -15,10 +15,11 @@ namespace FISSUP23.Server.Services
             _context = context;
         }
 
-        public async Task Add(NyOverforing overforing)
+        public async Task Add(Overforing overforing)
         {
-            _context.NyOverforings.Add(overforing);
-            await _context.SaveChangesAsync();
+            
+            _context.Overforings.Add(overforing);
+                await _context.SaveChangesAsync();
         }
 
         public async Task Delete(List<string> toDelete)
@@ -27,34 +28,43 @@ namespace FISSUP23.Server.Services
 
             overfors
                 .FindAll(o => toDelete.Contains(o.Id.ToString()))
-                .ForEach(x => _context.Remove(x));
-
+                .ForEach(x=>_context.Remove(x));
+            
             await _context.SaveChangesAsync();
         }
-        
+
+        private void NoContent()
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<Overforing> GetByID(int id)
         {
             if (_context.Overforings == null)
             {
-                throw new Exception("Id not found");
+                return NotFound();
             }
 
             var overforing = await _context.Overforings.FirstOrDefaultAsync(n => n.Id == id);
 
             if (overforing == null)
             {
-                throw new Exception("Overföring does not exist");
+                return NotFound();
             }
 
             return overforing;
         }
-        
+
+        private Overforing NotFound()
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<List<Overforing>> GetOverforingar()
         {
             var result = await _context.Overforings.ToListAsync();
-            
+
+
             return result;
         }
 
@@ -65,21 +75,48 @@ namespace FISSUP23.Server.Services
                 .ToListAsync();
         }
 
-        public async Task Update(int id, Overforing overforing)
+        public async Task Update(int id)
         {
-            var existing = await _context.Overforings.FirstOrDefaultAsync(n => n.Id == id);
-
-            if (existing == null)
+            var over = GetOverforingar();
+            if (id != over.Id)
             {
                 throw new Exception("Id not found");
             }
 
-            existing.Namn = overforing.Namn;
-            existing.SystemNamn = overforing.SystemNamn;
-            existing.Beskrivning = overforing.Beskrivning;
+            _context.Entry(over).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
+
+            //if (id != newOverforing.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            //_context.Entry(newOverforing).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!OverforingExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            //return 
         }
-        
+
+        private Database.Models.Overforing BadRequest()
+        {
+            throw new NotImplementedException();
+        }
 
 
         private bool OverforingExists(int id)
