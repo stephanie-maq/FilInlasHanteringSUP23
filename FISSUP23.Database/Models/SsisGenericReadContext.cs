@@ -307,7 +307,7 @@ public partial class SsisGenericReadContext : DbContext
         modelBuilder.Entity<NyOverforing>(entity =>
         {
             entity
-                .HasNoKey()
+                //.HasNoKey()
                 .ToTable("NyOverforing", "temp");
 
             entity.Property(e => e.Beskrivning).HasMaxLength(255);

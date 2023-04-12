@@ -8,41 +8,32 @@ namespace FISSUP23.Server.Services
 {
     public class FilkollektionService : IFilkollektionService
     {
-        private readonly SsisGenericReadContext _context;
-
-        public FilkollektionService(SsisGenericReadContext context)
-        {
-            _context = context;
-        }
-
-        public Task Add(ApiFilkollektion apiFilkollektion)
+        public Task<List<FilKollektion>> GetFilkollektioner()
         {
             throw new NotImplementedException();
         }
 
-        public Task Delete(int id)
+        public Task<FilKollektion> GetByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<ApiFilkollektion>> Get()
+        public Task Add(FilKollektion _Filkollektion)
         {
             throw new NotImplementedException();
-        }
-
-        public Task<ApiFilkollektion> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<ApiFilkollektion>> GetByOverforingId(int id)
-        {
-            var dbFilkollektioner = await _context.FilKollektions.Where(x => x.OverforingId == id).ToListAsync();
-
-            return dbFilkollektioner.Select(filkollektion => filkollektion.ToApi()).ToList();
         }
 
         public Task Update(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Delete(List<string> ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<FilKollektion>> Get()
         {
             throw new NotImplementedException();
         }

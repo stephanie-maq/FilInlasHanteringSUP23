@@ -1,14 +1,15 @@
-﻿using FISSUP23.Server.ApiModels;
+using FISSUP23.Database.Models;
 
-namespace FISSUP23.Server.Services
+namespace FISSUP23.Server.Services;
+
+public interface IFilkollektionService
 {
-    public interface IFilkollektionService
-    {
-        Task<List<ApiFilkollektion>> Get();
-        Task<List<ApiFilkollektion>> GetByOverforingId(int id);
-        Task<ApiFilkollektion> GetById(int id);
-        Task Add(ApiFilkollektion apiFilkollektion);
-        Task Update(int id);
-        Task Delete(int id);
-    }
+    Task<List<FilKollektion>> GetFilkollektioner();
+    Task<FilKollektion> GetByID(int id);
+    Task Add(FilKollektion _Filkollektion);
+    Task Update(int id);
+
+    Task Delete(List<string> ids);
+
+    Task<List<FilKollektion>> Get();
 }
