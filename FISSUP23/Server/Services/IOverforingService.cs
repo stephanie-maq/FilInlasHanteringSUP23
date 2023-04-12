@@ -8,7 +8,7 @@ namespace FISSUP23.Server.Services.Interface
         Task<List<Overforing>> GetOverforingar();
         Task<Overforing> GetByID(int id);
         Task Add(NyOverforing overforing);
-        Task Update(int id);
+        Task Update(int id, Overforing overforing);
 
         Task Delete(List<string> ids);
 
