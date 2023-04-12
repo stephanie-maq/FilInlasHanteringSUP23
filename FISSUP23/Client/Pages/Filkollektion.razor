@@ -1,6 +1,69 @@
-@page "/Filkollektion"
+@page "/FilKollektion/{Id:int}"
+@using FISSUP23.Database.Models
+@inject HttpClient http
+
 <h3>Filkollektion</h3>
+@if (FilKollektions != null)
+{
+    <body>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <span>Markera</span>
+                <span>
+                    <input type="checkbox"/>
+                </span>
+            </th>
+            <th>Namn</th>
+            <th>Ändelse</th>
+            <th>MatchMönster</th>
+            <th>Beskrivning</th>
+            <th>Antal Filer</th>
+            <th>FolderRoot</th>
+            <th>FolderArkiv</th>
+            <th>FolderNyFil</th>
+            <th>FolderFelaktigaFil</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var filkol in FilKollektions)
+        {
+            <tr>
+                <td>
+                    <input/>
+                </td>
+                <td>
+                    @filkol.Namn
+                </td>
+                <td>
+                    @filkol.Andelse
+                </td>
+                <td>
+                    @filkol.MatchMonster
+                </td>
+                <td>
+                    @filkol.Beskrivning
+                </td>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+    </body>
+}
 
 @code {
-    
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<FilKollektion> FilKollektions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        FilKollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions/{Id}");
+        await base.OnInitializedAsync();
+    }
+
 }
