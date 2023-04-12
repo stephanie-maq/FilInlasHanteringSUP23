@@ -74,9 +74,9 @@ namespace FISSUP23.Server.Services
                 throw new Exception("Id not found");
             }
 
-            existing.Namn = overforing.Namn;
-            existing.SystemNamn = overforing.SystemNamn;
-            existing.Beskrivning = overforing.Beskrivning;
+            existing.Namn = overforing.Namn ?? existing.Namn;
+            existing.SystemNamn = overforing.SystemNamn ?? existing.SystemNamn;
+            existing.Beskrivning = overforing.Beskrivning ?? existing.Beskrivning;
             await _context.SaveChangesAsync();
         }
         

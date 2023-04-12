@@ -7,9 +7,9 @@ public partial class Overforing
 {
     public int Id { get; set; }
 
-    public string Namn { get; set; } = null!;
+    public string? Namn { get; set; } = null!;
 
-    public string SystemNamn { get; set; } = null!;
+    public string? SystemNamn { get; set; } = null!;
 
     public string? Beskrivning { get; set; }
 
