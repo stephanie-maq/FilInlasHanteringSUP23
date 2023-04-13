@@ -1,0 +1,28 @@
+@page "/Filkollektions/Overforing"
+
+<div>
+    <h3>Add Filkollektion</h3>
+    <input type="text" class="form-control mb-4" placeholder="Filkollektions namn" aria-label="Last name">
+    <input type="text" class="form-control mb-4" placeholder="Ändelse" aria-label="Ladb_ownerst name">
+    <input type="text" class="form-control mb-4" placeholder="Matchmönster" aria-label="Last name">
+    <input type="text" class="form-control mb-4" placeholder="Beskrivning" aria-label="Last name">
+    <input type="text" class="form-control mb-4" placeholder="Folder root" aria-label="Last name">
+    <input type="text" class="form-control mb-4" placeholder="Folder arkiv" aria-label="Last name">
+    <input type="text" class="form-control mb-4" placeholder="Folder ny fil" aria-label="Last name">
+    <input type="text" class="form-control mb-4" placeholder="Folder felaktig fil" aria-label="Last name">
+
+    <button type="button" class="btn btn-warning "> Spara </button>
+</div>
+
+@code {
+    public string Id { get; set; }
+    public string Namn { get; set; }
+    public string Andelse { get; set; }
+    public string Matchmonster { get; set; }
+    public string Beskrivning { get; set; }
+    public string FolderRoot { get; set; }
+    public string FolderArkiv { get; set; }
+    public string FolderNyFil { get; set; }
+    public string FolderFelaktigFil { get; set; }
+
+}
