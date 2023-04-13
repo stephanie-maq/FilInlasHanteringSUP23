@@ -92,7 +92,8 @@
                 @foreach (var file in overf.FileCollections)
                 {
                     <dd class="col-sm-9"> @file.Namn </dd>
-                    <a href=@($"./Overforing/{overf.Id}/FilKollektion")>@overf.AntalFilkollektioner.ToString()</a>
+                    <dd class="col-sm-9"> @overf.AntalFilkollektioner.ToString() </dd>
+
                 }
             </dl>
 
