@@ -1,4 +1,4 @@
-﻿@page "/Overforing"
+﻿@page "/overforingar"
 @inject HttpClient http
 @inject NavigationManager navMan
 @using System.Text.Json
@@ -46,9 +46,8 @@
                     @overforing.Beskrivning
                 </td>
                 <td>
-                    <a href=@($"./Filkollektion/{overforing.Id}")>@overforing.AntalFilkollektioner.ToString()</a>
+                    <a href=@($"./overforingar/{overforing.Id}/filkollektioner")>@overforing.AntalFilkollektioner.ToString()</a>
                 </td>
-
             </tr>
         }
         </tbody>
@@ -93,7 +92,7 @@
                 @foreach (var file in overf.FileCollections)
                 {
                     <dd class="col-sm-9"> @file.Namn </dd>
-                    <a href=@($"./FilKollektion/{overf.Id}")>@overf.AntalFilkollektioner.ToString()</a>
+                    <a href=@($"./Overforing/{overf.Id}/FilKollektion")>@overf.AntalFilkollektioner.ToString()</a>
                 }
             </dl>
 
