@@ -15,12 +15,13 @@ namespace FISSUP23.Server.Services
             _context = context;
         }
 
-        public async Task Add(NyOverforing overforing)
+        public async Task Add(Overforing overforing)
         {
-            _context.NyOverforings.Add(overforing);
+            _context.Overforings.Add(overforing);
             await _context.SaveChangesAsync();
         }
-
+        
+        
         public async Task Delete(List<string> toDelete)
         {
             var overfors = await Get();
@@ -53,9 +54,8 @@ namespace FISSUP23.Server.Services
 
         public async Task<List<Overforing>> GetOverforingar()
         {
-            var result = await _context.Overforings.ToListAsync();
-            
-            return result;
+            return await _context.Overforings.ToListAsync();
+
         }
 
         public async Task<List<Overforing>> Get()
