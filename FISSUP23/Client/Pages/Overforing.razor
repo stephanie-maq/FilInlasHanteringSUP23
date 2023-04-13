@@ -23,7 +23,8 @@
                     <input type="checkbox" @onchange="MarkeraAlla"/>
                 </span>
             </th>
-            <th>Namn</th>
+            <th>Överförings Namn</th>
+            <th>System Namn</th>
             <th>Beskrivning</th>
             <th>Antal Filkollektioner</th>
         </tr>
@@ -39,12 +40,15 @@
                     @overforing.Namn
                 </td>
                 <td>
+                    @overforing.SystemNamn
+                </td>
+                <td>
                     @overforing.Beskrivning
                 </td>
                 <td>
                     <a href=@($"./Filkollektion/{overforing.Id}")>@overforing.AntalFilkollektioner.ToString()</a>
                 </td>
-                
+
             </tr>
         }
         </tbody>
@@ -75,6 +79,9 @@
             <dl class="row">
                 <dt class="col-sm-3">Namn:</dt>
                 <dd class="col-sm-9" style=" color: black"> @overf.Namn</dd>
+
+                <dt class="col-sm-3">Namn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @overf.SystemNamn</dd>
 
                 <dt class="col-sm-3">Beskrivning:</dt>
                 <dd class="col-sm-9">
@@ -131,7 +138,7 @@ else
             };
             OverforingVMs.Add(OverforingsVM);
         }
-        
+
         StateHasChanged();
     }
 
@@ -152,7 +159,7 @@ else
     private void MarkeraAlla()
     {
         IsCheckedTotal = !IsCheckedTotal;
-        
+
         foreach (var overforing in OverforingVMs)
         {
             overforing.isChecked = IsCheckedTotal;
@@ -175,7 +182,7 @@ else
     {
         navMan.NavigateTo($"./Overforings/NyOverforing", true);
     }
-    
+
     private async void Delete()
     {
         var toDelete = MarkeradeOverforingar.Select(m => m.Id.ToString());
@@ -186,7 +193,7 @@ else
             Method = HttpMethod.Delete,
             Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
         };
-        
+
         var resp = await http.SendAsync(request);
 
         if (resp.StatusCode == System.Net.HttpStatusCode.OK)
@@ -196,4 +203,5 @@ else
             StateHasChanged();
         }
     }
+
 }
