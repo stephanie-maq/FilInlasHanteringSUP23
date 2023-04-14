@@ -62,6 +62,7 @@ namespace FISSUP23.Server.Services
         {
             return await _context.Overforings
                 .Include(x => x.FilKollektions)
+                .ThenInclude(f => f.Fils)
                 .ToListAsync();
         }
 

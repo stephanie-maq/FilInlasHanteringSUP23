@@ -9,7 +9,7 @@ namespace FISSUP23.Server.Controllers
     public class OverforingsController : ControllerBase
     {
         private readonly IOverforingService _service;
-        
+
         public OverforingsController(IOverforingService service)
         {
             _service = service;
@@ -63,22 +63,14 @@ namespace FISSUP23.Server.Controllers
             {
                 return BadRequest(e.Message);
             }
-
         }
 
         //DELETE: api / Overforings / 5
         [HttpDelete]
         public async Task<IActionResult> DeleteOverforing([FromBody] List<string> toDelete)
         {
-            try
-            {
-                await _service.Delete(toDelete);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            await _service.Delete(toDelete);
+            return Ok();
         }
     }
 }
