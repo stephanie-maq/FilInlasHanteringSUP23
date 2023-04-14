@@ -31,7 +31,7 @@ public partial class FilKollektion
 
     public virtual Filtyp FilTyp { get; set; } = null!;
 
-    public virtual ICollection<Fil> Fils { get; } = new List<Fil>();
+    public virtual ICollection<Fil> Fils { get; set; } = new List<Fil>();
 
     public virtual Overforing Overforing { get; set; } = null!;
 }

@@ -19,7 +19,7 @@ namespace FISSUP23.Server.Services
 
         public async Task<List<FilKollektion>> GetByID(int id)
         {
-            var filKollektions = await _context.FilKollektions.Where(x => x.OverforingId == id).ToListAsync();
+            var filKollektions = await _context.FilKollektions.Include(x => x.Fils).Where(x => x.OverforingId == id).ToListAsync();
             return filKollektions;
         }
 
@@ -34,9 +34,15 @@ namespace FISSUP23.Server.Services
             throw new NotImplementedException();
         }
 
-        public Task Delete(List<string> ids)
+        public async Task Delete(List<string> toDelete)
         {
-            throw new NotImplementedException();
+            var filkollektions = await Get();
+
+            filkollektions
+                .FindAll(o => toDelete.Contains(o.Id.ToString()))
+                .ForEach(x => _context.Remove(x));
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<FilKollektion>> Get()

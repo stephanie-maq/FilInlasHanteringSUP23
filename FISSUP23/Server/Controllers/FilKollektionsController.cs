@@ -103,29 +103,19 @@ namespace FISSUP23.Server.Controllers
         //     return CreatedAtAction("GetFilKollektion", new { id = filKollektion.Id }, filKollektion);
         // }
 
-        // DELETE: api/FilKollektions/5
-        //[HttpDelete("{id}")]
-        // public async Task<IActionResult> DeleteFilKollektion(int id)
-        // {
-        //     if (_context.FilKollektions == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     var filKollektion = await _context.FilKollektions.FindAsync(id);
-        //     if (filKollektion == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     _context.FilKollektions.Remove(filKollektion);
-        //     await _context.SaveChangesAsync();
-        //
-        //     return NoContent();
-        // }
-        //
-        // private bool FilKollektionExists(int id)
-        // {
-        //     return (_context.FilKollektions?.Any(e => e.Id == id)).GetValueOrDefault();
-        // }
+         //DELETE: api/FilKollektions/5
+         [HttpDelete("{id}")]
+         public async Task<IActionResult> DeleteFilKollektion([FromBody] List<string> toDelete)
+         {
+             try
+             {
+                 await _filkollektionService.Delete(toDelete);
+                 return Ok();
+             }
+             catch (Exception e)
+             {
+                 return BadRequest(e.Message);
+             }
+         }
     }
 }
