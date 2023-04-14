@@ -1,7 +1,4 @@
 ﻿using FISSUP23.Database.Models;
-using FISSUP23.Server.ApiModels;
-using FISSUP23.Server.ApiModels.Extension;
-using FISSUP23.Server.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace FISSUP23.Server.Services
@@ -18,7 +15,6 @@ namespace FISSUP23.Server.Services
         public async Task<List<FilKollektion>> GetFilkollektioner()
         {
             return await _context.FilKollektions.ToListAsync();
-
         }
 
         public async Task<List<FilKollektion>> GetByID(int id)
@@ -47,6 +43,7 @@ namespace FISSUP23.Server.Services
         {
             return await _context.FilKollektions
                 .Include(x => x.Fils)
-                .ToListAsync();        }
+                .ToListAsync();
+        }
     }
 }

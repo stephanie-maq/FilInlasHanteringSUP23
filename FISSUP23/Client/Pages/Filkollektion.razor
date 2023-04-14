@@ -1,37 +1,40 @@
-@page "/FilKollektion/{Id:int}"
+@page "/overforingar/{Id:int}/filkollektioner"
 @using FISSUP23.Database.Models
 @inject HttpClient http
+@inject NavigationManager navMan
 
 <h3>Filkollektion</h3>
-@if (FilKollektions != null)
+
+<button type="button" class="btn btn-warning" @onclick="RedirectAddFilkollektion"> Add filkollektion</button>
+
+@if (FilkollektionVMs != null)
 {
-    <body>
     <table class="table">
         <thead>
         <tr>
             <th>
                 <span>Markera</span>
                 <span>
-                    <input type="checkbox"/>
+                    <input type="checkbox" @onchange="MarkeraAlla"/>
                 </span>
             </th>
             <th>Namn</th>
             <th>Ändelse</th>
             <th>MatchMönster</th>
             <th>Beskrivning</th>
-            <th>Antal Filer</th>
             <th>FolderRoot</th>
             <th>FolderArkiv</th>
             <th>FolderNyFil</th>
             <th>FolderFelaktigaFil</th>
+            <th>Antal Filer</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var filkol in FilKollektions)
+        @foreach (var filkol in FilkollektionVMs)
         {
             <tr>
                 <td>
-                    <input/>
+                    <input type="checkbox" @bind="filkol.isChecked" @onclick="() => OverCheck(filkol)"/>
                 </td>
                 <td>
                     @filkol.Namn
@@ -45,12 +48,29 @@
                 <td>
                     @filkol.Beskrivning
                 </td>
-
+                <td>
+                    @filkol.FolderRoot
+                </td>
+                <td>
+                    @filkol.FolderArkiv
+                </td>
+                <td>
+                    @filkol.FolderNyFil
+                </td>
+                <td>
+                    @filkol.FolderFelaktigFil
+                </td>
+                <td>
+                    <a href=@($"./overforingar/{Id}/filkollektioner/{filkol.Id}/filer")>@filkol.AntalFiler.ToString()</a>
+                </td>
             </tr>
         }
         </tbody>
     </table>
-    </body>
+}
+else
+{
+    <p> Laddar ...</p>
 }
 
 @code {
@@ -58,12 +78,73 @@
     [Parameter]
     public int Id { get; set; }
 
-    private List<FilKollektion> FilKollektions { get; set; }
+    private bool IsCheckedTotal { get; set; }
+    private List<FilKollektion> Filkollektions { get; set; }
+    private List<ViewModels.FilkollektionViewModel> FilkollektionVMs { get; set; }
+    private List<ViewModels.FilkollektionViewModel> MarkeradeFilkollektioner { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        FilKollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions/{Id}");
-        await base.OnInitializedAsync();
+        Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions/{Id}");
+        FilkollektionVMs = new List<ViewModels.FilkollektionViewModel>();
+        MarkeradeFilkollektioner = new List<ViewModels.FilkollektionViewModel>();
+
+        foreach (var filkollektion in Filkollektions)
+        {
+            var FilkollektionsVMs = new ViewModels.FilkollektionViewModel
+            {
+                isChecked = false,
+                Id = filkollektion.Id,
+                Namn = filkollektion.Namn,
+                Andelse = filkollektion.Andelse,
+                MatchMonster = filkollektion.MatchMonster,
+                Beskrivning = filkollektion.Beskrivning,
+                FolderRoot = filkollektion.FolderRoot,
+                FolderArkiv = filkollektion.FolderArkiv,
+                FolderNyFil = filkollektion.FolderNyFil,
+                FolderFelaktigFil = filkollektion.FolderFelaktigFil,
+                AntalFiler = filkollektion.Fils.Count
+            };
+            
+            FilkollektionVMs.Add(FilkollektionsVMs);
+        }
+
+        StateHasChanged();
+    }
+
+    private void OverCheck(ViewModels.FilkollektionViewModel filkollektion)
+    {
+        filkollektion.isChecked = !filkollektion.isChecked;
+
+        if (filkollektion.isChecked)
+        {
+            MarkeradeFilkollektioner.Add(filkollektion);
+        }
+        else
+        {
+            MarkeradeFilkollektioner.Remove(filkollektion);
+        }
+    }
+
+    private void MarkeraAlla()
+    {
+        IsCheckedTotal = !IsCheckedTotal;
+
+        foreach (var filkollektion in FilkollektionVMs)
+        {
+            filkollektion.isChecked = IsCheckedTotal;
+        }
+
+        MarkeradeFilkollektioner = new List<ViewModels.FilkollektionViewModel>();
+        if (IsCheckedTotal)
+        {
+            MarkeradeFilkollektioner.AddRange(FilkollektionVMs);
+        }
+    }
+
+    private void RedirectAddFilkollektion()
+    {
+        navMan.NavigateTo($"./filkollektions/overforing", true);
     }
 
 }

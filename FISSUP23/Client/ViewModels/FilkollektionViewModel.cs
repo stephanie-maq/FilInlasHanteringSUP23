@@ -15,8 +15,6 @@ public class FilkollektionViewModel : IViewModels
     public string MatchMonster { get; set; } = null!;
 
     public string? Beskrivning { get; set; }
-    
-    public int FilTypId { get; set; }
 
     public string FolderRoot { get; set; } = null!;
 
@@ -26,11 +24,5 @@ public class FilkollektionViewModel : IViewModels
 
     public string FolderFelaktigFil { get; set; } = null!;
 
-    public Filtyp FilTyp { get; set; } = null!;
-
-    public List<Fil> Fils { get; set; }
-
     public int AntalFiler { get; set; }
-
-    public Overforing Overforing { get; set; } = null!;
 }
