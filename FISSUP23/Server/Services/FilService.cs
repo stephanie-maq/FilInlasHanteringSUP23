@@ -17,9 +17,16 @@ public class FilService : IFilService
         return await _context.Fils.ToListAsync();
     }
 
-    public Task<Fil> GetByID(int id)
+    public async Task<List<Fil>> GetByID(int id)
     {
-        throw new NotImplementedException();
+        var fils = await _context.Fils
+            .Include(x => x.FilDatatyps)
+            .Include(x => x.Kolumns)
+            .Include(x => x.Inlasnings)
+            .Include(x => x.Tabells)
+            .Where(x => x.FilKollektionId == id)
+            .ToListAsync();
+        return fils;
     }
 
     public async Task Add(Fil fil)
@@ -38,8 +45,8 @@ public class FilService : IFilService
         throw new NotImplementedException();
     }
 
-    public Task<List<Fil>> Get()
+    public async Task<List<Fil>> Get()
     {
-        throw new NotImplementedException();
+        return await _context.Fils.ToListAsync();
     }
 }

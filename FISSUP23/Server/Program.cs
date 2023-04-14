@@ -42,5 +42,6 @@ static void ConfigureServices(IServiceCollection services)
     services.AddSwaggerGen();
     services.AddScoped<IOverforingService, OverforingService>();
     services.AddScoped<IFilkollektionService, FilkollektionService>();
+    services.AddScoped<IFilService, FilService>();
     services.AddDbContext<SsisGenericReadContext>();
 }

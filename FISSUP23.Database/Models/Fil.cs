@@ -21,7 +21,7 @@ public partial class Fil
 
     public short HarKolumnamn { get; set; }
 
-    public virtual ICollection<FilDatatyp> FilDatatyps { get; } = new List<FilDatatyp>();
+    public virtual ICollection<FilDatatyp> FilDatatyps { get; set; } = new List<FilDatatyp>();
 
     public virtual FilKollektion FilKollektion { get; set; } = null!;
 

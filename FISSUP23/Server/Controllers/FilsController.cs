@@ -22,101 +22,43 @@ namespace FISSUP23.Server.Controllers
             _service = service;
         }
 
-        // GET: api/Fils
-        // [HttpGet]
-        // public async Task<ActionResult<IEnumerable<Fil>>> GetFils()
-        // {
-        //   if (_context.Fils == null)
-        //   {
-        //       return NotFound();
-        //   }
-        //     return await _context.Fils.ToListAsync();
-        // }
-        //
-        // // GET: api/Fils/5
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<Fil>> GetFil(int id)
-        // {
-        //   if (_context.Fils == null)
-        //   {
-        //       return NotFound();
-        //   }
-        //     var fil = await _context.Fils.FindAsync(id);
-        //
-        //     if (fil == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     return fil;
-        // }
-        //
-        // // PUT: api/Fils/5
-        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutFil(int id, Fil fil)
-        // {
-        //     if (id != fil.Id)
-        //     {
-        //         return BadRequest();
-        //     }
-        //
-        //     _context.Entry(fil).State = EntityState.Modified;
-        //
-        //     try
-        //     {
-        //         await _context.SaveChangesAsync();
-        //     }
-        //     catch (DbUpdateConcurrencyException)
-        //     {
-        //         if (!FilExists(id))
-        //         {
-        //             return NotFound();
-        //         }
-        //         else
-        //         {
-        //             throw;
-        //         }
-        //     }
-        //
-        //     return NoContent();
-        // }
-        //
-        // // POST: api/Fils
-        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // [HttpPost]
-        // public async Task<ActionResult<Fil>> PostFil(Fil fil)
-        // {
-        //   if (_context.Fils == null)
-        //   {
-        //       return Problem("Entity set 'SsisGenericReadContext.Fils'  is null.");
-        //   }
-        //     _context.Fils.Add(fil);
-        //     await _context.SaveChangesAsync();
-        //
-        //     return CreatedAtAction("GetFil", new { id = fil.Id }, fil);
-        // }
-        //
-        // // DELETE: api/Fils/5
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> DeleteFil(int id)
-        // {
-        //     if (_context.Fils == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     var fil = await _context.Fils.FindAsync(id);
-        //     if (fil == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     _context.Fils.Remove(fil);
-        //     await _context.SaveChangesAsync();
-        //
-        //     return NoContent();
-        // }
-        //
+        //GET: api/Fils
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Fil>>> GetFils()
+        {
+            return await _service.Get();
+        }
+        
+        // GET: api/Fils/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Fil>>> GetByFilkollektion(int id)        {
+            return await _service.GetByID(id);
+        }
+        
+        // PUT: api/Fils/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutFil(int id, Fil fil)
+        {
+
+            return NoContent();
+        }
+        
+        // POST: api/Fils
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Fil>> PostFil(Fil fil)
+        {
+            throw new Exception();
+        }
+        
+        // DELETE: api/Fils/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFil(int id)
+        {
+            throw new Exception();
+        }
+        
         // private bool FilExists(int id)
         // {
         //     return (_context.Fils?.Any(e => e.Id == id)).GetValueOrDefault();
