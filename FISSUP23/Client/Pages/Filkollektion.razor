@@ -1,4 +1,4 @@
-@page "/overforingar/{Id:int}/filkollektioner"
+@page "/overforingar/{OverforingId:int}/filkollektioner"
 @using FISSUP23.Database.Models
 @inject HttpClient http
 @inject NavigationManager navMan
@@ -61,7 +61,7 @@
                     @filkol.FolderFelaktigFil
                 </td>
                 <td>
-                    <a href=@($"./overforingar/{Id}/filkollektioner/{filkol.Id}/filer")>@filkol.AntalFiler.ToString()</a>
+                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{filkol.Id}/filer")>@filkol.AntalFiler.ToString()</a>
                 </td>
             </tr>
         }
@@ -132,7 +132,7 @@ else
 @code {
 
     [Parameter]
-    public int Id { get; set; }
+    public int OverforingId { get; set; }
 
     private bool IsCheckedTotal { get; set; }
     private List<FilKollektion> Filkollektions { get; set; }
@@ -141,7 +141,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions/{Id}");
+        Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions/{OverforingId}");
         FilkollektionVMs = new List<ViewModels.FilkollektionViewModel>();
         MarkeradeFilkollektioner = new List<ViewModels.FilkollektionViewModel>();
 

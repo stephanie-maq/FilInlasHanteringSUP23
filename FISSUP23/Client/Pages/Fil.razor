@@ -1,6 +1,195 @@
-@page "/Fil"
+@page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer"
+@inject HttpClient http
+@inject NavigationManager navMan
+
+
 <h3>Fil</h3>
+<button type="button" class="btn btn-warning" @onclick="RedirectAddFil"> Add filkollektion</button>
+
+@if (FilVMs != null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <span>Markera</span>
+                <span>
+                    <input type="checkbox" @onchange="MarkeraAlla"/>
+                </span>
+            </th>
+            <th>Namn</th>
+            <th>Matchmönster</th>
+            <th>Beskrivning</th>
+            <th>Sort</th>
+            <th>KolumnSeparator</th>
+            <th>HarKolumnnamn</th>
+            <th>Antal FilDatatyp</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var fil in FilVMs)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" @bind="fil.isChecked" @onclick="() => OverCheck(fil)"/>
+                </td>
+                <td>
+                    @fil.Namn
+                </td>
+                <td>
+                    @fil.MatchMonster
+                </td>
+                <td>
+                    @fil.Beskrivning
+                </td>
+                <td>
+                    @fil.Sort
+                </td>
+                <td>
+                    @fil.KolumnSeparator
+                </td>
+                <td>
+                    @fil.HarKolumnamn
+                </td>
+                <td>
+                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}")>@fil.AntalFilDatatyp.ToString()</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (MarkeradeFiler.Count != 0)
+    {
+        <br/>
+        <br/>
+        <br/>
+
+
+        <h2 style="color:black">
+            <strong> Se detaljer, uppdatera eller radera</strong>
+        </h2>
+        <div>
+            @if (MarkeradeFiler.Count == 1)
+            {
+                <button type="button" class="btn btn-warning "> Uppdatera</button>
+            }
+            <button type="button" class="btn btn-warning "> Radera</button>
+        </div>
+
+
+        <br/>
+        @foreach (var fil in MarkeradeFiler)
+        {
+            <dl class="row">
+                <dt class="col-sm-3">Namn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @fil.Namn</dd>
+
+                <dt class="col-sm-3">Match mönster:</dt>
+                <dd class="col-sm-9" style=" color: black"> @fil.MatchMonster</dd>
+
+                <dt class="col-sm-3">Beskrivning:</dt>
+                <dd class="col-sm-9">
+                    <p style=" color: black">@fil.Beskrivning</p>
+                </dd>
+                <dt class="col-sm-3">Sort:</dt>
+                <dd class="col-sm-9" style=" color: black"> @fil.Sort</dd>
+
+                <dt class="col-sm-3">Kolumn Separator:</dt>
+                <dd class="col-sm-9" style=" color: black"> @fil.KolumnSeparator</dd>
+
+                <dt class="col-sm-3">FHar Kolumn namn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @fil.HarKolumnamn</dd>
+
+                <dt class="col-sm-3">Antal FilDatatyp</dt>
+                <dd class="col-sm-9" style=" color: black"> @fil.AntalFilDatatyp</dd>
+                
+
+            </dl>
+
+            <br/>
+        }
+    }
+}
+else
+{
+    <p> Laddar ...</p>
+}
+
 
 @code {
+    [Parameter]
+    public int OverforingId { get; set; }
+    [Parameter]
+    public int FilkollektionId { get; set; }
     
+    
+    private bool IsCheckedTotal { get; set; }
+    private List<ViewModels.FilViewModel> FilVMs { get; set; }
+    private List<ViewModels.FilViewModel> MarkeradeFiler { get; set; }
+    private List<Database.Models.Fil> fils { get; set; }
+
+    protected override async void OnInitialized()
+    {
+        fils = await http.GetFromJsonAsync<List<Database.Models.Fil>>($"./api/Fils/{FilkollektionId}");
+        FilVMs = new List<ViewModels.FilViewModel>();
+        MarkeradeFiler = new List<ViewModels.FilViewModel>();
+
+        foreach (var fil in fils)
+        {
+            var filsVMs = new ViewModels.FilViewModel()
+            {
+                isChecked = false,
+                Id = fil.Id,
+                Namn = fil.Namn,
+                MatchMonster = fil.MatchMonster,
+                Beskrivning = fil.Beskrivning,
+                Sort = fil.Sort,
+                KolumnSeparator = fil.KolumnSeparator,
+                HarKolumnamn = fil.HarKolumnamn,
+                AntalFilDatatyp = fil.FilDatatyps.Count
+            };
+
+            FilVMs.Add(filsVMs);
+        }
+
+        StateHasChanged();
+    }
+
+    private void OverCheck(ViewModels.FilViewModel fil)
+    {
+        fil.isChecked = !fil.isChecked;
+
+        if (fil.isChecked)
+        {
+            MarkeradeFiler.Add(fil);
+        }
+        else
+        {
+            MarkeradeFiler.Remove(fil);
+        }
+    }
+
+    private void MarkeraAlla()
+    {
+        IsCheckedTotal = !IsCheckedTotal;
+
+        foreach (var fil in FilVMs)
+        {
+            fil.isChecked = IsCheckedTotal;
+        }
+
+        MarkeradeFiler = new List<ViewModels.FilViewModel>();
+        if (IsCheckedTotal)
+        {
+            MarkeradeFiler.AddRange(FilVMs);
+        }
+    }
+
+    private void RedirectAddFil()
+    {
+        navMan.NavigateTo($"./overforingar/filkollektionar/filer/add", true);
+    }
+
+
 }

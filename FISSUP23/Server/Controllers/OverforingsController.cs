@@ -9,8 +9,7 @@ namespace FISSUP23.Server.Controllers
     public class OverforingsController : ControllerBase
     {
         private readonly IOverforingService _service;
-
-
+        
         public OverforingsController(IOverforingService service)
         {
             _service = service;
@@ -22,14 +21,6 @@ namespace FISSUP23.Server.Controllers
         {
             return await _service.Get();
         }
-
-        // GET: api/Overforings
-        //[HttpGet("/GetApiModel")]
-        //public async Task<ActionResult<IEnumerable<ApiOverforing>>> GetApi()
-        //{
-        //    return await _service.Get();
-        //}
-
 
         //GET: api/Overforings/5
         [HttpGet("{id}")]
