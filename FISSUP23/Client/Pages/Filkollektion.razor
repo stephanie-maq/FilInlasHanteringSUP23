@@ -1,5 +1,6 @@
 @page "/overforingar/{OverforingId:int}/filkollektioner"
 @using FISSUP23.Database.Models
+@using System.Text.Json
 @inject HttpClient http
 @inject NavigationManager navMan
 
@@ -82,7 +83,7 @@
             {
                 <button type="button" class="btn btn-warning "> Uppdatera</button>
             }
-            <button type="button" class="btn btn-warning "> Radera</button>
+            <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
         </div>
 
 
@@ -195,6 +196,26 @@ else
         if (IsCheckedTotal)
         {
             MarkeradeFilkollektioner.AddRange(FilkollektionVMs);
+        }
+    }
+    private async void Delete()
+    {
+        var toDelete = MarkeradeFilkollektioner.Select(m => m.Id.ToString());
+
+        var request = new HttpRequestMessage
+        {
+            RequestUri = new Uri("./api/FilKollektions", UriKind.RelativeOrAbsolute),
+            Method = HttpMethod.Delete,
+            Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
+        };
+
+        var resp = await http.SendAsync(request);
+
+        if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            FilkollektionVMs = FilkollektionVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
+            MarkeradeFilkollektioner = FilkollektionVMs;
+            StateHasChanged();
         }
     }
 

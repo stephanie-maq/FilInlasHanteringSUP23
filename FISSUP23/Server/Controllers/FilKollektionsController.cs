@@ -9,11 +9,12 @@ namespace FISSUP23.Server.Controllers
     public class FilKollektionsController : ControllerBase
     {
         private IFilkollektionService _filkollektionService;
-        
+
         public FilKollektionsController(IFilkollektionService service)
         {
-            _filkollektionService= service;
+            _filkollektionService = service;
         }
+
         // GET: api/FilKollektions
         [HttpGet]
         // public async Task<ActionResult<IEnumerable<FilKollektion>>> GetFilKollektions()
@@ -24,7 +25,6 @@ namespace FISSUP23.Server.Controllers
         //   }
         //     return await _context.FilKollektions.ToListAsync();
         // }
-        
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<FilKollektion>>> GetByOverforing(int id)
         {
@@ -103,19 +103,12 @@ namespace FISSUP23.Server.Controllers
         //     return CreatedAtAction("GetFilKollektion", new { id = filKollektion.Id }, filKollektion);
         // }
 
-         //DELETE: api/FilKollektions/5
-         [HttpDelete("{id}")]
-         public async Task<IActionResult> DeleteFilKollektion([FromBody] List<string> toDelete)
-         {
-             try
-             {
-                 await _filkollektionService.Delete(toDelete);
-                 return Ok();
-             }
-             catch (Exception e)
-             {
-                 return BadRequest(e.Message);
-             }
-         }
+        //DELETE: api/FilKollektions/5
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFilKollektion([FromBody] List<string> toDelete)
+        {
+            await _filkollektionService.Delete(toDelete);
+            return Ok();
+        }
     }
 }

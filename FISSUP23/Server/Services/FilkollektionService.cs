@@ -49,6 +49,7 @@ namespace FISSUP23.Server.Services
         {
             return await _context.FilKollektions
                 .Include(x => x.Fils)
+                .ThenInclude(f=>f.FilDatatyps)
                 .ToListAsync();
         }
     }
