@@ -15,10 +15,4 @@
     <ProjectReference Include="..\..\FISSUP23.Database\FISSUP23.Database.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="SharedUI\MainLayout.razor" />
-    <_ContentIncludedByDefault Remove="SharedUI\NavMenu.razor" />
-    <_ContentIncludedByDefault Remove="SharedUI\SurveyPrompt.razor" />
-  </ItemGroup>
-
 </Project>

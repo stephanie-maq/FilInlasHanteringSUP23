@@ -3,5 +3,6 @@
     public interface IViewModels
     {
         public bool isChecked { get; set; }
+        
     }
 }

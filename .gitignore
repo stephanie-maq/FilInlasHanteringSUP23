@@ -5,6 +5,7 @@
 
 # Jetbrains
 .idea
+.vscode
 
 # User-specific files
 *.rsuser

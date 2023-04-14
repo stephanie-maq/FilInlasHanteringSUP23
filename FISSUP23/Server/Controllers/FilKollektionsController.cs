@@ -30,12 +30,12 @@ namespace FISSUP23.Server.Controllers
         {
             try
             {
-                return await _filkollektionService.GetByID(id);
+                var ok = await _filkollektionService.GetByID(id);
+                return Ok(ok);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return BadRequest(e.Message);
             }
         }
 
