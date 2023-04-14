@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace FISSUP23.Database.Models;
 
@@ -58,11 +56,10 @@ public partial class SsisGenericReadContext : DbContext
     public virtual DbSet<Test> Tests { get; set; }
 
 
-
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost,57000;Database=SSIS_GenericRead;User Id=SA;Password=Str#ng_Passw#rd;TrustServerCertificate=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer(
+            "Server=localhost,57000;Database=SSIS_GenericRead;User Id=SA;Password=Str#ng_Passw#rd;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -107,24 +104,27 @@ public partial class SsisGenericReadContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.FilKollektion).WithMany(p => p.Fils)
+            entity.HasOne(d => d.FilKollektion)
+                .WithMany(p => p.Fils)
                 .HasForeignKey(d => d.FilKollektionId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Fil_FilKollektion");
+                .HasConstraintName("FK_Fil_FilKollektion")
+                .OnDelete(DeleteBehavior.ClientCascade);
         });
 
         modelBuilder.Entity<FilDatatyp>(entity =>
         {
             entity.ToTable("Fil_Datatyp", "import");
 
-            entity.HasOne(d => d.Datatyp).WithMany(p => p.FilDatatyps)
+            entity.HasOne(d => d.Datatyp)
+                .WithMany(p => p.FilDatatyps)
                 .HasForeignKey(d => d.DatatypId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Fil_Datatyp_Datatyper");
 
-            entity.HasOne(d => d.Fil).WithMany(p => p.FilDatatyps)
+            entity.HasOne(d => d.Fil)
+                .WithMany(p => p.FilDatatyps)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Fil_Datatyp_Kolumn");
         });
 
@@ -157,15 +157,17 @@ public partial class SsisGenericReadContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.FilTyp).WithMany(p => p.FilKollektions)
+            entity.HasOne(d => d.FilTyp)
+                .WithMany(p => p.FilKollektions)
                 .HasForeignKey(d => d.FilTypId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_FilKollektion_Filtyp");
+                .HasConstraintName("FK_FilKollektion_Filtyp")
+                .OnDelete(DeleteBehavior.ClientCascade);
 
-            entity.HasOne(d => d.Overforing).WithMany(p => p.FilKollektions)
+            entity.HasOne(d => d.Overforing)
+                .WithMany(p => p.FilKollektions)
                 .HasForeignKey(d => d.OverforingId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_FilKollektion_Overforing");
+                .HasConstraintName("FK_FilKollektion_Overforing")
+                .OnDelete(DeleteBehavior.ClientCascade);
         });
 
         modelBuilder.Entity<Filtyp>(entity =>
@@ -190,7 +192,7 @@ public partial class SsisGenericReadContext : DbContext
         modelBuilder.Entity<Inlasning>(entity =>
         {
             entity.ToTable("Inlasning", "import");
-            
+
             entity.Property(e => e.DatumTid).HasColumnType("datetime");
             entity.Property(e => e.FilNamn)
                 .HasMaxLength(255)
@@ -205,7 +207,7 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Fil).WithMany(p => p.Inlasnings)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Inlasning_Fil");
         });
 
@@ -222,7 +224,7 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Fil).WithMany(p => p.Kolumns)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Kolumn_Fil");
 
             entity.HasOne(d => d.Inlasning).WithMany(p => p.Kolumns)
@@ -236,12 +238,12 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Datatyp).WithMany(p => p.KolumnDatatyps)
                 .HasForeignKey(d => d.DatatypId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Kolumn_Datatyp_Datatyper");
 
             entity.HasOne(d => d.Kolumn).WithMany(p => p.KolumnDatatyps)
                 .HasForeignKey(d => d.KolumnId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Kolumn_Datatyp_Kolumn");
         });
 
@@ -269,12 +271,12 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Fil).WithMany(p => p.Lookups)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Lookup_Fil");
 
             entity.HasOne(d => d.LookupTyp).WithMany(p => p.Lookups)
                 .HasForeignKey(d => d.LookupTypId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Lookup_LookupTyp");
         });
 
@@ -284,12 +286,12 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Kolumn).WithMany(p => p.LookupKolumns)
                 .HasForeignKey(d => d.KolumnId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Lookup_Kolumn_Kolumn");
 
             entity.HasOne(d => d.Lookup).WithMany(p => p.LookupKolumns)
                 .HasForeignKey(d => d.LookupId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Lookup_Kolumn_Lookup");
         });
 
@@ -342,12 +344,12 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Fil).WithMany(p => p.RawDataKolumners)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_RawDataKolumner_Fil");
 
             entity.HasOne(d => d.Inlasning).WithMany(p => p.RawDataKolumners)
                 .HasForeignKey(d => d.InlasningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_RawDataKolumner_Inlasning");
         });
 
@@ -363,12 +365,12 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Fil).WithMany(p => p.RawDataParseds)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_RawDataParsed_Fil");
 
             entity.HasOne(d => d.Inlasning).WithMany(p => p.RawDataParseds)
                 .HasForeignKey(d => d.InlasningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_RawDataParsed_Inlasning");
         });
 
@@ -383,12 +385,12 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Fil).WithMany(p => p.RawData)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_RawData_Fil");
 
             entity.HasOne(d => d.Inlasning).WithMany(p => p.RawData)
                 .HasForeignKey(d => d.InlasningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_RawData_Inlasning");
         });
 
@@ -412,10 +414,12 @@ public partial class SsisGenericReadContext : DbContext
                 .HasComputedColumnSql("(concat_ws('.',quotename([Schema]),quotename([Namn])))", false);
             entity.Property(e => e.VyNamn)
                 .HasMaxLength(517)
-                .HasComputedColumnSql("(concat_ws('.',quotename([VySchema]),quotename(concat([VyPrefix],[Namn]))))", false);
+                .HasComputedColumnSql("(concat_ws('.',quotename([VySchema]),quotename(concat([VyPrefix],[Namn]))))",
+                    false);
             entity.Property(e => e.VyNamnLookup)
                 .HasMaxLength(517)
-                .HasComputedColumnSql("(concat_ws('.',quotename([VySchema]),quotename(concat([VyPrefix],[Namn],'_LookUp'))))", false);
+                .HasComputedColumnSql(
+                    "(concat_ws('.',quotename([VySchema]),quotename(concat([VyPrefix],[Namn],'_LookUp'))))", false);
             entity.Property(e => e.VyPrefix)
                 .HasMaxLength(255)
                 .IsUnicode(false);
@@ -425,7 +429,7 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.Fil).WithMany(p => p.Tabells)
                 .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Tabell_Fil");
 
             entity.HasOne(d => d.SkapadInlasning).WithMany(p => p.Tabells)
@@ -445,9 +449,6 @@ public partial class SsisGenericReadContext : DbContext
                 .IsUnicode(false);
         });
 
-       
-
-       
 
         OnModelCreatingPartial(modelBuilder);
     }
