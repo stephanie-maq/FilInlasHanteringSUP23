@@ -67,6 +67,62 @@
         }
         </tbody>
     </table>
+    @if (MarkeradeFilkollektioner.Count != 0)
+    {
+        <br/>
+        <br/>
+        <br/>
+
+
+        <h2 style="color:black">
+            <strong> Se detaljer, uppdatera eller radera</strong>
+        </h2>
+        <div>
+            @if (MarkeradeFilkollektioner.Count == 1)
+            {
+                <button type="button" class="btn btn-warning "> Uppdatera</button>
+            }
+            <button type="button" class="btn btn-warning "> Radera</button>
+        </div>
+
+
+        <br/>
+        @foreach (var filkollek in MarkeradeFilkollektioner)
+        {
+            <dl class="row">
+                <dt class="col-sm-3">Namn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.Namn</dd>
+
+                <dt class="col-sm-3">Ändelse:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.Andelse</dd>
+
+                <dt class="col-sm-3">Match mönster:</dt>
+                <dd class="col-sm-9">
+                    <p style=" color: black">@filkollek.MatchMonster</p>
+                </dd>
+                <dt class="col-sm-3">Beskrivning:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.Beskrivning</dd>
+
+                <dt class="col-sm-3">Folder root:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.FolderRoot</dd>
+
+                <dt class="col-sm-3">Folder arkiv:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.FolderArkiv</dd>
+
+                <dt class="col-sm-3">Folder ny fil:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.FolderNyFil</dd>
+
+                <dt class="col-sm-3">Folder felaktiga fil:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.FolderFelaktigFil</dd>
+
+                <dt class="col-sm-3">Antal filer:</dt>
+                <dd class="col-sm-9" style=" color: black"> @filkollek.AntalFiler</dd>
+
+            </dl>
+
+            <br/>
+        }
+    }
 }
 else
 {
@@ -105,7 +161,7 @@ else
                 FolderFelaktigFil = filkollektion.FolderFelaktigFil,
                 AntalFiler = filkollektion.Fils.Count
             };
-            
+
             FilkollektionVMs.Add(FilkollektionsVMs);
         }
 

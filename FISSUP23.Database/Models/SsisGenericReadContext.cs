@@ -109,7 +109,7 @@ public partial class SsisGenericReadContext : DbContext
 
             entity.HasOne(d => d.FilKollektion).WithMany(p => p.Fils)
                 .HasForeignKey(d => d.FilKollektionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Fil_FilKollektion");
         });
 
