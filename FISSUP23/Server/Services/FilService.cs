@@ -55,6 +55,7 @@ public class FilService : IFilService
     {
         return await _context.Fils
             .Include(x => x.FilDatatyps)
+            .ThenInclude(y => y.Datatyp)
             .ToListAsync();
     }
 }

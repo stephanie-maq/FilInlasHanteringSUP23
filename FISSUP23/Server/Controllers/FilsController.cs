@@ -52,11 +52,12 @@ namespace FISSUP23.Server.Controllers
             throw new Exception();
         }
         
-        // DELETE: api/Fils/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFil(int id)
+        // DELETE: api/Fils
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFil([FromBody] List<string> toDelete)
         {
-            throw new Exception();
+            await _service.Delete(toDelete);
+            return Ok();
         }
         
         // private bool FilExists(int id)

@@ -192,7 +192,7 @@ else
 
         var request = new HttpRequestMessage
         {
-            RequestUri = new Uri("./api/FilKollektions", UriKind.RelativeOrAbsolute),
+            RequestUri = new Uri("./api/Fils", UriKind.RelativeOrAbsolute),
             Method = HttpMethod.Delete,
             Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
         };
