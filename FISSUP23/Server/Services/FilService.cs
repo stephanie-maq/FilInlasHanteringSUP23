@@ -40,13 +40,22 @@ public class FilService : IFilService
         throw new NotImplementedException();
     }
 
-    public Task Delete(List<string> ids)
+    public async Task Delete(List<string> toDelete)
     {
-        throw new NotImplementedException();
+        var fils = await Get();
+
+        fils
+            .FindAll(o => toDelete.Contains(o.Id.ToString()))
+            .ForEach(x => _context.Remove(x));
+
+        await _context.SaveChangesAsync();
     }
 
     public async Task<List<Fil>> Get()
     {
-        return await _context.Fils.ToListAsync();
+        return await _context.Fils
+            .Include(x => x.FilDatatyps)
+            .ThenInclude(y => y.Datatyp)
+            .ToListAsync();
     }
 }

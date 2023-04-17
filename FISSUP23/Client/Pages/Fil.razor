@@ -1,4 +1,5 @@
 @page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer"
+@using System.Text.Json
 @inject HttpClient http
 @inject NavigationManager navMan
 
@@ -74,7 +75,7 @@
             {
                 <button type="button" class="btn btn-warning "> Uppdatera</button>
             }
-            <button type="button" class="btn btn-warning "> Radera</button>
+            <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
         </div>
 
 
@@ -183,6 +184,26 @@ else
         if (IsCheckedTotal)
         {
             MarkeradeFiler.AddRange(FilVMs);
+        }
+    }
+    private async void Delete()
+    {
+        var toDelete = MarkeradeFiler.Select(m => m.Id.ToString());
+
+        var request = new HttpRequestMessage
+        {
+            RequestUri = new Uri("./api/Fils", UriKind.RelativeOrAbsolute),
+            Method = HttpMethod.Delete,
+            Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
+        };
+
+        var resp = await http.SendAsync(request);
+
+        if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            FilVMs = FilVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
+            MarkeradeFiler = FilVMs;
+            StateHasChanged();
         }
     }
 
