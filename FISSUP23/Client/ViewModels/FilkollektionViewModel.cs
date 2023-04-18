@@ -5,12 +5,14 @@ namespace FISSUP23.Client.ViewModels;
 public class FilkollektionViewModel : IViewModels
 {
     public bool isChecked { get; set; }
-    
+
     public int Id { get; set; }
 
     public string Namn { get; set; } = null!;
 
     public string Andelse { get; set; } = null!;
+    
+    public int OverforingId { get; set; }
 
     public string MatchMonster { get; set; } = null!;
 
@@ -23,6 +25,8 @@ public class FilkollektionViewModel : IViewModels
     public string FolderNyFil { get; set; } = null!;
 
     public string FolderFelaktigFil { get; set; } = null!;
+
+    public Overforing Overforing { get; set; } = null!;
 
     public int AntalFiler { get; set; }
 }
