@@ -59,34 +59,19 @@ namespace FISSUP23.Server.Controllers
 
         // PUT: api/FilKollektions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        // public async Task<IActionResult> PutFilKollektion(int id, FilKollektion filKollektion)
-        // {
-        //     if (id != filKollektion.Id)
-        //     {
-        //         return BadRequest();
-        //     }
-        //
-        //     _context.Entry(filKollektion).State = EntityState.Modified;
-        //
-        //     try
-        //     {
-        //         await _context.SaveChangesAsync();
-        //     }
-        //     catch (DbUpdateConcurrencyException)
-        //     {
-        //         if (!FilKollektionExists(id))
-        //         {
-        //             return NotFound();
-        //         }
-        //         else
-        //         {
-        //             throw;
-        //         }
-        //     }
-        //
-        //     return NoContent();
-        // }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<FilKollektion>> PutFilKollektion(int id, FilKollektion filKollektion)
+        {
+            try
+            {
+                await _filkollektionService.Update(id, filKollektion);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         // POST: api/FilKollektions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
