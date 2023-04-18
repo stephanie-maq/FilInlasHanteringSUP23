@@ -90,18 +90,20 @@ namespace FISSUP23.Server.Controllers
 
         // POST: api/FilKollektions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        // public async Task<ActionResult<FilKollektion>> PostFilKollektion(FilKollektion filKollektion)
-        // {
-        //   if (_context.FilKollektions == null)
-        //   {
-        //       return Problem("Entity set 'SsisGenericReadContext.FilKollektions'  is null.");
-        //   }
-        //     _context.FilKollektions.Add(filKollektion);
-        //     await _context.SaveChangesAsync();
-        //
-        //     return CreatedAtAction("GetFilKollektion", new { id = filKollektion.Id }, filKollektion);
-        // }
+        [HttpPost]
+         public async Task<ActionResult<FilKollektion>> PostFilKollektion(FilKollektion filKollektion)
+         {
+             try
+             {
+                 await _filkollektionService.Add(filKollektion);
+                 //await _service.AddNyOverforing(nyOverforing);
+                 return Ok();
+             }
+             catch (Exception e)
+             {
+                 return BadRequest(e.Message);
+             }
+         }
 
         //DELETE: api/FilKollektions/5
         [HttpDelete]

@@ -1,21 +1,26 @@
-@page "/filkollektions/overforing"
+@page "/overforingar/{id:int}/filkollektioner/add"
+@using System.Text.Json
+@inject HttpClient http
+
 
 <div>
     <h3>Add Filkollektion</h3>
-    <input type="text" class="form-control mb-4" placeholder="Filkollektions namn" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Ändelse" aria-label="Ladb_ownerst name">
-    <input type="text" class="form-control mb-4" placeholder="Matchmönster" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Beskrivning" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder root" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder arkiv" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder ny fil" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder felaktig fil" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Namn" placeholder="Filkollektions namn" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Andelse" placeholder="Ändelse" aria-label="Ladb_ownerst name">
+    <input type="text" class="form-control mb-4" @bind="Matchmonster" placeholder="Matchmönster" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Beskrivning" placeholder="Beskrivning" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderRoot" placeholder="Folder root" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderArkiv" placeholder="Folder arkiv" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderNyFil" placeholder="Folder ny fil" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderFelaktigFil" placeholder="Folder felaktig fil" aria-label="Last name">
 
-    <button type="button" class="btn btn-warning "> Spara </button>
+    <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
 </div>
 
 @code {
-    public string Id { get; set; }
+    [Parameter]
+    public int id { get; set; }
+
     public string Namn { get; set; }
     public string Andelse { get; set; }
     public string Matchmonster { get; set; }
@@ -24,5 +29,24 @@
     public string FolderArkiv { get; set; }
     public string FolderNyFil { get; set; }
     public string FolderFelaktigFil { get; set; }
+    
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private async Task Spara()
+    {
+        var filkollek = new Database.Models.FilKollektion
+        {
+            Namn = Namn, Andelse = Andelse, MatchMonster = Matchmonster,
+            Beskrivning = Beskrivning, FolderRoot = FolderRoot,
+            FolderArkiv = FolderArkiv, FolderNyFil = FolderNyFil, FolderFelaktigFil = FolderFelaktigFil
+        };
+        var content = new StringContent(JsonSerializer.Serialize(filkollek), System.Text.Encoding.UTF8, "application/json");
+        await http.PostAsync("./api/FilKollektions", content);
+        
+    }
 
 }
