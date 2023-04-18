@@ -7,7 +7,7 @@ public interface IFilkollektionService
     Task<List<FilKollektion>> GetFilkollektioner();
     Task<List<FilKollektion>> GetByID(int id);
     Task Add(FilKollektion _Filkollektion);
-    Task Update(int id);
+    Task Update(int id, FilKollektion filKollektion);
 
     Task Delete(List<string> ids);
 
