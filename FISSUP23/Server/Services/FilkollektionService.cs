@@ -40,9 +40,10 @@ namespace FISSUP23.Server.Services
             //existing.Overforing.Id = filKollektion.OverforingId;
             existing.Namn = filKollektion.Namn ?? existing.Namn;
             existing.Andelse = filKollektion.Andelse ?? existing.Andelse;
+            existing.MatchMonster = filKollektion.MatchMonster;
             existing.Beskrivning = filKollektion.Beskrivning ?? existing.Beskrivning;
-            existing.FolderArkiv = filKollektion.FolderArkiv ?? existing.FolderArkiv;
             existing.FolderRoot = filKollektion.FolderRoot ?? existing.FolderRoot;
+            existing.FolderArkiv = filKollektion.FolderArkiv ?? existing.FolderArkiv;
             existing.FolderNyFil = filKollektion.FolderNyFil ?? existing.FolderNyFil;
             existing.FolderFelaktigFil = filKollektion.FolderFelaktigFil ?? existing.FolderFelaktigFil;
 

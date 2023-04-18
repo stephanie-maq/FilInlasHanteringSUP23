@@ -9,8 +9,8 @@
 {
     <body>
     <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@_FilKollektion.Namn" disabled>
-
-    <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@_FilKollektion.Overforing.Id" disabled>
+    
+    <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@_FilKollektion.Overforing.Id.ToString()" disabled>
     <input type="text" class="form-control mb-4" @bind="NyNamn" placeholder="Namn" aria-label="Last name">
     <input type="text" class="form-control mb-4" @bind="NyAndelse" placeholder="Ändelse" aria-label="Last name">
     <input type="text" class="form-control mb-4" @bind="NyMatchmonster" placeholder="Matchmönster" aria-label="Last name">
@@ -57,9 +57,9 @@ else
     {
         var filkollek = new FilKollektion
         {
-            Namn = NyNamn, Andelse = NyAndelse, Beskrivning = NyBeskrivning,
-            FolderRoot = NyFolderRoot, FolderArkiv = NyFolderArkiv,
-            FolderNyFil = NyFolderRoot, FolderFelaktigFil = NyFolderRoot
+            Namn = NyNamn, Andelse = NyAndelse, MatchMonster = NyMatchmonster,
+            Beskrivning = NyBeskrivning, FolderRoot = NyFolderRoot, FolderArkiv = NyFolderArkiv,
+            FolderNyFil = NyFolderNyFil, FolderFelaktigFil = NyFolderFelaktigFil
         };
         var content = new StringContent(JsonSerializer.Serialize(filkollek), System.Text.Encoding.UTF8, "application/json");
         await http.PutAsync($"./api/FilKollektions/{_FilKollektion.Id}", content);
