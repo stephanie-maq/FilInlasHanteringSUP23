@@ -31,6 +31,7 @@ namespace FISSUP23.Server.Services
                 .ForEach(x => _context.Remove(x));
 
             await _context.SaveChangesAsync();
+            
         }
         
 
