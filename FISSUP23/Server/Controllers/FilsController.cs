@@ -22,6 +22,13 @@ namespace FISSUP23.Server.Controllers
             _service = service;
         }
 
+        [Route("filtyper")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Filtyp>>> GetFiltyper()
+        {
+            return await _service.GetFilTyper();
+        }
+
         //GET: api/Fils
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fil>>> GetFils()

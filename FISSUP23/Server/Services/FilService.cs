@@ -58,4 +58,9 @@ public class FilService : IFilService
             .ThenInclude(y => y.Datatyp)
             .ToListAsync();
     }
+
+    public async Task<List<Filtyp>> GetFilTyper()
+    {
+        return await _context.Filtyps.ToListAsync();
+    }
 }

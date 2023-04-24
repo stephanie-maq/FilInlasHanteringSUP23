@@ -13,4 +13,5 @@ public interface IFilService
     Task Delete(List<string> ids);
 
     Task<List<Fil>> Get();
+    Task<List<Filtyp>> GetFilTyper();
 }

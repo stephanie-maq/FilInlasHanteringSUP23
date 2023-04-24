@@ -1,21 +1,45 @@
-@page "/filkollektions/overforing"
+@page "/overforingar/{overforingId:int}/filkollektioner/add"
+@using System.Text.Json
+@using FISSUP23.Database.Models
+@inject HttpClient http
+@inject NavigationManager navMan
+
 
 <div>
     <h3>Add Filkollektion</h3>
-    <input type="text" class="form-control mb-4" placeholder="Filkollektions namn" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Ändelse" aria-label="Ladb_ownerst name">
-    <input type="text" class="form-control mb-4" placeholder="Matchmönster" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Beskrivning" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder root" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder arkiv" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder ny fil" aria-label="Last name">
-    <input type="text" class="form-control mb-4" placeholder="Folder felaktig fil" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Namn" placeholder="Filkollektions namn" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Andelse" placeholder="Ändelse" aria-label="Ladb_ownerst name">
+    <input type="text" class="form-control mb-4" @bind="Matchmonster" placeholder="Matchmönster" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Beskrivning" placeholder="Beskrivning" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderRoot" placeholder="Folder root" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderArkiv" placeholder="Folder arkiv" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderNyFil" placeholder="Folder ny fil" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="FolderFelaktigFil" placeholder="Folder felaktig fil" aria-label="Last name">
 
-    <button type="button" class="btn btn-warning "> Spara </button>
+    <select class="dropdown" name="number" @bind="FiltypId">
+        @if (Filtyper != null)
+        {
+            <option value="">Välj filtyp</option>
+            @foreach (var filtyp in Filtyper)
+            {
+                <option value=@filtyp.Id>@filtyp.Namn</option>
+            }
+        }
+        else
+        {
+            <option value="">Loading</option>
+        }
+
+    </select>
+
+    <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
 </div>
 
 @code {
-    public string Id { get; set; }
+
+    [Parameter]
+    public int overforingId { get; set; }
+
     public string Namn { get; set; }
     public string Andelse { get; set; }
     public string Matchmonster { get; set; }
@@ -24,5 +48,36 @@
     public string FolderArkiv { get; set; }
     public string FolderNyFil { get; set; }
     public string FolderFelaktigFil { get; set; }
+
+    private List<Filtyp> Filtyper { get; set; } = new();
+    private int FiltypId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Filtyper = await http.GetFromJsonAsync<List<Filtyp>>("./api/Fils/filtyper");
+        StateHasChanged();
+    }
+
+    private async Task Spara()
+    {
+        var filkollek = new FilKollektion
+        {
+            Namn = Namn,
+            Andelse = Andelse,
+            MatchMonster = Matchmonster,
+            Beskrivning = Beskrivning,
+            FolderRoot = FolderRoot,
+            FolderArkiv = FolderArkiv,
+            FolderNyFil = FolderNyFil,
+            FolderFelaktigFil = FolderFelaktigFil,
+            // maybe fetch objects and use them instead of Ids in the future
+            FilTypId = FiltypId,
+            OverforingId = overforingId
+        };
+
+        var content = new StringContent(JsonSerializer.Serialize(filkollek), System.Text.Encoding.UTF8, "application/json");
+        await http.PostAsync("./api/FilKollektions", content);
+        navMan.NavigateTo($"./overforingar/{overforingId}/filkollektioner", true);
+    }
 
 }

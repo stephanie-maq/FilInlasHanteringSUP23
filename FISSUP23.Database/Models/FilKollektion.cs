@@ -28,10 +28,7 @@ public partial class FilKollektion
     public string FolderNyFil { get; set; } = null!;
 
     public string FolderFelaktigFil { get; set; } = null!;
-
-    public virtual Filtyp FilTyp { get; set; } = null!;
-
+    
     public virtual ICollection<Fil> Fils { get; set; } = new List<Fil>();
-
-    public virtual Overforing Overforing { get; set; } = null!;
+    
 }
