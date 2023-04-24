@@ -39,21 +39,8 @@ public partial class SsisGenericReadContext : DbContext
     public virtual DbSet<LookupKolumn> LookupKolumns { get; set; }
 
     public virtual DbSet<LookupTyp> LookupTyps { get; set; }
-
-    public virtual DbSet<NyOverforing> NyOverforings { get; set; }
-
+    
     public virtual DbSet<Overforing> Overforings { get; set; }
-
-
-    public virtual DbSet<RawDataKolumner> RawDataKolumners { get; set; }
-
-    public virtual DbSet<RawDataParsed> RawDataParseds { get; set; }
-
-    public virtual DbSet<RawDatum> RawData { get; set; }
-
-    public virtual DbSet<Tabell> Tabells { get; set; }
-
-    public virtual DbSet<Test> Tests { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -293,18 +280,7 @@ public partial class SsisGenericReadContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
         });
-
-        modelBuilder.Entity<NyOverforing>(entity =>
-        {
-            entity
-                //.HasNoKey()
-                .ToTable("NyOverforing", "temp");
-
-            entity.Property(e => e.Beskrivning).HasMaxLength(255);
-            entity.Property(e => e.Namn).HasMaxLength(255);
-            entity.Property(e => e.SystemNamn).HasMaxLength(255);
-        });
-
+        
         modelBuilder.Entity<Overforing>(entity =>
         {
             entity.ToTable("Overforing", "import");
@@ -318,68 +294,6 @@ public partial class SsisGenericReadContext : DbContext
             entity.Property(e => e.SystemNamn)
                 .HasMaxLength(255)
                 .IsUnicode(false);
-        });
-
-
-        modelBuilder.Entity<RawDataKolumner>(entity =>
-        {
-            entity.ToTable("RawDataKolumner", "import");
-
-            entity.Property(e => e.InlasningId).HasColumnName("InlasningID");
-            entity.Property(e => e.RawData)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.Fil).WithMany(p => p.RawDataKolumners)
-                .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientCascade)
-                .HasConstraintName("FK_RawDataKolumner_Fil");
-
-            entity.HasOne(d => d.Inlasning).WithMany(p => p.RawDataKolumners)
-                .HasForeignKey(d => d.InlasningId)
-                .OnDelete(DeleteBehavior.ClientCascade)
-                .HasConstraintName("FK_RawDataKolumner_Inlasning");
-        });
-
-        modelBuilder.Entity<RawDataParsed>(entity =>
-        {
-            entity.ToTable("RawDataParsed", "import");
-
-            entity.Property(e => e.InlasningId).HasColumnName("InlasningID");
-            entity.Property(e => e.RawDataParsed1)
-                .HasMaxLength(2047)
-                .IsUnicode(false)
-                .HasColumnName("RawDataParsed");
-
-            entity.HasOne(d => d.Fil).WithMany(p => p.RawDataParseds)
-                .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientCascade)
-                .HasConstraintName("FK_RawDataParsed_Fil");
-
-            entity.HasOne(d => d.Inlasning).WithMany(p => p.RawDataParseds)
-                .HasForeignKey(d => d.InlasningId)
-                .OnDelete(DeleteBehavior.ClientCascade)
-                .HasConstraintName("FK_RawDataParsed_Inlasning");
-        });
-
-        modelBuilder.Entity<RawDatum>(entity =>
-        {
-            entity.ToTable("RawData", "import");
-
-            entity.Property(e => e.InlasningId).HasColumnName("InlasningID");
-            entity.Property(e => e.RawData)
-                .HasMaxLength(2047)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.Fil).WithMany(p => p.RawData)
-                .HasForeignKey(d => d.FilId)
-                .OnDelete(DeleteBehavior.ClientCascade)
-                .HasConstraintName("FK_RawData_Fil");
-
-            entity.HasOne(d => d.Inlasning).WithMany(p => p.RawData)
-                .HasForeignKey(d => d.InlasningId)
-                .OnDelete(DeleteBehavior.ClientCascade)
-                .HasConstraintName("FK_RawData_Inlasning");
         });
 
         modelBuilder.Entity<Tabell>(entity =>
@@ -424,19 +338,7 @@ public partial class SsisGenericReadContext : DbContext
                 .HasForeignKey(d => d.SkapadInlasningId)
                 .HasConstraintName("FK_Tabell_Inlasning");
         });
-
-        modelBuilder.Entity<Test>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("Test", "import");
-
-            entity.Property(e => e.DatumTid).HasColumnType("datetime");
-            entity.Property(e => e.SystemNamn)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
-
+        
 
         OnModelCreatingPartial(modelBuilder);
     }

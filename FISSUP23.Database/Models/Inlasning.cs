@@ -33,11 +33,5 @@ public partial class Inlasning
 
     public virtual ICollection<Kolumn> Kolumns { get; } = new List<Kolumn>();
 
-    public virtual ICollection<RawDatum> RawData { get; } = new List<RawDatum>();
-
-    public virtual ICollection<RawDataKolumner> RawDataKolumners { get; } = new List<RawDataKolumner>();
-
-    public virtual ICollection<RawDataParsed> RawDataParseds { get; } = new List<RawDataParsed>();
-
     public virtual ICollection<Tabell> Tabells { get; } = new List<Tabell>();
 }
