@@ -23,9 +23,9 @@ namespace FISSUP23.Server.Services
             return filKollektions;
         }
 
-        public async Task Add(FilKollektion _Filkollektion)
+        public async Task Add(FilKollektion filkollektion)
         {
-            _context.FilKollektions.Add(_Filkollektion);
+            _context.Entry(filkollektion).State = EntityState.Added;
             await _context.SaveChangesAsync();
         }
 
