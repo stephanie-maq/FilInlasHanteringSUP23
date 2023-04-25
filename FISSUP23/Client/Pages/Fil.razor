@@ -5,7 +5,7 @@
 
 
 <h3>Fil</h3>
-<button type="button" class="btn btn-warning" @onclick="RedirectAddFil"> Add filkollektion</button>
+<button type="button" class="btn btn-warning" @onclick="RedirectAddFil"> Lägg till fil</button>
 
 @if (FilVMs != null)
 {
@@ -209,8 +209,9 @@ else
 
     private void RedirectAddFil()
     {
-        navMan.NavigateTo($"./overforingar/filkollektionar/filer/add", true);
+        navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/add", true);
     }
 
+    
 
 }

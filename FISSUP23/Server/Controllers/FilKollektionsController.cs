@@ -16,21 +16,22 @@ namespace FISSUP23.Server.Controllers
         }
 
         // GET: api/FilKollektions
-        [HttpGet]
-        // public async Task<ActionResult<IEnumerable<FilKollektion>>> GetFilKollektions()
-        // {
-        //   if (_context.FilKollektions == null)
-        //   {
-        //       return NotFound();
-        //   }
-        //     return await _context.FilKollektions.ToListAsync();
-        // }
+        // [HttpGet]
+        //  public async Task<ActionResult<IEnumerable<FilKollektion>>> GetFilKollektions()
+        //  {
+        //    if (_context.FilKollektions == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //      return await _context.FilKollektions.ToListAsync();
+        //  }
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<FilKollektion>>> GetByOverforing(int id)
         {
             try
             {
-                var ok = await _filkollektionService.GetByID(id);
+                var ok = await _filkollektionService.GetByOverforingID(id);
                 return Ok(ok);
             }
             catch (Exception e)
@@ -40,22 +41,11 @@ namespace FISSUP23.Server.Controllers
         }
 
         // GET: api/FilKollektions/5
-        //[HttpGet("{id}")]
-        // public async Task<ActionResult<FilKollektion>> GetFilKollektion(int id)
-        // {
-        //   if (_context.FilKollektions == null)
-        //   {
-        //       return NotFound();
-        //   }
-        //     var filKollektion = await _context.FilKollektions.FindAsync(id);
-        //
-        //     if (filKollektion == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     return filKollektion;
-        // }
+        // [HttpGet("{id}")]
+        //  public async Task<ActionResult<FilKollektion>> GetFilKollektion(int id)
+        //  {
+        //      return await _filkollektionService.GetByID(id);
+        //  }
 
         // PUT: api/FilKollektions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -96,7 +86,6 @@ namespace FISSUP23.Server.Controllers
              try
              {
                  await _filkollektionService.Add(filKollektion);
-                 //await _service.AddNyOverforing(nyOverforing);
                  return Ok();
              }
              catch (Exception e)
