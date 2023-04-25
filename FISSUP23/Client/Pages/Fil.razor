@@ -23,8 +23,8 @@
             <th>Beskrivning</th>
             <th>Sort</th>
             <th>KolumnSeparator</th>
-            <th>HarKolumnnamn</th>
-            <th>Antal FilDatatyp</th>
+            <th>Har Kolumnnamn</th>
+            <th>Antal Kolumner</th>
 
         </tr>
         </thead>
@@ -54,7 +54,7 @@
                     @fil.HarKolumnamn
                 </td>
                 <td>
-                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}")>@fil.AntalFilDatatyp.ToString()</a>
+                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/kolumner")>@fil.AntalKolumner.ToString()</a>
                 </td>
             </tr>
         }
@@ -102,8 +102,8 @@
                 <dt class="col-sm-3">FHar Kolumn namn:</dt>
                 <dd class="col-sm-9" style=" color: black"> @fil.HarKolumnamn</dd>
 
-                <dt class="col-sm-3">Antal FilDatatyp</dt>
-                <dd class="col-sm-9" style=" color: black"> @fil.AntalFilDatatyp</dd>
+                <dt class="col-sm-3">Antal Kolumner</dt>
+                <dd class="col-sm-9" style=" color: black"> @fil.AntalKolumner</dd>
                 
 
             </dl>
@@ -148,7 +148,7 @@ else
                 Sort = fil.Sort,
                 KolumnSeparator = fil.KolumnSeparator,
                 HarKolumnamn = fil.HarKolumnamn,
-                AntalFilDatatyp = fil.FilDatatyps.Count
+                AntalKolumner = fil.Kolumns.Count
             };
 
             FilVMs.Add(filsVMs);
