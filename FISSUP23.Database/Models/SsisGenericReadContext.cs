@@ -143,6 +143,16 @@ public partial class SsisGenericReadContext : DbContext
             entity.Property(e => e.Namn)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+            entity.HasOne<Overforing>()
+                .WithMany(p => p.FilKollektions)
+                .HasForeignKey(d => d.FilTypId)
+                .HasConstraintName("FK_FilKollektion_Filtyp")
+                .OnDelete(DeleteBehavior.ClientCascade);
+            entity.HasOne<Overforing>()
+                .WithMany(p => p.FilKollektions)
+                .HasForeignKey(d => d.OverforingId)
+                .HasConstraintName("FK_FilKollektion_Overforing")
+                .OnDelete(DeleteBehavior.ClientCascade);
         });
 
         modelBuilder.Entity<Filtyp>(entity =>
