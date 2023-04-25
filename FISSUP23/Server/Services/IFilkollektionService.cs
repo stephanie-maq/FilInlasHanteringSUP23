@@ -5,7 +5,8 @@ namespace FISSUP23.Server.Services;
 public interface IFilkollektionService
 {
     Task<List<FilKollektion>> GetFilkollektioner();
-    Task<List<FilKollektion>> GetByID(int id);
+    //Task<FilKollektion> GetByID(int id);
+    Task<List<FilKollektion>> GetByOverforingID(int id);
     Task Add(FilKollektion filkollektion);
     Task Update(int id);
 
