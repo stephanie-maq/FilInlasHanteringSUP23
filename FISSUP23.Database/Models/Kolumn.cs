@@ -19,8 +19,6 @@ public partial class Kolumn
 
     public int? InlasningId { get; set; }
 
-    public virtual Fil Fil { get; set; } = null!;
-
     public virtual Inlasning? Inlasning { get; set; }
 
     public virtual ICollection<KolumnDatatyp> KolumnDatatyps { get; } = new List<KolumnDatatyp>();

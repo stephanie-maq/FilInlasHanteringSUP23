@@ -5,6 +5,7 @@ namespace FISSUP23.Server.Services;
 public interface IFilService
 {
     Task<List<Fil>> GetFiler();
+    Task<List<FilDatatyp>> GetFilDataTyper();
     Task<List<Fil>> GetByID(int id);
     Task Add(Fil Fil);
 

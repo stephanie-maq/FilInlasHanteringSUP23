@@ -20,7 +20,7 @@ public class FilViewModel
 
     public short HarKolumnamn { get; set; }
 
-    public int AntalFilDatatyp { get; set; }
+    public int AntalKolumner { get; set; }
     
     
 }

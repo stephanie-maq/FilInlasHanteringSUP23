@@ -17,12 +17,28 @@ namespace FISSUP23.Server.Services
             return await _context.FilKollektions.ToListAsync();
         }
 
-        public async Task<List<FilKollektion>> GetByID(int id)
+        public async Task<List<FilKollektion>> GetByOverforingID(int id)
         {
             var filKollektions = await _context.FilKollektions.Include(x => x.Fils).Where(x => x.OverforingId == id).ToListAsync();
             return filKollektions;
         }
 
+        // public async Task<FilKollektion> GetByID(int id)
+        // {
+        //     if (_context.FilKollektions == null)
+        //     {
+        //         throw new Exception("Id not found");
+        //     }
+        //
+        //     var filKollektion = await _context.FilKollektions.FirstOrDefaultAsync(n => n.Id == id);
+        //
+        //     if (filKollektion == null)
+        //     {
+        //         throw new Exception("Filkollektion does not exist");
+        //     }
+        //
+        //     return filKollektion;
+        // }
         public async Task Add(FilKollektion filkollektion)
         {
             _context.Entry(filkollektion).State = EntityState.Added;

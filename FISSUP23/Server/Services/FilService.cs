@@ -31,7 +31,7 @@ public class FilService : IFilService
 
     public async Task Add(Fil fil)
     {
-        _context.Fils.Add(fil);
+        _context.Entry(fil).State = EntityState.Added;
         await _context.SaveChangesAsync();
     }
 
@@ -62,5 +62,11 @@ public class FilService : IFilService
     public async Task<List<Filtyp>> GetFilTyper()
     {
         return await _context.Filtyps.ToListAsync();
+    }
+
+    public async Task<List<FilDatatyp>> GetFilDataTyper()
+    {
+        return await _context.FilDatatyps
+            .Include(x => x.Datatyp).ToListAsync();
     }
 }

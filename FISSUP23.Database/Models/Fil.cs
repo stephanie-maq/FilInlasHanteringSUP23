@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 
 namespace FISSUP23.Database.Models;
 
@@ -22,8 +22,6 @@ public partial class Fil
     public short HarKolumnamn { get; set; }
 
     public virtual ICollection<FilDatatyp> FilDatatyps { get; set; } = new List<FilDatatyp>();
-
-    public virtual FilKollektion FilKollektion { get; set; } = null!;
 
     public virtual ICollection<Inlasning> Inlasnings { get; } = new List<Inlasning>();
 

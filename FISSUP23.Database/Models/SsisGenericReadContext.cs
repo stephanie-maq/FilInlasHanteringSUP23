@@ -91,7 +91,7 @@ public partial class SsisGenericReadContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.FilKollektion)
+            entity.HasOne<FilKollektion>()
                 .WithMany(p => p.Fils)
                 .HasForeignKey(d => d.FilKollektionId)
                 .HasConstraintName("FK_Fil_FilKollektion")
@@ -207,7 +207,7 @@ public partial class SsisGenericReadContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Fil).WithMany(p => p.Kolumns)
+            entity.HasOne<Fil>().WithMany(p => p.Kolumns)
                 .HasForeignKey(d => d.FilId)
                 .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Kolumn_Fil");
