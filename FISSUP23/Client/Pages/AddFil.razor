@@ -28,7 +28,7 @@
     @*     } *@
     @* *@
     @* </select> *@
-
+    @* *@
     <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
 </div>
 
@@ -46,26 +46,14 @@
     private int Sort { get; set; }
     private string KolumnSeperator { get; set; }
     private short HarKolumnamn { get; set; }
-
-    public FilKollektion? _Filkollektion { get; set; }
-    public List<FilKollektion> Filkollektions { get; set; }
-
-    private List<Database.Models.FilDatatyp> Fildatatyper { get; set; } = new();
-    private List<Database.Models.Inlasning> Inlasnings { get; set; } = new();
-    private List<Database.Models.Kolumn> Kolumns { get; set; } = new();
-    private List<Database.Models.Lookup> Lookups { get; set; } = new();
-    private List<Database.Models.Tabell> Tabells { get; set; } = new();
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Fildatatyper = await http.GetFromJsonAsync<List<FilDatatyp>>("./api/Fils/fildatatyper");
-        // StateHasChanged();
-
-        Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions/{OverforingId}");
-
-        _Filkollektion = Filkollektions.FirstOrDefault(x => x.Id == FilkollektionId);
-    }
+    
+    // private List<FilDatatyp> Fildatatyper { get; set; } = new();
+    //
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     Fildatatyper = await http.GetFromJsonAsync<List<FilDatatyp>>("./api/Fils/fildatatyper");
+    //     StateHasChanged();
+    // }
 
     private async Task Spara()
     {
@@ -77,7 +65,6 @@
             Sort = Sort,
             KolumnSeparator = KolumnSeperator,
             HarKolumnamn = HarKolumnamn,
-            FilKollektion = _Filkollektion,
             FilKollektionId = FilkollektionId,
             Kolumns = {},
             Inlasnings = {},
