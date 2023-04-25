@@ -23,8 +23,6 @@ public partial class Fil
 
     public virtual ICollection<FilDatatyp> FilDatatyps { get; set; } = new List<FilDatatyp>();
 
-    public virtual FilKollektion FilKollektion { get; set; } = null!;
-
     public virtual ICollection<Inlasning> Inlasnings { get; } = new List<Inlasning>();
 
     public virtual ICollection<Kolumn> Kolumns { get; } = new List<Kolumn>();
