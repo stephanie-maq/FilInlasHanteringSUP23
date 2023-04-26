@@ -81,7 +81,7 @@
         <div>
             @if (MarkeradeFilkollektioner.Count == 1)
             {
-                <button type="button" class="btn btn-warning "> Uppdatera</button>
+                <button type="button" class="btn btn-warning " > Uppdatera</button>
             }
             <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
         </div>
@@ -198,6 +198,13 @@ else
             MarkeradeFilkollektioner.AddRange(FilkollektionVMs);
         }
     }
+    
+    // private void RedirectUpdate()
+    // {
+    //     var mo = MarkeradeFilkollektioner.FirstOrDefault();
+    //     navMan.NavigateTo($"./overforings/{OverforingId}/filkollektions/{mo.Id.ToString()}/update", true);
+    // }
+    
     private async void Delete()
     {
         var toDelete = MarkeradeFilkollektioner.Select(m => m.Id.ToString());

@@ -1,0 +1,66 @@
+@page "overofrings/{overforingId:int}/filkollektions/{fillkolektionId:int}/update"
+@inject HttpClient http
+@using System.Text.Json
+
+<h3 class="mb-4">Uppdatera filkollektion</h3>
+
+@if (filkollektion != null)
+{
+    <body>
+        <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@filkollektion.Namn" disabled>
+        <input type="text" class="form-control mb-4" @bind="NyNamn" placeholder="Uppdatera namn" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyAndelse" placeholder="Uppdatera ändelse" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyMatchMonster" placeholder="Uppdatera matchmönster" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyBeskrivning" placeholder="Uppdatera beskrivning" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyFolderRoot" placeholder="Uppdatera folder root" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyFolderArkiv" placeholder="Uppdatera folder arkiv" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyFolderFil" placeholder="Uppdatera folder fil" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyFelaktigaFil" placeholder="Uppdatera felaktigafil" aria-label="Last name">
+
+        <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
+    </body>
+}
+@code {
+    [Parameter]
+    public int fillkolektionId { get; set; }
+    [Parameter]
+    public int overforingId { get; set; }
+
+    private string NyNamn { get; set; }
+    private string NyAndelse { get; set; }
+    private string NyMatchMonster { get; set; }
+    private string NyBeskrivning { get; set; }
+    private string NyFolderRoot { get; set; }
+    private string NyFolderArkiv { get; set; }
+    private string NyFolderFil{ get; set; }
+    private string NyFelaktigaFil { get; set; }
+
+    private Database.Models.FilKollektion filkollektion { get; set; }
+    private List<Database.Models.Fil> fils { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        filkollektion = await http.GetFromJsonAsync<FISSUP23.Database.Models.FilKollektion>($"./api/FilKollektions/{fillkolektionId}/byId");
+        fils = await http.GetFromJsonAsync<List<Database.Models.Fil>>($"./api/Fils");
+
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task Spara()
+    {
+        var filkollektion = new Database.Models.FilKollektion
+        {
+            Namn = NyNamn, Andelse = NyAndelse,
+            MatchMonster = NyMatchMonster, Beskrivning = NyBeskrivning,
+            OverforingId = overforingId,
+            FolderRoot = NyFolderRoot, FolderArkiv = NyFolderArkiv,
+            FolderNyFil = NyFolderFil, FolderFelaktigFil = NyFelaktigaFil,
+            Fils =fils
+        };
+        var content = new StringContent(JsonSerializer.Serialize(filkollektion), System.Text.Encoding.UTF8, "application/json");
+        await http.PutAsync($"./api/FilKollektions/{fillkolektionId}", content);
+
+    }
+
+}
