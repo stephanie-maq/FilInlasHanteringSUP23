@@ -1,8 +1,8 @@
-﻿@page "/Overforings/{Id:int}/Update"
+﻿@page "/overforingar/{Id:int}/update"
 @using System.Text.Json
 @inject HttpClient http
 
-<h3 class="mb-4">Update Overföring</h3>
+<h3 class="mb-4">Uppdatera overföring</h3>
 
 @if (_over != null)
 {
@@ -10,7 +10,7 @@
         <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@_over.Namn" disabled>
         <input type="text" class="form-control mb-4" @bind="NyNamn" placeholder="Uppdatera namn" aria-label="Last name">
         <input type="text" class="form-control mb-4" @bind="NySystemNamn" placeholder="Uppdatera systemnam" aria-label="Last name">
-        <input type="text" class="form-control mb-4" @bind="NyBeskrivning" placeholder="Beskrivning" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyBeskrivning" placeholder="Uppdatera Beskrivning" aria-label="Last name">
 
         <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
     </body>

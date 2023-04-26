@@ -174,12 +174,12 @@ else
     private void RedirectUpdate()
     {
         var mo = MarkeradeOverforingar.FirstOrDefault();
-        navMan.NavigateTo($"./Overforings/{mo.Id.ToString()}/Update", true);
+        navMan.NavigateTo($"./overforingar/{mo.Id.ToString()}/update", true);
     }
 
     private void RedirectAddOverforing()
     {
-        navMan.NavigateTo($"./Overforings/NyOverforing", true);
+        navMan.NavigateTo($"./overforingar/nyoverforing", true);
     }
 
     private async void Delete()
