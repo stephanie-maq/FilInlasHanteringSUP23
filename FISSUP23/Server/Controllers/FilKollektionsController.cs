@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FISSUP23.Client.Pages;
+using Microsoft.AspNetCore.Mvc;
 using FISSUP23.Database.Models;
 using FISSUP23.Server.Services;
-
 namespace FISSUP23.Server.Controllers
 {
     [Route("api/[controller]")]
@@ -40,44 +40,30 @@ namespace FISSUP23.Server.Controllers
             }
         }
 
-        // GET: api/FilKollektions/5
-        // [HttpGet("{id}")]
-        //  public async Task<ActionResult<FilKollektion>> GetFilKollektion(int id)
-        //  {
-        //      return await _filkollektionService.GetByID(id);
-        //  }
+        //GET: api/FilKollektions/5
+        [Route("byId")]
+        [HttpGet("{id}")]
+         public async Task<ActionResult<FilKollektion>> GetFilKollektion(int id)
+         {
+             return await _filkollektionService.GetByID(id);
+         }
 
         // PUT: api/FilKollektions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        // public async Task<IActionResult> PutFilKollektion(int id, FilKollektion filKollektion)
-        // {
-        //     if (id != filKollektion.Id)
-        //     {
-        //         return BadRequest();
-        //     }
-        //
-        //     _context.Entry(filKollektion).State = EntityState.Modified;
-        //
-        //     try
-        //     {
-        //         await _context.SaveChangesAsync();
-        //     }
-        //     catch (DbUpdateConcurrencyException)
-        //     {
-        //         if (!FilKollektionExists(id))
-        //         {
-        //             return NotFound();
-        //         }
-        //         else
-        //         {
-        //             throw;
-        //         }
-        //     }
-        //
-        //     return NoContent();
-        // }
-
+        [HttpPut("{id}")]
+         public async Task<ActionResult<FISSUP23.Database.Models.Overforing>> PutFilkollektion(int id, FilKollektion filKollektion)
+         {
+             try
+             {
+                 await _filkollektionService.Update(id, filKollektion);
+                 return Ok();
+             }
+             catch (Exception e)
+             {
+                 return BadRequest(e.Message);
+             }
+         }
+        
         // POST: api/FilKollektions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

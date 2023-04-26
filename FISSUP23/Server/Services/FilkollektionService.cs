@@ -23,31 +23,49 @@ namespace FISSUP23.Server.Services
             return filKollektions;
         }
 
-        // public async Task<FilKollektion> GetByID(int id)
-        // {
-        //     if (_context.FilKollektions == null)
-        //     {
-        //         throw new Exception("Id not found");
-        //     }
-        //
-        //     var filKollektion = await _context.FilKollektions.FirstOrDefaultAsync(n => n.Id == id);
-        //
-        //     if (filKollektion == null)
-        //     {
-        //         throw new Exception("Filkollektion does not exist");
-        //     }
-        //
-        //     return filKollektion;
-        // }
+        public async Task<FilKollektion> GetByID(int id)
+        {
+            if (_context.FilKollektions == null)
+            {
+                throw new Exception("Id not found");
+            }
+        
+            var filKollektion = await _context.FilKollektions.FirstOrDefaultAsync(n => n.Id == id);
+        
+            if (filKollektion == null)
+            {
+                throw new Exception("Filkollektion does not exist");
+            }
+        
+            return filKollektion;
+        }
         public async Task Add(FilKollektion filkollektion)
         {
             _context.Entry(filkollektion).State = EntityState.Added;
             await _context.SaveChangesAsync();
         }
 
-        public Task Update(int id)
+        public async Task Update(int id, FilKollektion filKollektion)
         {
-            throw new NotImplementedException();
+            var existing = await _context.FilKollektions.FirstOrDefaultAsync(n => n.Id == id);
+        
+            if (existing == null)
+            {
+                throw new Exception("Id not found");
+            }
+
+            existing.Namn = filKollektion.Namn;
+            existing.Andelse = filKollektion.Andelse;
+            existing.MatchMonster = filKollektion.MatchMonster;
+            existing.Beskrivning = filKollektion.Beskrivning ?? existing.Beskrivning;
+            existing.FolderRoot = existing.FolderRoot;
+            existing.FolderArkiv = existing.FolderArkiv;
+            existing.FolderNyFil = existing.FolderNyFil;
+            existing.FolderFelaktigFil = existing.FolderFelaktigFil;
+            existing.OverforingId = existing.OverforingId;
+            existing.Fils = existing.Fils;
+        
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(List<string> toDelete)
