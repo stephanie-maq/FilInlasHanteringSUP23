@@ -16,15 +16,11 @@ namespace FISSUP23.Server.Controllers
         }
 
         // GET: api/FilKollektions
-        // [HttpGet]
-        //  public async Task<ActionResult<IEnumerable<FilKollektion>>> GetFilKollektions()
-        //  {
-        //    if (_context.FilKollektions == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //      return await _context.FilKollektions.ToListAsync();
-        //  }
+        [HttpGet]
+         public async Task<ActionResult<IEnumerable<FilKollektion>>> GetFilKollektions()
+         {
+             return await _filkollektionService.GetFilkollektioner();
+         }
         
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<FilKollektion>>> GetByOverforing(int id)

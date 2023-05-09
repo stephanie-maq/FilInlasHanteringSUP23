@@ -14,7 +14,8 @@ namespace FISSUP23.Server.Services
 
         public async Task<List<FilKollektion>> GetFilkollektioner()
         {
-            return await _context.FilKollektions.ToListAsync();
+            return await _context.FilKollektions.Include(x => x.Fils)
+                .ToListAsync();
         }
 
         public async Task<List<FilKollektion>> GetByOverforingID(int id)
