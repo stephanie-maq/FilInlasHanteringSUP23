@@ -1,0 +1,54 @@
+@page "/Overforingar||"
+@inject HttpClient http
+
+<h3>Overforingar</h3>
+
+@if (Overforings != null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Namn</th>
+            <th>Systemnamn</th>
+            <th>
+                Beskrivning
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var overforing in Overforings)
+        {
+            <tr>
+                <td>
+                    @overforing.Id
+                </td>
+                <td>
+                    @overforing.Namn
+                </td>
+                <td>
+                    @overforing.SystemNamn
+                </td>
+                <td>
+                    @overforing.Beskrivning
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p> Laddar data ..</p>
+}
+
+@code {
+    private List<Database.Models.Overforing> Overforings { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Overforings = await http.GetFromJsonAsync<List<Database.Models.Overforing>>($"./api/Overforings");
+        StateHasChanged();
+    }
+
+}

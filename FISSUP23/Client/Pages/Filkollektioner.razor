@@ -1,0 +1,85 @@
+@page "/filkollektioner"
+@using FISSUP23.Database.Models
+@inject HttpClient http
+
+<h3>Filkollektioner</h3>
+
+@if (Filkollektions != null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Namn</th>
+            <th>Ändelse</th>
+            <th>MatchMönster</th>
+            <th>Beskrivning</th>
+            <th>Overforing Id</th>
+            <th>Filtyp Id</th>
+            <th>FolderRoot</th>
+            <th>FolderArkiv</th>
+            <th>FolderNyFil</th>
+            <th>FolderFelaktigaFil</th>
+            <th>Antal Filer</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var filkol in Filkollektions)
+        {
+            <tr>
+                <td>
+                    @filkol.Id.ToString()
+                </td>
+                <td>
+                    @filkol.Namn
+                </td>
+                <td>
+                    @filkol.Andelse
+                </td>
+                <td>
+                    @filkol.MatchMonster
+                </td>
+                <td>
+                    @filkol.Beskrivning
+                </td>
+                <td>
+                    @filkol.OverforingId.ToString()
+                </td>
+                <td>
+                    @filkol.FilTypId.ToString()
+                </td>
+                <td>
+                    @filkol.FolderRoot
+                </td>
+                <td>
+                    @filkol.FolderArkiv
+                </td>
+                <td>
+                    @filkol.FolderNyFil
+                </td>
+                <td>
+                    @filkol.FolderFelaktigFil
+                </td>
+                <td>
+                    @filkol.Fils.Count.ToString()
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+    {
+        <p> Laddar data ..</p>
+    }
+
+    @code {
+    private List<FilKollektion> Filkollektions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions");
+        StateHasChanged();
+    }
+
+}
