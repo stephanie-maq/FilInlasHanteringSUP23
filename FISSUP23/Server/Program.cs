@@ -44,5 +44,6 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IFilkollektionService, FilkollektionService>();
     services.AddScoped<IFilService, FilService>();
     services.AddScoped<IKolumnService, KolumnService>();
+    services.AddScoped<IProcessdataService, ProcessdataService>();
     services.AddDbContext<SsisGenericReadContext>();
 }

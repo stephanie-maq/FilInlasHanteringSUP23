@@ -1,4 +1,4 @@
-@page "/Kolumner"
+@page "/kolumner"
 @inject HttpClient http
 
 <h3>Kolumner</h3>
@@ -22,7 +22,7 @@
         {
             <tr>
                 <td>
-                    @kolumn.Id
+                    @kolumn.Id.ToString()
                 </td>
                 <td>
                     @kolumn.InNamn
@@ -34,7 +34,7 @@
                     @kolumn.NyKolumn
                 </td>
                 <td>
-                    @kolumn.Sort
+                    @kolumn.Sort.ToString()
                 </td>
                 <td>
                     @kolumn.FilId.ToString()
