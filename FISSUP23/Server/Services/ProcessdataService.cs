@@ -15,7 +15,10 @@ public class ProcessdataService : IProcessdataService
     public async Task<List<Inlasning>> GetInlasningar()
     {
         return await _context.Inlasnings.Include(x => x.Kolumns)
-            .Include(y => y.ErrorLog)
+            .Include(y=>y.ErrorLog)
+            .ThenInclude(r=>r.Inlasnings)
+            .Include(r=>r.Tabells)
+            .ThenInclude(r=>r.SkapadInlasning)
             .ToListAsync();
     }
 }
