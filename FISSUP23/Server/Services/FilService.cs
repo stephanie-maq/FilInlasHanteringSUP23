@@ -12,16 +12,10 @@ public class FilService : IFilService
         _context = context;
     }
 
-    public async Task<List<Fil>> GetById(int id)
+    public async Task<Fil> GetById(int id)
     {
-        var fils = await _context.Fils
-            .Include(x => x.FilDatatyps)
-            .Include(x => x.Kolumns)
-            .Include(x => x.Inlasnings)
-            .Include(x => x.Tabells)
-            .Where(x => x.FilKollektionId == id)
-            .ToListAsync();
-        return fils;
+       var fils= await _context.Fils.Where(x => x.Id == id).ToListAsync();
+       return fils.FirstOrDefault();
     }
 
     public async Task Add(Fil fil)

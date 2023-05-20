@@ -138,7 +138,8 @@ else
 
     protected override async void OnInitialized()
     {
-        fils = await http.GetFromJsonAsync<List<Database.Models.Fil>>($"./api/Fils/{FilkollektionId}");
+        var filkollektion = await http.GetFromJsonAsync<Database.Models.FilKollektion>($"./api/FilKollektions/{FilkollektionId}");
+        fils = filkollektion.Fils.ToList();
         FilVMs = new List<ViewModels.FilViewModel>();
         MarkeradeFiler = new List<ViewModels.FilViewModel>();
 

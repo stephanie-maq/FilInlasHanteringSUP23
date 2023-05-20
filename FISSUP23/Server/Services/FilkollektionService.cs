@@ -31,7 +31,9 @@ namespace FISSUP23.Server.Services
                 throw new Exception("Id not found");
             }
         
-            var filKollektion = await _context.FilKollektions.FirstOrDefaultAsync(n => n.Id == id);
+            var filKollektion = await _context.FilKollektions
+                .Include(x=>x.Fils)
+                .FirstOrDefaultAsync(n => n.Id == id);
         
             if (filKollektion == null)
             {
