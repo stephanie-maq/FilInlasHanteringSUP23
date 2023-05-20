@@ -40,12 +40,12 @@
     private int? Precision { get; set; }
     private int? Scale { get; set; }
 
-    private List<Fil> fils { get; set; }
+    private Fil fil { get; set; }
 
     protected override async void OnInitialized()
     {
-        fils = await http.GetFromJsonAsync<List<Fil>>($"./api/Fils/{filId}");
-        Console.WriteLine(fils.Count.ToString());
+        fil = await http.GetFromJsonAsync<Fil>($"./api/Fils/{filId}");
+        Console.WriteLine(fil);
     }
 
     private async Task Spara()
