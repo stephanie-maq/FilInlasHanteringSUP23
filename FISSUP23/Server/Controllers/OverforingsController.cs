@@ -19,7 +19,7 @@ namespace FISSUP23.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Overforing>>> GetOverforings()
         {
-            return await _service.Get();
+            return await _service.GetOverforingar();
         }
 
         //GET: api/Overforings/5
