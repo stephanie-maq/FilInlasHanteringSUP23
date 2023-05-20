@@ -19,14 +19,14 @@ namespace FISSUP23.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Overforing>>> GetOverforings()
         {
-            return await _service.Get();
+            return await _service.GetOverforingar();
         }
 
         //GET: api/Overforings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Overforing>> GetOverforing(int id)
         {
-            return await _service.GetByID(id);
+            return await _service.GetById(id);
         }
 
 

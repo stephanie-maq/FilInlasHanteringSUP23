@@ -23,11 +23,11 @@ namespace FISSUP23.Server.Controllers
          }
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<FilKollektion>>> GetByOverforing(int id)
+        public async Task<ActionResult<FilKollektion>> GetFilkollektionById(int id)
         {
             try
             {
-                var ok = await _filkollektionService.GetByOverforingID(id);
+                var ok = await _filkollektionService.GetById(id);
                 return Ok(ok);
             }
             catch (Exception e)
@@ -35,44 +35,6 @@ namespace FISSUP23.Server.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-        // GET: api/FilKollektions/5
-        // [HttpGet("{id}")]
-        //  public async Task<ActionResult<FilKollektion>> GetFilKollektion(int id)
-        //  {
-        //      return await _filkollektionService.GetByID(id);
-        //  }
-
-        // PUT: api/FilKollektions/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        // public async Task<IActionResult> PutFilKollektion(int id, FilKollektion filKollektion)
-        // {
-        //     if (id != filKollektion.Id)
-        //     {
-        //         return BadRequest();
-        //     }
-        //
-        //     _context.Entry(filKollektion).State = EntityState.Modified;
-        //
-        //     try
-        //     {
-        //         await _context.SaveChangesAsync();
-        //     }
-        //     catch (DbUpdateConcurrencyException)
-        //     {
-        //         if (!FilKollektionExists(id))
-        //         {
-        //             return NotFound();
-        //         }
-        //         else
-        //         {
-        //             throw;
-        //         }
-        //     }
-        //
-        //     return NoContent();
-        // }
 
         // POST: api/FilKollektions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -24,22 +24,24 @@ namespace FISSUP23.Server.Services
             return filKollektions;
         }
 
-        // public async Task<FilKollektion> GetByID(int id)
-        // {
-        //     if (_context.FilKollektions == null)
-        //     {
-        //         throw new Exception("Id not found");
-        //     }
-        //
-        //     var filKollektion = await _context.FilKollektions.FirstOrDefaultAsync(n => n.Id == id);
-        //
-        //     if (filKollektion == null)
-        //     {
-        //         throw new Exception("Filkollektion does not exist");
-        //     }
-        //
-        //     return filKollektion;
-        // }
+        public async Task<FilKollektion> GetById(int id)
+        {
+            if (_context.FilKollektions == null)
+            {
+                throw new Exception("Id not found");
+            }
+        
+            var filKollektion = await _context.FilKollektions
+                .Include(x=>x.Fils)
+                .FirstOrDefaultAsync(n => n.Id == id);
+        
+            if (filKollektion == null)
+            {
+                throw new Exception("Filkollektion does not exist");
+            }
+        
+            return filKollektion;
+        }
         public async Task Add(FilKollektion filkollektion)
         {
             _context.Entry(filkollektion).State = EntityState.Added;

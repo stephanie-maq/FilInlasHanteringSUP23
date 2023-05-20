@@ -24,7 +24,7 @@ namespace FISSUP23.Server.Services
         
         public async Task Delete(List<string> toDelete)
         {
-            var overfors = await Get();
+            var overfors = await GetOverforingar();
 
             overfors
                 .FindAll(o => toDelete.Contains(o.Id.ToString()))
@@ -34,14 +34,17 @@ namespace FISSUP23.Server.Services
         }
         
 
-        public async Task<Overforing> GetByID(int id)
+        public async Task<Overforing> GetById(int id)
         {
             if (_context.Overforings == null)
             {
                 throw new Exception("Id not found");
             }
 
-            var overforing = await _context.Overforings.FirstOrDefaultAsync(n => n.Id == id);
+            var overforing = await _context.Overforings
+                .Include(x=>x.FilKollektions)
+                .ThenInclude(y=>y.Fils)
+                .FirstOrDefaultAsync(n => n.Id == id);
 
             if (overforing == null)
             {
@@ -50,15 +53,8 @@ namespace FISSUP23.Server.Services
 
             return overforing;
         }
-        
 
         public async Task<List<Overforing>> GetOverforingar()
-        {
-            return await _context.Overforings.ToListAsync();
-
-        }
-
-        public async Task<List<Overforing>> Get()
         {
             return await _context.Overforings
                 .Include(x => x.FilKollektions)
