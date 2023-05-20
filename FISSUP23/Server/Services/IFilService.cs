@@ -10,6 +10,6 @@ public interface IFilService
     Task AddFilDatatype(FilDatatyp filDatatyp);
     Task Delete(List<string> ids);
 
-    Task<List<Fil>> Get();
+    Task<List<Fil>> GetFiler();
     Task<List<Filtyp>> GetFilTyper();
 }

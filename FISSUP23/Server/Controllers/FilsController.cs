@@ -34,7 +34,7 @@ namespace FISSUP23.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fil>>> GetFils()
         {
-            return await _service.Get();
+            return await _service.GetFiler();
         }
         
         // GET: api/Fils/5
