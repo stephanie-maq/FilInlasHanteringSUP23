@@ -23,7 +23,7 @@ public partial class Datatyp
 
     public short? Fig2 { get; set; }
 
-    public virtual ICollection<FilDatatyp> FilDatatyps { get; } = new List<FilDatatyp>();
+    public virtual ICollection<FilDatatyp> FilDatatyps { get; set; } = new List<FilDatatyp>();
 
     public virtual ICollection<KolumnDatatyp> KolumnDatatyps { get; } = new List<KolumnDatatyp>();
 }
