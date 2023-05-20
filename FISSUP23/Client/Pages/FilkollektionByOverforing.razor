@@ -142,7 +142,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions/{OverforingId}");
+        var overforing = await http.GetFromJsonAsync<Database.Models.Overforing>($"./api/Overforings/{OverforingId}");
+        Filkollektions = overforing.FilKollektions.ToList();
         FilkollektionVMs = new List<ViewModels.FilkollektionViewModel>();
         MarkeradeFilkollektioner = new List<ViewModels.FilkollektionViewModel>();
 

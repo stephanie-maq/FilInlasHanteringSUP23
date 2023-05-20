@@ -26,7 +26,7 @@ namespace FISSUP23.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Overforing>> GetOverforing(int id)
         {
-            return await _service.GetByID(id);
+            return await _service.GetById(id);
         }
 
 
