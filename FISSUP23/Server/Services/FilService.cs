@@ -17,7 +17,7 @@ public class FilService : IFilService
         return await _context.Fils.ToListAsync();
     }
 
-    public async Task<List<Fil>> GetByID(int id)
+    public async Task<List<Fil>> GetById(int id)
     {
         var fils = await _context.Fils
             .Include(x => x.FilDatatyps)

@@ -4,13 +4,10 @@ namespace FISSUP23.Server.Services;
 
 public interface IFilService
 {
-    Task<List<Fil>> GetFiler();
     Task<List<Datatyp>> GetDataTyper();
-    Task<List<Fil>> GetByID(int id);
+    Task<List<Fil>> GetById(int id);
     Task Add(Fil Fil);
     Task AddFilDatatype(FilDatatyp filDatatyp);
-    Task Update(int id, Fil fil);
-
     Task Delete(List<string> ids);
 
     Task<List<Fil>> Get();

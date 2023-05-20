@@ -40,7 +40,7 @@ namespace FISSUP23.Server.Controllers
         // GET: api/Fils/5
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Fil>>> GetByFilkollektion(int id)        {
-            return await _service.GetByID(id);
+            return await _service.GetById(id);
         }
         
         // PUT: api/Fils/5
