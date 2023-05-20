@@ -1,0 +1,71 @@
+@page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer/{filId:int}/filDatatyp/add"
+<h3>Add Fildatatyp</h3>
+@using System.Text.Json
+@using FISSUP23.Database.Models
+@inject HttpClient http
+@inject NavigationManager navMan
+<div>
+    <input type="text" class="form-control mb-4" placeholder="FilId = @filId" readonly>
+    <input type="text" class="form-control mb-4" @bind="Length" placeholder="Length" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Precision" placeholder="Precision" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="Scale" placeholder="Scale" aria-label="Last name">
+    <div class="form-inline">
+        <select class="dropdown" name="number" @bind="intx" >
+                <option value="">Välj Datatyp</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        <div class="form-check form-check-inline" style="margin-left: 60px">
+                <input type="checkbox" class="form-check-input " id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Is Nullable</label>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-warning" style="margin-top: 30px" @onclick="Spara"> Spara </button>
+    </div>
+
+@code {
+
+    [Parameter]
+    public int OverforingId { get; set; }
+
+    [Parameter]
+    public int FilkollektionId { get; set; }
+
+    [Parameter]
+    public int filId { get; set; }
+
+    private string intx { get; set; }
+    private int? Length { get; set; }
+    private int? Precision { get; set; }
+    private int? Scale { get; set; }
+
+    private List<Fil> fils { get; set; }
+
+    protected override async void OnInitialized()
+    {
+        fils = await http.GetFromJsonAsync<List<Fil>>($"./api/Fils/{filId}");
+        Console.WriteLine(fils.Count.ToString());
+    }
+
+    private async Task Spara()
+    {
+
+        var fildatatyp = new FilDatatyp
+        {
+            FilId = filId,
+            Length = Length,
+            Precision = Precision,
+            Scale = Scale,
+            IsNullable = 0,
+            Fil = new Fil(),
+            Datatyp = new Datatyp()
+
+        };
+
+        var content = new StringContent(JsonSerializer.Serialize(fildatatyp), System.Text.Encoding.UTF8, "application/json");
+        await http.PostAsync("./api/Fils/filDatatyp/add", content);
+    //navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer", true);
+    }
+
+}

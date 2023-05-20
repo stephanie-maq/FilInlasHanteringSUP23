@@ -25,6 +25,7 @@
             <th>KolumnSeparator</th>
             <th>Har Kolumnnamn</th>
             <th>Antal Kolumner</th>
+             <th>FilDataTyp</th>
 
         </tr>
         </thead>
@@ -55,6 +56,9 @@
                 </td>
                 <td>
                     <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/kolumner")>@fil.AntalKolumner.ToString()</a>
+                </td>
+                <td>
+                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/filDatatyp/add")>Lägg till</a>
                 </td>
             </tr>
         }
@@ -104,7 +108,7 @@
 
                 <dt class="col-sm-3">Antal Kolumner</dt>
                 <dd class="col-sm-9" style=" color: black"> @fil.AntalKolumner</dd>
-                
+
 
             </dl>
 
@@ -119,12 +123,14 @@ else
 
 
 @code {
+
     [Parameter]
     public int OverforingId { get; set; }
+
     [Parameter]
     public int FilkollektionId { get; set; }
-    
-    
+
+
     private bool IsCheckedTotal { get; set; }
     private List<ViewModels.FilViewModel> FilVMs { get; set; }
     private List<ViewModels.FilViewModel> MarkeradeFiler { get; set; }
@@ -148,6 +154,7 @@ else
                 Sort = fil.Sort,
                 KolumnSeparator = fil.KolumnSeparator,
                 HarKolumnamn = fil.HarKolumnamn,
+                läggFilDatatyp = fil.FilDatatyps.ToString(),
                 AntalKolumner = fil.Kolumns.Count
             };
 
@@ -186,6 +193,7 @@ else
             MarkeradeFiler.AddRange(FilVMs);
         }
     }
+
     private async void Delete()
     {
         var toDelete = MarkeradeFiler.Select(m => m.Id.ToString());
@@ -212,6 +220,6 @@ else
         navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/add", true);
     }
 
-    
+
 
 }

@@ -12,27 +12,13 @@
     <input type="text" class="form-control mb-4" @bind="Sort" placeholder="Sort" aria-label="Last name">
     <input type="text" class="form-control mb-4" @bind="KolumnSeperator" placeholder="Kolumn Separator" aria-label="Last name">
     <input type="text" class="form-control mb-4" @bind="HarKolumnamn" placeholder="Har kolumn namn" aria-label="Last name">
-
-    @* <select class="dropdown" name="number" @bind="Fildatatyper"> *@
-    @*     @if (Fildatatyper != null) *@
-    @*     { *@
-    @*         <option value="">Välj filtyp</option> *@
-    @*         @foreach (var filDatatyp in Fildatatyper) *@
-    @*         { *@
-    @*             <option value=@filDatatyp.Id>@filDatatyp.Datatyp.Namn</option> *@
-    @*         } *@
-    @*     } *@
-    @*     else *@
-    @*     { *@
-    @*         <option value="">Loading</option> *@
-    @*     } *@
-    @* *@
-    @* </select> *@
-    @* *@
+    
     <button type="button" class="btn btn-warning " @onclick="Spara"> Spara </button>
 </div>
 
 @code{
+    
+    
 
     [Parameter]
     public int OverforingId { get; set; }
@@ -46,17 +32,10 @@
     private int Sort { get; set; }
     private string KolumnSeperator { get; set; }
     private short HarKolumnamn { get; set; }
-    
-    // private List<FilDatatyp> Fildatatyper { get; set; } = new();
-    //
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     Fildatatyper = await http.GetFromJsonAsync<List<FilDatatyp>>("./api/Fils/fildatatyper");
-    //     StateHasChanged();
-    // }
 
     private async Task Spara()
     {
+
         var fil = new Database.Models.Fil
         {
             Namn = Namn,
@@ -65,13 +44,9 @@
             Sort = Sort,
             KolumnSeparator = KolumnSeperator,
             HarKolumnamn = HarKolumnamn,
-            FilKollektionId = FilkollektionId,
-            Kolumns = {},
-            Inlasnings = {},
-            Tabells = {},
-            Lookups = {}
+            FilKollektionId = FilkollektionId
         };
-
+        
         var content = new StringContent(JsonSerializer.Serialize(fil), System.Text.Encoding.UTF8, "application/json");
         await http.PostAsync("./api/Fils", content);
         navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer", true);

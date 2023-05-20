@@ -35,6 +35,29 @@ public class FilService : IFilService
         await _context.SaveChangesAsync();
     }
 
+    public async Task AddFilDatatype(FilDatatyp filDatatyp)
+    {
+        switch (filDatatyp.DatatypId)
+        {
+            case 1:
+            {
+                var datatyps = await _context.FilDatatyps.Where(x => x.Datatyp.Namn == "int").ToListAsync();
+                var realId = datatyps.First().DatatypId;
+                filDatatyp.DatatypId = realId;
+                break;
+            }
+            case 2:
+            {
+                var datatyps = await _context.FilDatatyps.Where(x => x.Datatyp.Namn == "varchar").ToListAsync();
+                var realId = datatyps.First().DatatypId;
+                filDatatyp.DatatypId = realId;
+                break;
+            }
+        }
+        _context.Entry(filDatatyp).State = EntityState.Added;
+        await _context.SaveChangesAsync();
+    }
+
     public Task Update(int id, Fil fil)
     {
         throw new NotImplementedException();
@@ -64,9 +87,9 @@ public class FilService : IFilService
         return await _context.Filtyps.ToListAsync();
     }
 
-    public async Task<List<FilDatatyp>> GetFilDataTyper()
+    public async Task<List<Datatyp>> GetDataTyper()
     {
-        return await _context.FilDatatyps
-            .Include(x => x.Datatyp).ToListAsync();
+        return await _context.Datatyps
+            .ToListAsync();
     }
 }

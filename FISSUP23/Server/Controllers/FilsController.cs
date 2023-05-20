@@ -23,11 +23,11 @@ namespace FISSUP23.Server.Controllers
             return await _service.GetFilTyper();
         }
         
-        [Route("fildatatyper")]
+        [Route("datatyper")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FilDatatyp>>> GetFilDatatyper()
+        public async Task<ActionResult<IEnumerable<Datatyp>>> GetDatatyper()
         {
-            return await _service.GetFilDataTyper();
+            return await _service.GetDataTyper();
         }
 
         //GET: api/Fils
@@ -60,6 +60,20 @@ namespace FISSUP23.Server.Controllers
             try
             {
                 await _service.Add(fil);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [Route("filDatatyp/add")]
+        [HttpPost]
+        public async Task<ActionResult> PostFileDataType(FilDatatyp filDatatyp)
+        {
+            try
+            {
+                await _service.AddFilDatatype(filDatatyp);
                 return Ok();
             }
             catch (Exception e)
