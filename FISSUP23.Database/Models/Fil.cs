@@ -25,7 +25,7 @@ public partial class Fil
 
     public virtual ICollection<Inlasning> Inlasnings { get; } = new List<Inlasning>();
 
-    public virtual ICollection<Kolumn> Kolumns { get; } = new List<Kolumn>();
+    public virtual ICollection<Kolumn> Kolumns { get; set; } = new List<Kolumn>();
 
     public virtual ICollection<Lookup> Lookups { get; } = new List<Lookup>();
 

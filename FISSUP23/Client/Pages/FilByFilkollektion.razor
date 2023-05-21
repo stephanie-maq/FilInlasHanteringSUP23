@@ -1,5 +1,6 @@
 @page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer"
 @using System.Text.Json
+@using FISSUP23.Database.Models
 @inject HttpClient http
 @inject NavigationManager navMan
 
@@ -135,7 +136,7 @@ else
     private List<ViewModels.FilViewModel> FilVMs { get; set; }
     private List<ViewModels.FilViewModel> MarkeradeFiler { get; set; }
     private List<Database.Models.Fil> fils { get; set; }
-
+    
     protected override async void OnInitialized()
     {
         var filkollektion = await http.GetFromJsonAsync<Database.Models.FilKollektion>($"./api/FilKollektions/{FilkollektionId}");

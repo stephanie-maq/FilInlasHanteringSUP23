@@ -33,6 +33,7 @@ namespace FISSUP23.Server.Services
         
             var filKollektion = await _context.FilKollektions
                 .Include(x=>x.Fils)
+                .ThenInclude(y=>y.Kolumns)
                 .FirstOrDefaultAsync(n => n.Id == id);
         
             if (filKollektion == null)
