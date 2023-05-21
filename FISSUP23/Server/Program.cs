@@ -2,6 +2,7 @@ using FISSUP23.Database.Models;
 using FISSUP23.Server.Services;
 using FISSUP23.Server.Services.Interface;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,5 +46,11 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IFilService, FilService>();
     services.AddScoped<IKolumnService, KolumnService>();
     services.AddScoped<IProcessdataService, ProcessdataService>();
-    services.AddDbContext<SsisGenericReadContext>();
+    
+    services.AddDbContext<SsisGenericReadContext>(options =>
+    {
+        options.ConfigureWarnings(warnings =>
+                
+            warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored));
+    });
 }

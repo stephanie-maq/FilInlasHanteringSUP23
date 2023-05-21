@@ -9,7 +9,7 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>FillId</th>
+            <th>FilNamn</th>
             <th>DatumTid</th>
             <th>FilNamn</th>
             <th>AntalTillagdaKolumner</th>
@@ -29,10 +29,10 @@
                     @Inlasning.Id.ToString()
                 </td>
                 <td>
-                    @Inlasning.FilId.ToString()
+                    @Inlasning.Fil.Namn
                 </td>
                 <td>
-                    @Inlasning.DatumTid.ToLongDateString()
+                    @Inlasning.DatumTid
                 </td>
                 <td>
                     @Inlasning.FilNamn
