@@ -1,0 +1,181 @@
+@page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer/{FilId:int}/kolumner"
+@using FISSUP23.Database.Models
+@inject HttpClient http
+@inject NavigationManager navMan
+
+
+<h3>Kolumner</h3>
+
+@if (KolumnVMs != null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <span>Markera</span>
+                <span>
+                    <input type="checkbox" @onchange="MarkeraAlla"/>
+                </span>
+            </th>
+            <th>InNamn</th>
+            <th>UtNamn</th>
+            <th>Sort</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var kolumn in KolumnVMs)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" @bind="kolumn.isChecked" @onclick="() => OverCheck(kolumn)"/>
+                </td>
+                <td>
+                    @kolumn.InNamn
+                </td>
+                <td>
+                    @kolumn.UtNamn
+                </td>
+                <td>
+                    @kolumn.Sort
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (MarkeradeFiler.Count != 0)
+    {
+        <br/>
+        <br/>
+        <br/>
+
+
+        <h2 style="color:black">
+            <strong> Se detaljer</strong>
+        </h2>
+
+
+        <br/>
+        @foreach (var kolumn in MarkeradeFiler)
+        {
+            <dl class="row">
+                <dt class="col-sm-3">InNman:</dt>
+                <dd class="col-sm-9" style=" color: black"> @kolumn.InNamn</dd>
+
+                <dt class="col-sm-3">UtNamn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @kolumn.UtNamn</dd>
+
+                <dt class="col-sm-3">Sort:</dt>
+                <dd class="col-sm-9">
+                    <p style=" color: black">@kolumn.Sort</p>
+                </dd>
+
+
+            </dl>
+
+            <br/>
+        }
+    }
+}
+else
+{
+    <p> Laddar ...</p>
+}
+
+
+@code {
+
+    [Parameter]
+    public int OverforingId { get; set; }
+
+    [Parameter]
+    public int FilkollektionId { get; set; }
+
+    [Parameter]
+    public int FilId { get; set; }
+
+    private bool IsCheckedTotal { get; set; }
+    private List<ViewModels.KolumnViewModel> KolumnVMs { get; set; }
+    private List<ViewModels.KolumnViewModel> MarkeradeFiler { get; set; }
+    private List<Kolumn> kolumns { get; set; }
+
+    protected override async void OnInitialized()
+    {
+        var fil = await http.GetFromJsonAsync<Fil>($"./api/Fils/{FilId}");
+        kolumns = fil.Kolumns.ToList();
+
+        KolumnVMs = new List<ViewModels.KolumnViewModel>();
+        MarkeradeFiler = new List<ViewModels.KolumnViewModel>();
+
+        foreach (var kolumn in kolumns)
+        {
+            var kolumnsVMs = new ViewModels.KolumnViewModel()
+            {
+                isChecked = false,
+                Id = kolumn.Id,
+                InNamn = kolumn.InNamn,
+                UtNamn = kolumn.UtNamn,
+                Sort = kolumn.Sort
+            };
+
+            KolumnVMs.Add(kolumnsVMs);
+        }
+
+        StateHasChanged();
+    }
+
+    private void OverCheck(ViewModels.KolumnViewModel kolumn)
+    {
+        kolumn.isChecked = !kolumn.isChecked;
+
+        if (kolumn.isChecked)
+        {
+            MarkeradeFiler.Add(kolumn);
+        }
+        else
+        {
+            MarkeradeFiler.Remove(kolumn);
+        }
+    }
+
+    private void MarkeraAlla()
+    {
+        IsCheckedTotal = !IsCheckedTotal;
+
+        foreach (var kolumn in KolumnVMs)
+        {
+            kolumn.isChecked = IsCheckedTotal;
+        }
+
+        MarkeradeFiler = new List<ViewModels.KolumnViewModel>();
+        if (IsCheckedTotal)
+        {
+            MarkeradeFiler.AddRange(KolumnVMs);
+        }
+    }
+
+    // private async void Delete()
+    // {
+    //     var toDelete = MarkeradeFiler.Select(m => m.Id.ToString());
+    //
+    //     var request = new HttpRequestMessage
+    //     {
+    //         RequestUri = new Uri("./api/Fils", UriKind.RelativeOrAbsolute),
+    //         Method = HttpMethod.Delete,
+    //         Content = new StringContent(JsonSerializer.Serialize(toDelete), System.Text.Encoding.UTF8, "application/json")
+    //     };
+    //
+    //     var resp = await http.SendAsync(request);
+    //
+    //     if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+    //     {
+    //         FilVMs = FilVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
+    //         MarkeradeFiler = FilVMs;
+    //         StateHasChanged();
+    //     }
+    // }
+    //
+
+
+
+}
