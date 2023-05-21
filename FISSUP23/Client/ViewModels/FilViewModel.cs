@@ -2,7 +2,7 @@ using FISSUP23.Database.Models;
 
 namespace FISSUP23.Client.ViewModels;
 
-public class FilViewModel
+public class FilViewModel 
 {
     public bool isChecked { get; set; }
 
@@ -23,6 +23,5 @@ public class FilViewModel
     public int AntalKolumner { get; set; }
 
     public string? läggFilDatatyp { get; set; }
-
-
+    
 }

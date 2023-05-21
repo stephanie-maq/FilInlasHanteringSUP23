@@ -14,7 +14,10 @@ public class FilService : IFilService
 
     public async Task<Fil> GetById(int id)
     {
-       var fils= await _context.Fils.Where(x => x.Id == id).ToListAsync();
+       var fils= await _context.Fils.Where(x => x.Id == id)
+           .Include(y=>y.Kolumns)
+           .ThenInclude(t=>t.Inlasning)
+           .ToListAsync();
        return fils.FirstOrDefault();
     }
 
