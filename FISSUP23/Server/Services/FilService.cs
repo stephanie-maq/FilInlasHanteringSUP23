@@ -16,7 +16,7 @@ public class FilService : IFilService
     {
        var fils= await _context.Fils.Where(x => x.Id == id)
            .Include(y=>y.Kolumns)
-           .ThenInclude(t=>t.Inlasning)
+           .Include(r=>r.Tabells)
            .ToListAsync();
        return fils.FirstOrDefault();
     }

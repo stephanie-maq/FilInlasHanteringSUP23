@@ -1,0 +1,195 @@
+@page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer/{FilId:int}/tabeller"
+@using FISSUP23.Database.Models
+@inject HttpClient http
+@inject NavigationManager navMan
+
+
+<h3>Tabeller</h3>
+
+@if (TabellVms != null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <span>Markera</span>
+                <span>
+                    <input type="checkbox" @onchange="MarkeraAlla"/>
+                </span>
+            </th>
+            <th>Schema</th>
+            <th>Namn</th>
+            <th>VySchema</th>
+            <th>VyPrefix</th>
+            <th>Beskrivning</th>
+            <th>TabellNamn</th>
+            <th>VyNamn</th>
+            <th>VyNamnLookup</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var tabell in TabellVms)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" @bind="tabell.isChecked" @onclick="() => OverCheck(tabell)"/>
+                </td>
+                <td>
+                    @tabell.Schema
+                </td>
+                <td>
+                    @tabell.Namn
+                </td>
+                <td>
+                    @tabell.VySchema
+                </td>
+                <td>
+                    @tabell.VyPrefix
+                </td>
+                <td>
+                    @tabell.Beskrivning
+                </td>
+                <td>
+                    @tabell.TabellNamn
+                </td>
+                <td>
+                    @tabell.VyNamn
+                </td>
+                <td>
+                    @tabell.VyNamnLookup
+                </td>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (MarkeradeFiler.Count != 0)
+    {
+        <br/>
+        <br/>
+        <br/>
+        <h2 style="color:black">
+            <strong> Se detaljer</strong>
+        </h2>
+
+
+        <br/>
+        @foreach (var tabell in MarkeradeFiler)
+        {
+            <dl class="row">
+                <dt class="col-sm-3">Schema:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.Schema</dd>
+
+                <dt class="col-sm-3">Namn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.Namn</dd>
+
+                <dt class="col-sm-3">VySchema:</dt>
+                <dd class="col-sm-9">
+                    <p style=" color: black">@tabell.VySchema</p>
+                </dd>
+                <dt class="col-sm-3">VyPrefix:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.VyPrefix</dd>
+                <dt class="col-sm-3">Beskrivning:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.Beskrivning</dd>
+                <dt class="col-sm-3">TabellNamn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.TabellNamn</dd>
+                <dt class="col-sm-3">VyNamn:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.VyNamn</dd>
+                <dt class="col-sm-3">VyNamnLookup:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.VyNamnLookup</dd>
+                <dt class="col-sm-3">SkapadInLasningId:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.SkapadInlasningId</dd>
+                <dt class="col-sm-3">Modifierad:</dt>
+                <dd class="col-sm-9" style=" color: black"> @tabell.Modifierad</dd>
+
+            </dl>
+            <br/>
+        }
+    }
+}
+else
+{
+    <p> Laddar ...</p>
+}
+
+
+@code {
+
+    [Parameter]
+    public int OverforingId { get; set; }
+
+    [Parameter]
+    public int FilkollektionId { get; set; }
+
+    [Parameter]
+    public int FilId { get; set; }
+
+    private bool IsCheckedTotal { get; set; }
+    private List<ViewModels.TabellViewModel> TabellVms { get; set; }
+    private List<ViewModels.TabellViewModel> MarkeradeFiler { get; set; }
+    private List<Tabell> tabells { get; set; }
+
+    protected override async void OnInitialized()
+    {
+        var fil = await http.GetFromJsonAsync<Fil>($"./api/Fils/{FilId}");
+        tabells = fil.Tabells.ToList();
+
+        TabellVms = new List<ViewModels.TabellViewModel>();
+        MarkeradeFiler = new List<ViewModels.TabellViewModel>();
+
+        foreach (var tabell in tabells)
+        {
+            var tabellsVms = new ViewModels.TabellViewModel()
+            {
+                isChecked = false,
+                Id = tabell.Id,
+                Namn = tabell.Namn,
+                Schema = tabell.Schema,
+                VySchema = tabell.VySchema,
+                VyPrefix = tabell.VyPrefix,
+                Beskrivning = tabell.Beskrivning,
+                FilId = tabell.FilId,
+                Modifierad = tabell.Modifierad,
+                TabellNamn = tabell.TabellNamn,
+                VyNamn = tabell.VyNamn,
+                VyNamnLookup = tabell.VyNamnLookup,
+                SkapadInlasningId = tabell.SkapadInlasningId,
+            };
+
+            TabellVms.Add(tabellsVms);
+        }
+
+        StateHasChanged();
+    }
+
+    private void OverCheck(ViewModels.TabellViewModel tabell)
+    {
+        tabell.isChecked = !tabell.isChecked;
+
+        if (tabell.isChecked)
+        {
+            MarkeradeFiler.Add(tabell);
+        }
+        else
+        {
+            MarkeradeFiler.Remove(tabell);
+        }
+    }
+
+    private void MarkeraAlla()
+    {
+        IsCheckedTotal = !IsCheckedTotal;
+
+        foreach (var tabell in TabellVms)
+        {
+            tabell.isChecked = IsCheckedTotal;
+        }
+
+        MarkeradeFiler = new List<ViewModels.TabellViewModel>();
+        if (IsCheckedTotal)
+        {
+            MarkeradeFiler.AddRange(TabellVms);
+        }
+    }
+
+}

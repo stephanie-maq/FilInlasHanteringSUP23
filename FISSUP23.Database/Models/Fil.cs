@@ -29,5 +29,5 @@ public partial class Fil
 
     public virtual ICollection<Lookup> Lookups { get; } = new List<Lookup>();
 
-    public virtual ICollection<Tabell> Tabells { get; } = new List<Tabell>();
+    public virtual ICollection<Tabell> Tabells { get; set; } = new List<Tabell>();
 }
