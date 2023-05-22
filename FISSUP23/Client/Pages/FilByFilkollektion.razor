@@ -60,7 +60,7 @@
                     <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/kolumner")>@fil.AntalKolumner.ToString()</a>
                 </td>
                 <td>
-                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/tabeller")>@fil.AntalKolumner.ToString()</a>
+                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/tabeller")>Tabell</a>
                 </td>
                 <td>
                     <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/filDatatyp/add")>Lägg till</a>
@@ -108,14 +108,18 @@
                 <dt class="col-sm-3">Kolumn Separator:</dt>
                 <dd class="col-sm-9" style=" color: black"> @fil.KolumnSeparator</dd>
 
-                <dt class="col-sm-3">FHar Kolumn namn:</dt>
+                <dt class="col-sm-3">Har Kolumn namn:</dt>
                 <dd class="col-sm-9" style=" color: black"> @fil.HarKolumnamn</dd>
 
-                <dt class="col-sm-3">Antal Kolumner</dt>
-                <dd class="col-sm-9" style=" color: black"> @fil.AntalKolumner</dd>
+                <dt class="col-sm-3">Kolumner</dt>
+                <dd class="col-sm-9" style=" color: black">
+                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/kolumner")>Kolumn</a>
+                </dd>
 
-                <dt class="col-sm-3">Antal Kolumner</dt>
-                <dd class="col-sm-9" style=" color: black"> @fil</dd>
+                <dt class="col-sm-3">Tabeller</dt>
+                <dd class="col-sm-9" style=" color: black">
+                    <a href=@($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{fil.Id}/tabeller")>Tabell</a>
+                </dd>
 
 
             </dl>
