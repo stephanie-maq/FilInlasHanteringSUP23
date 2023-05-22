@@ -49,9 +49,29 @@ namespace FISSUP23.Server.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task Update(int id)
+        public async Task Update(int id, FilKollektion filkollektion)
         {
-            throw new NotImplementedException();
+            var existing = await _context.FilKollektions
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (existing == null)
+            {
+                throw new Exception("Id not found");
+            }
+            
+            existing.Namn = filkollektion.Namn;
+            existing.Andelse = filkollektion.Andelse;
+            existing.MatchMonster = filkollektion.MatchMonster;
+            existing.Beskrivning = filkollektion.Beskrivning ?? existing.Beskrivning;
+            existing.OverforingId = filkollektion.OverforingId;
+            existing.FilTypId = filkollektion.FilTypId;
+            existing.FolderRoot = filkollektion.FolderRoot;
+            existing.FolderArkiv = filkollektion.FolderArkiv;
+            existing.FolderNyFil = filkollektion.FolderNyFil;
+            existing.FolderFelaktigFil = filkollektion.FolderFelaktigFil;
+            existing.FilTypId = filkollektion.FilTypId;
+            existing.Fils = filkollektion.Fils ?? existing.Fils;
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(List<string> toDelete)

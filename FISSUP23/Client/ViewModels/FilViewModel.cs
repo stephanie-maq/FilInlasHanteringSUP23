@@ -21,7 +21,11 @@ public class FilViewModel
     public short HarKolumnamn { get; set; }
 
     public int AntalKolumner { get; set; }
+    
+    public int AntalTabeller { get; set; }
 
     public string? läggFilDatatyp { get; set; }
+    
+
     
 }
