@@ -9,7 +9,7 @@ public interface IFilkollektionService
     Task<FilKollektion> GetById(int id);
     
     Task Add(FilKollektion filkollektion);
-    Task Update(int id);
+    Task Update(int id, FilKollektion filKollektion);
 
     Task Delete(List<string> ids);
 }
