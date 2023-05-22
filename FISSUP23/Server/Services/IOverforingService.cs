@@ -5,6 +5,8 @@ namespace FISSUP23.Server.Services.Interface
 {
     public interface IOverforingService
     {
+        
+        Task<List<Overforing>> GetOverforingar();
         Task<Overforing> GetById(int id);
         Task Add(Overforing overforing);
 
@@ -12,6 +14,5 @@ namespace FISSUP23.Server.Services.Interface
 
         Task Delete(List<string> ids);
 
-        Task<List<Overforing>> GetOverforingar();
     }
 }

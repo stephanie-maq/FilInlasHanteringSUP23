@@ -52,6 +52,20 @@ namespace FISSUP23.Server.Controllers
              }
          }
 
+         [HttpPut("{id}")]
+         public async Task<ActionResult<Overforing>> PutOverforing(int id, FilKollektion filKollektion)
+         {
+             try
+             {
+                 await _filkollektionService.Update(id, filKollektion);
+                 return Ok();
+             }
+             catch (Exception e)
+             {
+                 return BadRequest(e.Message);
+             }
+         }
+         
         //DELETE: api/FilKollektions/5
         [HttpDelete]
         public async Task<IActionResult> DeleteFilKollektion([FromBody] List<string> toDelete)
