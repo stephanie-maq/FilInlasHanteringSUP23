@@ -1,0 +1,80 @@
+@page "/processdata"
+@inject HttpClient http
+
+<h3>Processdata</h3>
+
+@if (Inlasnings != null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>FilNamn</th>
+            <th>DatumTid</th>
+            <th>FilNamn</th>
+            <th>AntalTillagdaKolumner</th>
+            <th>AntalRader</th>
+            @* <th>RaderadData</th> *@
+            @* <th>Omlasning</th> *@
+            @* <th>Dubblett</th> *@
+            @* <th>Namn</th> *@
+            @* <th>ErrorLogId</th> *@
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var Inlasning in Inlasnings)
+        {
+            <tr>
+                <td>
+                    @Inlasning.Id.ToString()
+                </td>
+                <td>
+                    @Inlasning.FilId.ToString()
+                </td>
+                <td>
+                    @Inlasning.DatumTid
+                </td>
+                <td>
+                    @Inlasning.FilNamn
+                </td>
+                <td>
+                    @Inlasning.AntalTillagdaKolumner.ToString()
+                </td>
+                <td>
+                    @Inlasning.AntalRader.ToString()
+                </td>
+                @* <td> *@
+                @*     @Inlasning.RaderadData.ToString() *@
+                @* </td> *@
+                @* <td> *@
+                @*     @Inlasning.Omlasning.ToString() *@
+                @* </td> *@
+                @* <td> *@
+                @*     @Inlasning.Dubblett.ToString() *@
+                @* </td> *@
+                @* <td> *@
+                @*     @Inlasning.Namn *@
+                @* </td> *@
+                @* <td> *@
+                @*     @Inlasning.ErrorLogId.ToString() *@
+                @* </td> *@
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p> Laddar data ..</p>
+}
+
+@code {
+    private List<Database.Models.Inlasning> Inlasnings { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Inlasnings = await http.GetFromJsonAsync<List<Database.Models.Inlasning>>($"./api/Processdatas");
+        StateHasChanged();
+    }
+
+}

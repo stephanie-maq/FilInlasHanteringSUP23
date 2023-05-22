@@ -30,7 +30,7 @@ namespace FISSUP23.Server.Controllers
         //     return await _service.GetFilDataTyper();
         // }
 
-        //GET: api/Fils
+        //GET: api/Kolumns
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Kolumn>>> GetKolumner()
         {

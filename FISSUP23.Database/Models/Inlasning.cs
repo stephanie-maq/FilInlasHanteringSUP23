@@ -29,7 +29,7 @@ public partial class Inlasning
 
     public virtual ErrorLog? ErrorLog { get; set; }
 
-    public virtual Fil Fil { get; set; } = null!;
+    public virtual Fil? Fil { get; set; } = null!;
 
     public virtual ICollection<Kolumn> Kolumns { get; } = new List<Kolumn>();
 
