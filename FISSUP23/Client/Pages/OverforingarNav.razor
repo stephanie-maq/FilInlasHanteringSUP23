@@ -5,37 +5,7 @@
 
 @if (Overforings != null)
 {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Namn</th>
-            <th>Systemnamn</th>
-            <th>
-                Beskrivning
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var overforing in Overforings)
-        {
-            <tr>
-                <td>
-                    @overforing.Id
-                </td>
-                <td>
-                    @overforing.Namn
-                </td>
-                <td>
-                    @overforing.SystemNamn
-                </td>
-                <td>
-                    @overforing.Beskrivning
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    <FilterTable TableHeaders="tableHeaders" TableRows="tableRows"/>
 }
 else
 {
@@ -44,10 +14,20 @@ else
 
 @code {
     private List<Database.Models.Overforing> Overforings { get; set; }
+    private List<string> tableHeaders = new() { "Id", "Namn", "Systemnamn", "Beskrivning" };
+    private List<List<string>> tableRows = new();
 
     protected override async Task OnInitializedAsync()
     {
         Overforings = await http.GetFromJsonAsync<List<Database.Models.Overforing>>($"./api/Overforings");
+        foreach (var overforing in Overforings)
+        {
+            List<string> row = new()
+            {
+                overforing.Id.ToString(), overforing.Namn, overforing.SystemNamn, overforing.Beskrivning
+            };
+            tableRows.Add(row);
+        }
         StateHasChanged();
     }
 
