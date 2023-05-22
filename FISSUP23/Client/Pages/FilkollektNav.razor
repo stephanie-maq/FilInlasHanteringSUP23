@@ -1,0 +1,27 @@
+@page "/filkollektioner"
+@using FISSUP23.Database.Models
+@inject HttpClient http
+
+<h3>Filkollektioner</h3>
+
+@if (Filkollektions != null)
+{
+    <FilterTable TableHeaders="tableHeaders" TableRows="tableRows"/>
+}
+else
+{
+    <p> Laddar data ..</p>
+}
+
+@code {
+    private List<FilKollektion> Filkollektions { get; set; }
+    private List<string> tableHeaders = new() {"Id", "Namn", "MatchMönster", "Beskrivning", "OverforingId", "FiltypId", "FolderRoot","FolderArkiv","FolderNyFil","FolderFelaktigaFil","AntalFiler"};
+    private List<List<string>> tableRows = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions");
+        StateHasChanged();
+    }
+
+}

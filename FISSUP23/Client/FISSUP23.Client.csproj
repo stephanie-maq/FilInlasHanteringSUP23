@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\FISSUP23.Database\FISSUP23.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Shared\ModalFraga.razor" />
+  </ItemGroup>
+
 </Project>

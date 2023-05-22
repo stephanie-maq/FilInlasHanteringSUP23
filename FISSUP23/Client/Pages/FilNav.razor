@@ -1,0 +1,38 @@
+@page "/Filer"
+@using FISSUP23.Database.Models
+@inject HttpClient http
+
+<h3>Filer</h3>
+
+@if (Fils != null)
+{
+    <FilterTable TableHeaders="tableHeaders" TableRows="tableRows"/>
+}
+else
+{
+    <p> Laddar data ..</p>
+}
+
+
+@code {
+    private List<Fil> Fils { get; set; }
+    private List<string> tableHeaders = new() {"Id", "Namn", "MatchMönster", "Beskrivning", "Sort", "FilkollektionsId", "KolumnSeperator", "HarKolumn"};
+    private List<List<string>> tableRows = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Fils = await http.GetFromJsonAsync<List<Fil>>($"./api/Fils");
+        foreach (var fil in Fils)
+        {
+            List<string> row = new()
+            {
+                fil.Id.ToString(), fil.Namn, fil.MatchMonster, fil.Beskrivning,
+                fil.Sort.ToString(), fil.FilKollektionId.ToString(),
+                fil.KolumnSeparator, fil.HarKolumnamn.ToString()
+            };
+            tableRows.Add(row);
+        }
+        StateHasChanged();
+    }
+
+}
