@@ -1,0 +1,36 @@
+@page "/kolumner"
+@inject HttpClient http
+
+<h3>Kolumner</h3>
+
+@if (Kolumns != null)
+{
+    <FilterTable TableHeaders="tableHeaders" TableRows="tableRows"/>
+}
+else
+{
+    <p> Laddar data ..</p>
+}
+
+
+@code {
+    private List<Database.Models.Kolumn> Kolumns { get; set; }
+    private List<string> tableHeaders = new() {"Id", "InNamn", "UtNamn", "NyKolumn", "Sort", "FilId", "InlasningId"};
+    private List<List<string>> tableRows = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Kolumns = await http.GetFromJsonAsync<List<Database.Models.Kolumn>>($"./api/Kolumns");
+        foreach (var kolumn in Kolumns)
+        {
+            List<string> row = new()
+            {
+                kolumn.Id.ToString(), kolumn.InNamn, kolumn.UtNamn, kolumn.Sort.ToString(),
+                kolumn.FilId.ToString(), kolumn.InlasningId.ToString()
+            };
+            tableRows.Add(row);
+        }
+        StateHasChanged();
+    }
+
+}
