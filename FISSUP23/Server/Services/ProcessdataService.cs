@@ -1,5 +1,6 @@
 using FISSUP23.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using Overforing = FISSUP23.Client.Pages.Overforing;
 
 namespace FISSUP23.Server.Services;
 
@@ -15,10 +16,10 @@ public class ProcessdataService : IProcessdataService
     public async Task<List<Inlasning>> GetInlasningar()
     {
         return await _context.Inlasnings
-            .Include(y=>y.ErrorLog)
-            .Include(r=>r.Fil)
-            .Include(e=>e.Kolumns)
-            .Include(w=>w.Tabells)
+            .Include(p=>p.Kolumns)
+            .Include(u=>u.Fil)
+            .ThenInclude(b=>b.FilDatatyps)
+            .Include(y=>y.Tabells)
             .ToListAsync();
     }
 }
