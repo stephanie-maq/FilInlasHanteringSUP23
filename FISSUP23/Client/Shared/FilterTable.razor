@@ -1,0 +1,62 @@
+@namespace FISSUP23.Client.Shared
+
+<div>
+    <input type="text" oninput="@Filter" placeholder="Filter"/>
+    <table class="table">
+        <thead>
+        <tr>
+            @foreach (var header in TableHeaders)
+            {
+                <th>@header</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var row in ViewRows)
+        {
+            <tr>
+                @foreach (var cell in row)
+                {
+                    <td>@cell</td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<string> TableHeaders { get; set; }
+
+    [Parameter]
+    public List<List<string>> TableRows { get; set; }
+
+    private List<List<string>> ViewRows { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ViewRows = TableRows;
+        StateHasChanged();
+    }
+
+    private void Filter(ChangeEventArgs e)
+    {
+        var data = (string)e.Value!;
+
+        if (!string.IsNullOrEmpty(data) && !string.IsNullOrWhiteSpace(data))
+        {
+            ViewRows = TableRows
+                .Where(rows => rows.Exists(cell => cell.Contains(data)))
+                .ToList();
+        }
+        else
+        {
+            ViewRows = TableRows;
+        }
+
+        StateHasChanged();
+    }
+
+}
