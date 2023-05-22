@@ -81,7 +81,7 @@
         <div>
             @if (MarkeradeFilkollektioner.Count == 1)
             {
-                <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
+                <button type="button" class="btn btn-warning "> Uppdatera</button>
             }
             <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
         </div>
@@ -223,12 +223,6 @@ else
     private void RedirectAddFilkollektion()
     {
         navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/add", true);
-    }
-    
-    private void RedirectUpdate()
-    {
-        var mo = MarkeradeFilkollektioner.FirstOrDefault();
-        navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{mo.Id.ToString()}/update", true);
     }
 
 }

@@ -1,7 +1,6 @@
 ﻿@page "/overforingar/{Id:int}/update"
 @using System.Text.Json
 @inject HttpClient http
-@inject NavigationManager navMan
 
 <h3 class="mb-4">Uppdatera overföring</h3>
 
@@ -38,8 +37,6 @@
         var overforing = new Database.Models.Overforing {Namn = NyNamn, SystemNamn = NySystemNamn, Beskrivning = NyBeskrivning};
         var content = new StringContent(JsonSerializer.Serialize(overforing), System.Text.Encoding.UTF8, "application/json");
         await http.PutAsync($"./api/Overforings/{_over.Id}", content);
-        navMan.NavigateTo($"./overforingar", true);
-
 
     }
 
