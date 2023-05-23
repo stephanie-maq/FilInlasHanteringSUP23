@@ -12,13 +12,21 @@
     <input type="text" class="form-control mb-4" @bind="Precision" placeholder="Precision" aria-label="Last name">
     <input type="text" class="form-control mb-4" @bind="Scale" placeholder="Scale" aria-label="Last name">
     <div class="form-inline">
-        <select class="dropdown" name="number" @bind="intx" >
-                <option value="">Välj Datatyp</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
+        <select class="dropdown" name="number" @bind="datatypeId">
+                @if (_datatyps != null)
+                {
+                    @foreach (var dt in _datatyps)
+                    {
+                        <option value=@dt.Id>@dt.Namn</option>
+                    }
+                }
+                else
+                {
+                    <option value="">Loading</option>
+                }
             </select>
         <div class="form-check form-check-inline" style="margin-left: 60px">
-                <input type="checkbox" class="form-check-input " id="exampleCheck1">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" @bind="_nullable">
                 <label class="form-check-label" for="exampleCheck1">Is Nullable</label>
             </div>
         </div>
@@ -36,38 +44,43 @@
 
     [Parameter]
     public int filId { get; set; }
-
-    private string intx { get; set; }
+    
     private int? Length { get; set; }
     private int? Precision { get; set; }
     private int? Scale { get; set; }
 
     private Fil fil { get; set; }
+    private int datatypeId { get; set; }
+    private List<Datatyp> _datatyps { get; set; }
+    private bool _nullable { get; set; } 
 
     protected override async void OnInitialized()
     {
         fil = await http.GetFromJsonAsync<Fil>($"./api/Fils/{filId}");
-        Console.WriteLine(fil);
+        fil.Tabells = new List<Tabell>();
+        _datatyps = await http.GetFromJsonAsync<List<Datatyp>>($"./api/Fils/datatyper");
+        datatypeId = _datatyps.First().Id;
+        StateHasChanged();
     }
 
     private async Task Spara()
     {
-
+        var n = _nullable ? 1 : 0;
+        
         var fildatatyp = new FilDatatyp
         {
             FilId = filId,
             Length = Length,
             Precision = Precision,
             Scale = Scale,
-            IsNullable = 0,
-            Fil = new Fil(),
-            Datatyp = new Datatyp()
-
+            IsNullable = (short?) n,
+            Fil = fil,
+            Datatyp = _datatyps.Find(x => x.Id == datatypeId)
         };
 
         var content = new StringContent(JsonSerializer.Serialize(fildatatyp), System.Text.Encoding.UTF8, "application/json");
         await http.PostAsync("./api/Fils/filDatatyp/add", content);
-    //navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer", true);
+        navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer", true);
     }
 
 }

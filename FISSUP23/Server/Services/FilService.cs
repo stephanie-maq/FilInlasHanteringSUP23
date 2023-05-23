@@ -29,23 +29,6 @@ public class FilService : IFilService
 
     public async Task AddFilDatatype(FilDatatyp filDatatyp)
     {
-        switch (filDatatyp.DatatypId)
-        {
-            case 1:
-            {
-                var datatyps = await _context.FilDatatyps.Where(x => x.Datatyp.Namn == "int").ToListAsync();
-                var realId = datatyps.First().DatatypId;
-                filDatatyp.DatatypId = realId;
-                break;
-            }
-            case 2:
-            {
-                var datatyps = await _context.FilDatatyps.Where(x => x.Datatyp.Namn == "varchar").ToListAsync();
-                var realId = datatyps.First().DatatypId;
-                filDatatyp.DatatypId = realId;
-                break;
-            }
-        }
         _context.Entry(filDatatyp).State = EntityState.Added;
         await _context.SaveChangesAsync();
     }
