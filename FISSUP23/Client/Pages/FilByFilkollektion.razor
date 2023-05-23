@@ -84,7 +84,7 @@
             {
                 <button type="button" class="btn btn-warning "> Uppdatera</button>
             }
-            <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
+            <button type="button" class="btn btn-warning " @onclick="OpenDeleteDialog"> Delete </button>
         </div>
 
 
@@ -132,7 +132,13 @@ else
 {
     <p> Laddar ...</p>
 }
-
+@if (DeleteDialogOpen)
+{
+    <Modaldialog Title="OBS!"
+                 text=" Genom att ta bort den entiteten kommer andra relaterade entiteter att tas bort.
+                        Är du säker?" onClose="@OnDeleteDialogClose">
+    </Modaldialog>
+}
 
 @code {
 
@@ -147,6 +153,9 @@ else
     private List<ViewModels.FilViewModel> FilVMs { get; set; }
     private List<ViewModels.FilViewModel> MarkeradeFiler { get; set; }
     private List<Database.Models.Fil> fils { get; set; }
+    
+    public bool DeleteDialogOpen { get; set; }
+
 
     protected override async void OnInitialized()
     {
@@ -190,6 +199,22 @@ else
         {
             MarkeradeFiler.Remove(fil);
         }
+    }
+    
+    private async Task OnDeleteDialogClose(bool accepted)
+    {
+        if (accepted)
+        {
+            Delete();
+        }
+        DeleteDialogOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenDeleteDialog()
+    {
+        DeleteDialogOpen = true;
+        StateHasChanged();
     }
 
     private void MarkeraAlla()
