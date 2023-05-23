@@ -20,7 +20,8 @@ namespace FISSUP23.Server.Services
 
         public async Task<List<FilKollektion>> GetByOverforingID(int id)
         {
-            var filKollektions = await _context.FilKollektions.Include(x => x.Fils).Where(x => x.OverforingId == id).ToListAsync();
+            var filKollektions = await _context.FilKollektions.Include(x => x.Fils).Where(x => x.OverforingId == id)
+                .ToListAsync();
             return filKollektions;
         }
 
@@ -30,23 +31,34 @@ namespace FISSUP23.Server.Services
             {
                 throw new Exception("Id not found");
             }
-        
+
             var filKollektion = await _context.FilKollektions
-                .Include(x=>x.Fils)
-                .ThenInclude(y=>y.Kolumns)
+                .Include(x => x.Fils)
+                .ThenInclude(y => y.Kolumns)
                 .FirstOrDefaultAsync(n => n.Id == id);
-        
+
             if (filKollektion == null)
             {
                 throw new Exception("Filkollektion does not exist");
             }
-        
+
             return filKollektion;
         }
+
         public async Task Add(FilKollektion filkollektion)
         {
             _context.Entry(filkollektion).State = EntityState.Added;
             await _context.SaveChangesAsync();
+        }
+
+        private string IsEmpty(string s1, string s2)
+        {
+            if (string.IsNullOrEmpty(s1) || string.IsNullOrWhiteSpace(s1))
+            {
+                return s2;
+            }
+
+            return s1;
         }
 
         public async Task Update(int id, FilKollektion filkollektion)
@@ -58,19 +70,18 @@ namespace FISSUP23.Server.Services
             {
                 throw new Exception("Id not found");
             }
-            
-            existing.Namn = filkollektion.Namn;
-            existing.Andelse = filkollektion.Andelse;
-            existing.MatchMonster = filkollektion.MatchMonster;
+
+            existing.Namn = IsEmpty(filkollektion.Namn, existing.Namn);
+            existing.Andelse = IsEmpty(filkollektion.Andelse, existing.Andelse);
+            existing.MatchMonster = IsEmpty(filkollektion.MatchMonster, existing.MatchMonster);
             existing.Beskrivning = filkollektion.Beskrivning ?? existing.Beskrivning;
             existing.OverforingId = filkollektion.OverforingId;
             existing.FilTypId = filkollektion.FilTypId;
-            existing.FolderRoot = filkollektion.FolderRoot;
-            existing.FolderArkiv = filkollektion.FolderArkiv;
-            existing.FolderNyFil = filkollektion.FolderNyFil;
-            existing.FolderFelaktigFil = filkollektion.FolderFelaktigFil;
-            existing.FilTypId = filkollektion.FilTypId;
-            existing.Fils = filkollektion.Fils ?? existing.Fils;
+            existing.FolderRoot = IsEmpty(filkollektion.FolderRoot, existing.FolderRoot);
+            existing.FolderArkiv = IsEmpty(filkollektion.FolderArkiv, existing.FolderArkiv);
+            existing.FolderNyFil = IsEmpty(filkollektion.FolderNyFil, existing.FolderNyFil);
+            existing.FolderFelaktigFil = IsEmpty(filkollektion.FolderFelaktigFil, existing.FolderFelaktigFil);
+            existing.Fils = filkollektion.Fils;
             await _context.SaveChangesAsync();
         }
 
@@ -89,7 +100,7 @@ namespace FISSUP23.Server.Services
         {
             return await _context.FilKollektions
                 .Include(x => x.Fils)
-                .ThenInclude(f=>f.FilDatatyps)
+                .ThenInclude(f => f.FilDatatyps)
                 .ToListAsync();
         }
     }

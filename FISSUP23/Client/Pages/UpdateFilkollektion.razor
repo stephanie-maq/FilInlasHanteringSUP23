@@ -20,7 +20,7 @@
     <input type="text" class="form-control mb-4" @bind="NyFolderArkiv" placeholder="FolderArkiv: @filkollektion.FolderArkiv" aria-label="Last name">
     <input type="text" class="form-control mb-4" @bind="nyFolderNyFil" placeholder="FolderNyFil: @filkollektion.FolderNyFil" aria-label="Last name">
     <input type="text" class="form-control mb-4" @bind="NyFolderFelaktigFil" placeholder="FolderFelaktigaFil: @filkollektion.FolderFelaktigFil" aria-label="Last name">
-    
+
     <select class="dropdown" name="number" @bind="FiltypId">
         @if (Filtyper != null)
         {
@@ -34,7 +34,6 @@
             <option value="">Loading</option>
         }
     </select>
-    
 
     <button type="button" class="btn btn-secondary" @onclick="Spara"> Spara </button>
     </body>
@@ -49,15 +48,15 @@
     public int filkollektionId { get; set; }
 
     private FilKollektion filkollektion { get; set; }
-    
-    private string NyNamn { get; set; }
-    private string NyAndelse { get; set; }
-    private string NyMatchmonster { get; set; }
+
+    private string NyNamn { get; set; } = "";
+    private string NyAndelse { get; set; } = "";
+    private string NyMatchmonster { get; set; } = "";
     private string NyBeskrivning { get; set; }
-    private string nyFolderNyFil { get; set; }
-    private string NyFolderRoot { get; set; }
-    private string NyFolderArkiv { get; set; }
-    private string NyFolderFelaktigFil { get; set; }
+    private string nyFolderNyFil { get; set; } = "";
+    private string NyFolderRoot { get; set; } = "";
+    private string NyFolderArkiv { get; set; } = "";
+    private string NyFolderFelaktigFil { get; set; } = "";
     private List<Filtyp>? Filtyper { get; set; } = new();
     private List<Fil> fils { get; set; } = new();
 
@@ -67,12 +66,13 @@
     {
         filkollektion = await http.GetFromJsonAsync<FISSUP23.Database.Models.FilKollektion>($"./api/FilKollektions/{filkollektionId}");
         Filtyper = await http.GetFromJsonAsync<List<Filtyp>>("./api/Fils/filtyper");
-        await base.OnInitializedAsync();
+        FiltypId = filkollektion.FilTypId;
+        StateHasChanged();
     }
 
     private async Task Spara()
     {
-        var filkollektion = new FilKollektion()
+        var filkollektion = new FilKollektion
         {
             Id = filkollektionId,
             OverforingId = overforingId,
@@ -90,7 +90,6 @@
         var content = new StringContent(JsonSerializer.Serialize(filkollektion), System.Text.Encoding.UTF8, "application/json");
         await http.PutAsync($"./api/FilKollektions/{filkollektion.Id}", content);
         navMan.NavigateTo($"./overforingar/{overforingId}/filkollektioner", true);
-
     }
 
 }
