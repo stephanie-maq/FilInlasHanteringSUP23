@@ -14,6 +14,7 @@ public class KolumnService : IKolumnService
     
     public async Task<List<Kolumn>> GetKolumner()
     {
-        return await _context.Kolumns.ToListAsync();
+        return await _context.Kolumns
+            .ToListAsync();
     }
 }

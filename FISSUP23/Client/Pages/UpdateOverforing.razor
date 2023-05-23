@@ -8,10 +8,9 @@
 @if (_over != null)
 {
     <body>
-        <input class="form-control mb-4" id="disabledInput" type="text" placeholder="@_over.Namn" disabled>
-        <input type="text" class="form-control mb-4" @bind="NyNamn" placeholder="Uppdatera namn" aria-label="Last name">
-        <input type="text" class="form-control mb-4" @bind="NySystemNamn" placeholder="Uppdatera systemnam" aria-label="Last name">
-        <input type="text" class="form-control mb-4" @bind="NyBeskrivning" placeholder="Uppdatera Beskrivning" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="NyNamn" placeholder="Namn: @_over.Namn" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NySystemNamn" placeholder="Systemnam: @_over.SystemNamn" aria-label="Last name">
+        <input type="text" class="form-control mb-4" @bind="NyBeskrivning" placeholder="Beskrivning: @_over.Beskrivning" aria-label="Last name">
 
         <button type="button" class="btn btn-secondary" @onclick="Spara"> Spara </button>
     </body>
