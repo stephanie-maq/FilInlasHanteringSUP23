@@ -15,12 +15,22 @@ else
 
 @code {
     private List<FilKollektion> Filkollektions { get; set; }
-    private List<string> tableHeaders = new() {"Id", "Namn", "MatchMönster", "Beskrivning", "OverforingId", "FiltypId", "FolderRoot","FolderArkiv","FolderNyFil","FolderFelaktigaFil","AntalFiler"};
+    private List<string> tableHeaders = new() {"Id", "Namn", "Ändelse", "MatchMönster", "Beskrivning", "OverforingId", "FiltypId", "FolderRoot","FolderArkiv","FolderNyFil","FolderFelaktigaFil"};
     private List<List<string>> tableRows = new();
 
     protected override async Task OnInitializedAsync()
     {
         Filkollektions = await http.GetFromJsonAsync<List<FilKollektion>>($"./api/FilKollektions");
+        foreach (var filkollek in Filkollektions)
+        {
+            List<string> row = new()
+            {
+                filkollek.Id.ToString(), filkollek.Namn, filkollek.Andelse,filkollek.MatchMonster, filkollek.Beskrivning,
+                filkollek.OverforingId.ToString(), filkollek.FilTypId.ToString(),
+                filkollek.FolderRoot, filkollek.FolderArkiv, filkollek.FolderNyFil, filkollek.FolderFelaktigFil
+            };
+            tableRows.Add(row);
+        }
         StateHasChanged();
     }
 
