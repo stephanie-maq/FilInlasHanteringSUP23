@@ -82,7 +82,7 @@
         <div>
             @if (MarkeradeFiler.Count == 1)
             {
-                <button type="button" class="btn btn-secondary"> Uppdatera</button>
+                <button type="button" class="btn btn-secondary" @onclick="RedirectToUpdate"> Uppdatera</button>
             }
             <button type="button" class="btn btn-secondary" style="margin-left: 10px" @onclick="OpenDeleteDialog"> Ta bort </button>
         </div>
@@ -265,6 +265,10 @@ else
         navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/add", true);
     }
 
-
+    private void RedirectToUpdate()
+    {
+        var filId = MarkeradeFiler.Select(m => m.Id.ToString()).First();
+        navMan.NavigateTo($"/overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{filId}/update", true);
+    }
 
 }

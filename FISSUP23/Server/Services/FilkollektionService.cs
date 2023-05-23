@@ -51,7 +51,7 @@ namespace FISSUP23.Server.Services
             await _context.SaveChangesAsync();
         }
 
-        private string IsEmpty(string s1, string s2)
+        private static string IsEmpty(string s1, string s2)
         {
             if (string.IsNullOrEmpty(s1) || string.IsNullOrWhiteSpace(s1))
             {

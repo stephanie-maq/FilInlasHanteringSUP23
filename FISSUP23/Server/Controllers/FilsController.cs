@@ -46,10 +46,10 @@ namespace FISSUP23.Server.Controllers
         // PUT: api/Fils/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFil(int id, Fil fil)
+        public async Task<IActionResult> PutFil(int id, [FromBody] Fil fil)
         {
-
-            return NoContent();
+            await _service.Update(id, fil);
+            return Ok();
         }
         
         // POST: api/Fils

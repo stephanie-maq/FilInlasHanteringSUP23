@@ -23,11 +23,11 @@ public partial class Fil
 
     public virtual ICollection<FilDatatyp> FilDatatyps { get; set; } = new List<FilDatatyp>();
 
-    public virtual ICollection<Inlasning> Inlasnings { get; } = new List<Inlasning>();
+    public virtual ICollection<Inlasning> Inlasnings { get; set; } = new List<Inlasning>();
 
     public virtual ICollection<Kolumn> Kolumns { get; set; } = new List<Kolumn>();
 
-    public virtual ICollection<Lookup> Lookups { get; } = new List<Lookup>();
+    public virtual ICollection<Lookup> Lookups { get; set; } = new List<Lookup>();
 
     public virtual ICollection<Tabell> Tabells { get; set; } = new List<Tabell>();
 }
