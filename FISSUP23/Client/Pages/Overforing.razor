@@ -2,7 +2,7 @@
 @inject HttpClient http
 @inject NavigationManager navMan
 @using System.Text.Json
-
+@using FISSUP23.Client.Shared
 
 <br/>
 <button type="button" class="btn btn-warning" @onclick="RedirectAddOverforing"> Lägg till ny överföring</button>
@@ -68,9 +68,8 @@
             {
                 <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
             }
-            <button type="button" class="btn btn-warning " @onclick="Delete"> Radera</button>
+            <button type="button" class="btn btn-warning " @onclick="OpenDeleteDialog"> Delete </button>
         </div>
-
 
         <br/>
         @foreach (var overf in MarkeradeOverforingar)
@@ -92,7 +91,6 @@
                 @foreach (var file in overf.FileCollections)
                 {
                     <dd class="col-sm-9"> @file.Namn </dd>
-
                 }
             </dl>
 
@@ -105,12 +103,22 @@ else
 {
     <p>Laddar data...</p>
 }
+@if (DeleteDialogOpen)
+{
+    <Modaldialog Title="OBS!"
+                 text=" Genom att ta bort den entiteten kommer andra relaterade entiteter att tas bort.
+                        Är du säker?" onClose="@OnDeleteDialogClose">
+    </Modaldialog>
+}
+
 
 @code {
     private bool IsCheckedTotal { get; set; }
     private List<FISSUP23.Database.Models.Overforing> OverforingList { get; set; }
     private List<ViewModels.OverforingViewModel> MarkeradeOverforingar { get; set; }
     private List<ViewModels.OverforingViewModel> OverforingVMs { get; set; }
+
+    public bool DeleteDialogOpen { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -141,6 +149,7 @@ else
         StateHasChanged();
     }
 
+
     private void OverCheck(ViewModels.OverforingViewModel over)
     {
         over.isChecked = !over.isChecked;
@@ -153,6 +162,22 @@ else
         {
             MarkeradeOverforingar.Remove(over);
         }
+    }
+
+    private async Task OnDeleteDialogClose(bool accepted)
+    {
+        if (accepted)
+        {
+            Delete();
+        }
+        DeleteDialogOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenDeleteDialog()
+    {
+        DeleteDialogOpen = true;
+        StateHasChanged();
     }
 
     private void MarkeraAlla()
