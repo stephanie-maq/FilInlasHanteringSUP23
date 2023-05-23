@@ -5,7 +5,7 @@
 
 
 <br/>
-<button type="button" class="btn btn-warning" @onclick="RedirectAddOverforing"> Lägg till ny överföring</button>
+<button type="button" class="btn btn-secondary" @onclick="RedirectAddOverforing"> Lägg till överföring</button>
 <br/>
 <br/>
 
@@ -66,9 +66,9 @@
         <div>
             @if (MarkeradeOverforingar.Count == 1)
             {
-                <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
+                <button type="button" class="btn btn-secondary"@onclick="RedirectUpdate"> Uppdatera</button>
             }
-            <button type="button" class="btn btn-warning " @onclick="OpenDeleteDialog"> Delete </button>
+            <button type="button" class="btn btn-secondary" @onclick="OpenDeleteDialog"> Delete </button>
         </div>
 
         <br/>

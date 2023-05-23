@@ -5,7 +5,7 @@
 @inject NavigationManager navMan
 
 <h2>Filer för "@filForOverName" och "@FilForFilkollekName"</h2>
-<button type="button" class="btn btn-warning" @onclick="RedirectAddFil"> Lägg till fil</button>
+<button type="button" class="btn btn-secondary" @onclick="RedirectAddFil"> Lägg till fil</button>
 
 
 @if (FilVMs != null)
@@ -82,9 +82,9 @@
         <div>
             @if (MarkeradeFiler.Count == 1)
             {
-                <button type="button" class="btn btn-warning "> Uppdatera</button>
+                <button type="button" class="btn btn-secondary"> Uppdatera</button>
             }
-            <button type="button" class="btn btn-warning " @onclick="OpenDeleteDialog"> Delete </button>
+            <button type="button" class="btn btn-secondary" @onclick="OpenDeleteDialog"> Delete </button>
         </div>
 
 
