@@ -19,7 +19,7 @@ public partial class Fil
 
     public string KolumnSeparator { get; set; } = null!;
 
-    public short HarKolumnamn { get; set; }
+    public short? HarKolumnamn { get; set; }
 
     public virtual ICollection<FilDatatyp> FilDatatyps { get; set; } = new List<FilDatatyp>();
 

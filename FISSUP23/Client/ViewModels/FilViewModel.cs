@@ -18,7 +18,7 @@ public class FilViewModel
     
     public string KolumnSeparator { get; set; } = null!;
 
-    public short HarKolumnamn { get; set; }
+    public short? HarKolumnamn { get; set; }
 
     public int AntalKolumner { get; set; }
     

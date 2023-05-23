@@ -4,9 +4,9 @@
 @inject HttpClient http
 @inject NavigationManager navMan
 
-
-<h3>Fil</h3>
+<h2>Filer för "@filForOverName" och "@FilForFilkollekName"</h2>
 <button type="button" class="btn btn-warning" @onclick="RedirectAddFil"> Lägg till fil</button>
+
 
 @if (FilVMs != null)
 {
@@ -148,19 +148,25 @@ else
     [Parameter]
     public int FilkollektionId { get; set; }
 
+    public string FilForFilkollekName { get; set; }
+    public string filForOverName { get; set; }
 
     private bool IsCheckedTotal { get; set; }
     private List<ViewModels.FilViewModel> FilVMs { get; set; }
     private List<ViewModels.FilViewModel> MarkeradeFiler { get; set; }
     private List<Database.Models.Fil> fils { get; set; }
-    
+
     public bool DeleteDialogOpen { get; set; }
 
 
     protected override async void OnInitialized()
     {
         var filkollektion = await http.GetFromJsonAsync<Database.Models.FilKollektion>($"./api/FilKollektions/{FilkollektionId}");
+        var overforing = await http.GetFromJsonAsync<Database.Models.Overforing>($"./api/Overforings/{OverforingId}");
+
         fils = filkollektion.Fils.ToList();
+        FilForFilkollekName = filkollektion.Namn;
+        filForOverName = overforing.Namn;
         FilVMs = new List<ViewModels.FilViewModel>();
         MarkeradeFiler = new List<ViewModels.FilViewModel>();
 
@@ -200,7 +206,7 @@ else
             MarkeradeFiler.Remove(fil);
         }
     }
-    
+
     private async Task OnDeleteDialogClose(bool accepted)
     {
         if (accepted)
