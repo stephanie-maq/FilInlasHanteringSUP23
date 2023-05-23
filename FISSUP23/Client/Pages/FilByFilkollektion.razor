@@ -1,5 +1,6 @@
 @page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer"
 @using System.Text.Json
+@using FISSUP23.Client.ViewModels
 @using FISSUP23.Database.Models
 @inject HttpClient http
 @inject NavigationManager navMan
@@ -255,7 +256,7 @@ else
         if (resp.StatusCode == System.Net.HttpStatusCode.OK)
         {
             FilVMs = FilVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
-            MarkeradeFiler = FilVMs;
+            MarkeradeFiler = new List<FilViewModel>();
             StateHasChanged();
         }
     }
