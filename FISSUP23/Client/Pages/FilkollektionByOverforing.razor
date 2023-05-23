@@ -6,7 +6,7 @@
 
 <h3>Filkollektioner för "@filkollektionForOverName"</h3>
 
-<button type="button" class="btn btn-warning" @onclick="RedirectAddFilkollektion"> Lägg till filkollektion</button>
+<button type="button" class="btn btn-secondary" @onclick="RedirectAddFilkollektion"> Lägg till filkollektion</button>
 
 @if (FilkollektionVMs != null)
 {
@@ -81,9 +81,9 @@
         <div>
             @if (MarkeradeFilkollektioner.Count == 1)
             {
-                <button type="button" class="btn btn-warning " @onclick="RedirectUpdate"> Uppdatera</button>
+                <button type="button" class="btn btn-secondary" @onclick="RedirectUpdate"> Uppdatera</button>
             }
-            <button type="button" class="btn btn-warning " @onclick="OpenDeleteDialog"> Delete </button>
+            <button type="button" class="btn btn-secondary" @onclick="OpenDeleteDialog"> Delete </button>
         </div>
 
 
