@@ -1,9 +1,11 @@
 @page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer/{filId:int}/filDatatyp/add"
-<h3>Add Fildatatyp</h3>
 @using System.Text.Json
 @using FISSUP23.Database.Models
 @inject HttpClient http
 @inject NavigationManager navMan
+
+<h3>Add Fildatatyp</h3>
+
 <div>
     <input type="text" class="form-control mb-4" placeholder="FilId = @filId" readonly>
     <input type="text" class="form-control mb-4" @bind="Length" placeholder="Length" aria-label="Last name">

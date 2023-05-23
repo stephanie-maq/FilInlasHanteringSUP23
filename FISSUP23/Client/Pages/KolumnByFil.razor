@@ -4,7 +4,7 @@
 @inject NavigationManager navMan
 
 
-<h3>Kolumner</h3>
+<h3>Kolumner för "@KolumnForFil"</h3>
 
 @if (KolumnVMs != null)
 {
@@ -94,6 +94,8 @@ else
     [Parameter]
     public int FilId { get; set; }
 
+    private string KolumnForFil { get; set; }
+
     private bool IsCheckedTotal { get; set; }
     private List<ViewModels.KolumnViewModel> KolumnVMs { get; set; }
     private List<ViewModels.KolumnViewModel> MarkeradeFiler { get; set; }
@@ -103,6 +105,7 @@ else
     {
         var fil = await http.GetFromJsonAsync<Fil>($"./api/Fils/{FilId}");
         kolumns = fil.Kolumns.ToList();
+        KolumnForFil = fil.Namn;
 
         KolumnVMs = new List<ViewModels.KolumnViewModel>();
         MarkeradeFiler = new List<ViewModels.KolumnViewModel>();

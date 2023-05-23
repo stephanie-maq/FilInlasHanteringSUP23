@@ -4,7 +4,7 @@
 @inject NavigationManager navMan
 
 
-<h3>Tabeller</h3>
+<h3>Tabeller för "@TabellForFil"</h3>
 
 @if (TabellVms != null)
 {
@@ -124,6 +124,8 @@ else
     [Parameter]
     public int FilId { get; set; }
 
+    private string TabellForFil { get; set; }
+    
     private bool IsCheckedTotal { get; set; }
     private List<ViewModels.TabellViewModel> TabellVms { get; set; }
     private List<ViewModels.TabellViewModel> MarkeradeFiler { get; set; }
@@ -133,6 +135,7 @@ else
     {
         var fil = await http.GetFromJsonAsync<Fil>($"./api/Fils/{FilId}");
         tabells = fil.Tabells.ToList();
+        TabellForFil = fil.Namn;
 
         TabellVms = new List<ViewModels.TabellViewModel>();
         MarkeradeFiler = new List<ViewModels.TabellViewModel>();
