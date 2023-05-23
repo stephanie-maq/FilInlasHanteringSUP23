@@ -14,11 +14,11 @@
             <th>FilNamn</th>
             <th>AntalTillagdaKolumner</th>
             <th>AntalRader</th>
-            @* <th>RaderadData</th> *@
-            @* <th>Omlasning</th> *@
-            @* <th>Dubblett</th> *@
-            @* <th>Namn</th> *@
-            @* <th>ErrorLogId</th> *@
+            <th>RaderadData</th>
+            <th>Omlasning</th>
+            <th>Dubblett</th>
+            <th>Namn</th>
+            <th>ErrorLogId</th>
         </tr>
         </thead>
         <tbody>
@@ -43,21 +43,21 @@
                 <td>
                     @Inlasning.AntalRader.ToString()
                 </td>
-                @* <td> *@
-                @*     @Inlasning.RaderadData.ToString() *@
-                @* </td> *@
-                @* <td> *@
-                @*     @Inlasning.Omlasning.ToString() *@
-                @* </td> *@
-                @* <td> *@
-                @*     @Inlasning.Dubblett.ToString() *@
-                @* </td> *@
-                @* <td> *@
-                @*     @Inlasning.Namn *@
-                @* </td> *@
-                @* <td> *@
-                @*     @Inlasning.ErrorLogId.ToString() *@
-                @* </td> *@
+                <td>
+                    @Inlasning.RaderadData.ToString()
+                </td>
+                <td>
+                    @Inlasning.Omlasning.ToString()
+                </td>
+                <td>
+                    @Inlasning.Dubblett.ToString()
+                </td>
+                <td>
+                    @Inlasning.Namn
+                </td>
+                <td>
+                    @Inlasning.ErrorLogId.ToString()
+                </td>
             </tr>
         }
         </tbody>
@@ -73,7 +73,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Inlasnings = await http.GetFromJsonAsync<List<Database.Models.Inlasning>>($"./api/Processdatas");
+        Inlasnings = await http.GetFromJsonAsync<List<Database.Models.Inlasning>>($"./api/Processdata");
         StateHasChanged();
     }
 
