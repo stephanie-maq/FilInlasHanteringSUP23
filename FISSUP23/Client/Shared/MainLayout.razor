@@ -15,8 +15,7 @@
                 <ModalGuide Title=@TitleDialog
                             text1=@TextDialog1 
                             text2=@TextDialog2
-                            text3=@TextDialog3
-                            text4=@TextDialog4 onClose="@CloseGuideDialog">
+                            text3=@TextDialog3 onClose="@CloseGuideDialog">
                 </ModalGuide>
             }
         </div>
@@ -34,7 +33,7 @@
     public string TextDialog1 { get; set; }
     public string TextDialog2 { get; set; }
     public string TextDialog3 { get; set; }
-    public string TextDialog4 { get; set; }
+
 
 
 
@@ -45,7 +44,6 @@
         TextDialog1 = "1. För att ändra i databasen, välj Main i menyn.";
         TextDialog2 = "2. För att se data om en viss tabell eller filtrera data, välj tabellens namn i menyn.";
         TextDialog3 = "3. Bortagning och uppdatering av data görs genom att markera raden.";
-        TextDialog4 = "Stay tuned för framtida versioner";
     }
 
     private async Task CloseGuideDialog(bool accepted)
