@@ -53,7 +53,7 @@ namespace FISSUP23.Server.Controllers
          }
 
          [HttpPut("{id}")]
-         public async Task<ActionResult<Overforing>> PutOverforing(int id, FilKollektion filKollektion)
+         public async Task<ActionResult<Overforing>> PutOverforing(int id, [FromBody] FilKollektion filKollektion)
          {
              try
              {

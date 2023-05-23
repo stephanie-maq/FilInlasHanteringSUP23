@@ -1,5 +1,6 @@
 @page "/overforingar/{OverforingId:int}/filkollektioner/{FilkollektionId:int}/filer"
 @using System.Text.Json
+@using FISSUP23.Client.ViewModels
 @using FISSUP23.Database.Models
 @inject HttpClient http
 @inject NavigationManager navMan
@@ -82,7 +83,7 @@
         <div>
             @if (MarkeradeFiler.Count == 1)
             {
-                <button type="button" class="btn btn-secondary"> Uppdatera</button>
+                <button type="button" class="btn btn-secondary" @onclick="RedirectToUpdate"> Uppdatera</button>
             }
             <button type="button" class="btn btn-secondary" style="margin-left: 10px" @onclick="OpenDeleteDialog"> Ta bort </button>
         </div>
@@ -255,7 +256,7 @@ else
         if (resp.StatusCode == System.Net.HttpStatusCode.OK)
         {
             FilVMs = FilVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
-            MarkeradeFiler = FilVMs;
+            MarkeradeFiler = new List<FilViewModel>();
             StateHasChanged();
         }
     }
@@ -265,6 +266,10 @@ else
         navMan.NavigateTo($"./overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/add", true);
     }
 
-
+    private void RedirectToUpdate()
+    {
+        var filId = MarkeradeFiler.Select(m => m.Id.ToString()).First();
+        navMan.NavigateTo($"/overforingar/{OverforingId}/filkollektioner/{FilkollektionId}/filer/{filId}/update", true);
+    }
 
 }

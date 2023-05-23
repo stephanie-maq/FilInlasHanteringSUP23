@@ -2,6 +2,7 @@
 @inject HttpClient http
 @inject NavigationManager navMan
 @using System.Text.Json
+@using FISSUP23.Client.ViewModels
 
 
 <br/>
@@ -223,7 +224,7 @@ else
         if (resp.StatusCode == System.Net.HttpStatusCode.OK)
         {
             OverforingVMs = OverforingVMs.FindAll(o => !toDelete.Contains(o.Id.ToString())).ToList();
-            MarkeradeOverforingar = OverforingVMs;
+            MarkeradeOverforingar = new List<OverforingViewModel>();
             StateHasChanged();
         }
     }

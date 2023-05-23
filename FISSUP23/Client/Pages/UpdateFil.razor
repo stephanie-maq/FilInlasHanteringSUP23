@@ -1,0 +1,78 @@
+@page "/overforingar/{overforingId:int}/filkollektioner/{filkollektionId:int}/filer/{filId:int}/update"
+@using System.Text.Json
+@using FISSUP23.Database.Models
+@inject HttpClient http
+@inject NavigationManager navMan
+
+
+<h3 class="mb-4">Uppdatera fil</h3>
+
+@if (_fil != null)
+{
+    <body>
+    <input class="form-control mb-4" id="disabledInput" type="text" placeholder="Filkollektions ID: @filkollektionId" disabled>
+    <input class="form-control mb-4" id="disabledInput" type="text" placeholder="Fil Id: @_fil.Id" disabled>
+    <input type="text" class="form-control mb-4" @bind="NyNamn" placeholder="Namn: @_fil.Namn" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="NyMatchMonster" placeholder="MatchMonster: @_fil.MatchMonster" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="NySort" placeholder="Sort: @_fil.Sort" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="NyBeskrivning" placeholder="Beskrivning: @_fil.Beskrivning" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="NyKolumnSeparator" placeholder="KolumnSeparator: @_fil.KolumnSeparator" aria-label="Last name">
+    <input type="text" class="form-control mb-4" @bind="NyHarKolumnamn" placeholder="HarKolumnamn: @_fil.HarKolumnamn" aria-label="Last name">
+
+    <button type="button" class="btn btn-secondary" @onclick="Spara"> Spara </button>
+    </body>
+}
+
+@code {
+
+    [Parameter]
+    public int overforingId { get; set; }
+
+    [Parameter]
+    public int filkollektionId { get; set; }
+
+    [Parameter]
+    public int filId { get; set; }
+
+
+    private string NyNamn { get; set; } = "";
+    private string NyMatchMonster { get; set; } = "";
+    private string? NyBeskrivning { get; set; }
+    private short? NySort { get; set; }
+    private string NyKolumnSeparator { get; set; } = "";
+    private short? NyHarKolumnamn { get; set; }
+
+
+    private Fil _fil { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _fil = await http.GetFromJsonAsync<Fil>($"./api/Fils/{filId}");
+        StateHasChanged();
+    }
+
+    private async Task Spara()
+    {
+        var newFil = new Fil
+        {
+            Id = _fil.Id,
+            Namn = NyNamn,
+            MatchMonster = NyMatchMonster,
+            Beskrivning = NyBeskrivning,
+            Sort = NySort,
+            FilKollektionId = _fil.FilKollektionId,
+            KolumnSeparator = NyKolumnSeparator,
+            HarKolumnamn = NyHarKolumnamn,
+            FilDatatyps = _fil.FilDatatyps,
+            Inlasnings = _fil.Inlasnings.Count == 0 ? new List<Inlasning>() : _fil.Inlasnings,
+            Kolumns = _fil.Kolumns.Count == 0 ? new List<Kolumn>() : _fil.Kolumns,
+            Lookups = new List<Lookup>(),
+            Tabells = _fil.Tabells.Count == 0 ? new List<Tabell>() : _fil.Tabells,
+        };
+
+        var content = new StringContent(JsonSerializer.Serialize(newFil), System.Text.Encoding.UTF8, "application/json");
+        await http.PutAsync($"./api/Fils/{filId}", content);
+        navMan.NavigateTo($"./overforingar/{overforingId}/filkollektioner/{filkollektionId}/filer", true);
+    }
+
+}
